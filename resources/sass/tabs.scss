@@ -1,0 +1,30 @@
+@keyframes flicker {
+  from {
+    background-color: $tab-bg;
+  }
+
+  to {
+    background-color: $tab-notify-bg;
+  }
+}
+
+.tabs {
+  background-color: white !important;
+
+  .nav {
+    margin-bottom: 2rem;
+  }
+
+  .nav-link.notifying {
+    animation: flicker alternate infinite 1s;
+  }
+}
+
+#tablist > ul {
+  position: sticky;
+  top: 60px;
+  background-color: white;
+  z-index: 99;
+  padding-top: 10px;
+  transform: translateY(-10px);
+}

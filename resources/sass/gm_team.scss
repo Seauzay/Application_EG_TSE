@@ -1,0 +1,54 @@
+.gm-team {
+  padding-top: 32px;
+  padding-bottom: 32px;
+
+  .gm-riddle-col {
+    @include media-breakpoint-down(xs) {
+      margin-top: 1rem;
+      margin-left: 1rem
+    }
+  }
+
+  .current-riddle-title {
+    font-weight: bold;
+  }
+
+  .progress {
+    font-size: 1.2rem;
+
+    background-color: lightgrey;
+
+    @include media-breakpoint-down(sm) {
+      margin: 1rem;
+    }
+
+    @include media-breakpoint-up(md) {
+      margin: 0 1rem 1rem 1rem;
+    }
+  }
+
+  .accordion {
+    .card {
+      border: none;
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+    }
+
+    .card-header {
+      position: relative;
+
+      & > i {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: all 0.5s;
+
+        &.active {
+          transform: translateY(-50%) rotate(.5turn);
+        }
+      }
+    }
+  }
+
+}

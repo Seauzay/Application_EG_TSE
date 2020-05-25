@@ -1,0 +1,76 @@
+.player-login {
+  @include media-breakpoint-down(md) {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
+  @include media-breakpoint-up(sm) {
+    label {
+      font-size: 1.3rem;
+    }
+
+    button {
+      font-size: 1.3rem;
+    }
+  }
+
+  @include media-breakpoint-down(xsm) {
+    .btn {
+      padding-left: 0.2rem !important;
+      padding-right: 0.2rem !important;
+    }
+  }
+
+  .btn-rouge{
+    border: 1px solid $red;
+    color: $red;
+
+    &:hover, &.active{
+      background-color: $red;
+      color: white;
+    }
+  }
+
+  .btn-vert{
+    border: 1px solid $green;
+    color: $green;
+
+    &:hover, &.active{
+      background-color: $green;
+      color: white;
+    }
+  }
+
+  .btn-bleu{
+    border: 1px solid $blue;
+    color: $blue;
+
+    &:hover, &.active{
+      background-color: $blue;
+      color: white;
+    }
+  }
+
+  $jaune: #e6e200;
+  $jaune_foncé: #a4a000;
+  .btn-jaune{
+    border: 1px solid $jaune;
+    color: $jaune_foncé;
+
+    &:hover, &.active{
+      background-color: $jaune;
+      color: white;
+    }
+  }
+
+  $violet: rgba(191, 63, 190, 0.87);
+  .btn-violet{
+    border: 1px solid $violet;
+    color: $violet;
+
+    &:hover, &.active{
+      background-color: $violet;
+      color: white;
+    }
+  }
+}

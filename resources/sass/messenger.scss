@@ -1,0 +1,45 @@
+$msg_self_bg: $blue;
+$msg_other_bg: $gray;
+
+.message {
+  .msg-head {
+    font-size: 10px;
+  }
+
+  .name {
+    font-size: 12px;
+  }
+
+  .content {
+    background-color: $msg_other_bg;
+    border-radius: 15px;
+    padding: 5px 15px;
+    max-width: calc(40% + 100px);
+    display: inline-block;
+    text-align: left;
+  }
+
+  & > div {
+    text-align: left;
+  }
+}
+
+.message.self {
+  .content {
+    background-color: $msg_self_bg;
+    color: white;
+  }
+
+  & > div {
+    text-align: right;
+  }
+}
+
+.messenger-container {
+  width: 95%;
+
+  .message-form {
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+}
