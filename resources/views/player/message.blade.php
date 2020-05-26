@@ -20,7 +20,7 @@
                 text = str.slice(0, ++i);
                 if (text === str)
                 {
-                    setTimeout(function(){ return  window.location = "{{ url('player/play') }}"; }, 4000);
+                    setTimeout(function(){ return  window.location = "{{ url('/player/login') }}"; }, 4000);
                     return;
 
                 }

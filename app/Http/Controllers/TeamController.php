@@ -71,7 +71,7 @@ class TeamController extends Controller
             }
         }
         Auth::login($user);
-        return redirect('player/play');
+        return redirect('/');
     }
 
     function home()
@@ -92,11 +92,28 @@ class TeamController extends Controller
                     throw new UnauthorizedException();
             }
         } else
-            return redirect('player/login');
+            return redirect('player/play');
     }
 
     function firstMessage(Request $request)
     {
+        if (Auth::check()) {
+            $user = Auth::user();
+            switch ($user->grade){
+                case 0:
+                    return view('player.home', ['logout_url' => 'player/logout']);
+                    break;
+                case 1:
+                    return view('gm.home', ['logout_url' => 'gm/logout']);
+                    break;
+                case 2:
+                    return redirect('/admin');
+                    break;
+                default:
+                    throw new UnauthorizedException();
+            }
+        } else
+           // return redirect('player/play');
         return view('player.message',['logout_url' => 'player/logout']);
     }
     function logout()

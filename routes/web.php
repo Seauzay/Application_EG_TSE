@@ -16,7 +16,7 @@ Route::get('/', 'TeamController@firstMessage');
 Route::get('player/login', 'TeamController@login');
 Route::post('player/checklogin', 'TeamController@checklogin');
 Route::get('player/logout', 'TeamController@logout');
-Route::get('player/play','TeamController@home');
+//Route::get('player/play','TeamController@home');
 
 
 // GameMaster Login :
