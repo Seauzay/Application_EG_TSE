@@ -38,6 +38,7 @@ class AdminController extends Controller
         DB::table('rooms')->truncate();
         DB::table('rooms_teams')->truncate();
         DB::table('teams')->where('id', '>', '1')->delete();
+        Artisan::call('db:seed');
         return redirect('admin');
     }
 
