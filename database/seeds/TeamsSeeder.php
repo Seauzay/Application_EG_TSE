@@ -19,12 +19,16 @@ class TeamsSeeder extends Seeder
             'name' => 'admin',
             'password' => bcrypt('default'),
             'grade' => 2,
+            'remember_token' => "",
+
         ]);
         DB::table('teams')->insert([
             'id' => 2,
             'name' => 'gamemaster',
             'password' => bcrypt('1234'),
             'grade' => 1,
+            'remember_token' => "",
+
         ]);
         
         $colors = [
@@ -45,6 +49,8 @@ class TeamsSeeder extends Seeder
                     'id' => $color->base + $number,
                     'name' => $color->name.' '.$number,
                     'grade' => 0,
+                    'remember_token' => "",
+
                 ]);
             }
         }
