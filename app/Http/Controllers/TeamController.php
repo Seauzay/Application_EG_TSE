@@ -71,7 +71,7 @@ class TeamController extends Controller
             }
         }
         Auth::login($user);
-        return redirect('/');
+        return redirect('player/play');
     }
 
     function home()
@@ -97,7 +97,7 @@ class TeamController extends Controller
 
     function firstMessage(Request $request)
     {
-        return view('player.message',['logout_url' => 'gm/logout']);
+        return view('player.message',['logout_url' => 'player/logout']);
     }
     function logout()
     {

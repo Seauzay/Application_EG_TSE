@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('content')
 
-    <form class="player-login" method="GET" action="{{ url('player/login') }}">
+    <form class="player-login" method="GET" action="{{ url('player/play') }}">
         <div id="typewriter" class="container mb-3" data-toggle="buttons">
 
         <script>
@@ -20,7 +20,7 @@
                 text = str.slice(0, ++i);
                 if (text === str)
                 {
-                    setTimeout(function(){ return  window.location = "{{ url('player/login') }}"; }, 4000);
+                    setTimeout(function(){ return  window.location = "{{ url('player/play') }}"; }, 4000);
                     return;
 
                 }
