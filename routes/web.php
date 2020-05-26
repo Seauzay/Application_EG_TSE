@@ -12,10 +12,11 @@
 */
 
 //Player Login :
-Route::get('/', 'TeamController@home');
+Route::get('/', 'TeamController@firstMessage');
 Route::get('player/login', 'TeamController@login');
 Route::post('player/checklogin', 'TeamController@checklogin');
 Route::get('player/logout', 'TeamController@logout');
+
 
 // GameMaster Login :
 Route::get('gm', 'GameMasterController@home');

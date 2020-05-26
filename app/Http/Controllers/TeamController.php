@@ -95,6 +95,10 @@ class TeamController extends Controller
             return redirect('player/login');
     }
 
+    function firstMessage(Request $request)
+    {
+        return view('player.message',['logout_url' => 'gm/logout']);
+    }
     function logout()
     {
         Auth::logout();
