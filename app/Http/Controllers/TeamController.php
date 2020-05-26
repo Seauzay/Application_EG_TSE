@@ -118,7 +118,9 @@ class TeamController extends Controller
     }
     function logout()
     {
+        $remember_token=false;
         Auth::logout();
+
         return redirect('/');
     }
 }
