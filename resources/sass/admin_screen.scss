@@ -1,0 +1,22 @@
+.card-admin{
+  border: 1px solid #F9C11C;
+  background-color: #FBE192;
+  padding: 12px;
+  margin: auto auto 20px;
+  width: 20rem;
+  overflow:auto;
+  input{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  h2{
+    text-align: center;
+  }
+  .current-riddle-descr, .current-riddle-code{
+    font-style: italic ;
+    font-weight: bold;
+  }
+  .current-riddle-disable-cb{
+    opacity: 0.4;
+  }
+}

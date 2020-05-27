@@ -12,6 +12,7 @@ use Illuminate\Validation\UnauthorizedException;
 
 class AdminController extends Controller
 {
+
     public function home()
     {
         $this->authorize('isAdmin', Team::class);
@@ -22,12 +23,17 @@ class AdminController extends Controller
                 'name' => $riddle->name,
                 'description' => $riddle->description,
                 'code' => $riddle->code,
+                'url' =>$riddle->url,
                 'disabled' => $riddle->disabled
             ];
         })->all();
 
-        return view('admin.home', compact('riddles'));
+        $adm = Auth::user();
+        $logout_url =['logout_url' => 'admin/logout'];
+
+        return view('admin.home', compact('riddles'))->with(['logout_url' => 'admin/logout'])->withTitle($adm->getAttribute('name'));
     }
+
 
     public function refreshDB()
     {
@@ -51,7 +57,9 @@ class AdminController extends Controller
         $riddle->name = $request->input('name') ?? $riddle->name;
         $riddle->description = $request->input('description') ?? $riddle->description;
         $riddle->code = $request->input('code') ?? $riddle->code;
+        $riddle->url = $request->input('url')?? $riddle->url;
         $riddle->disabled = $request->input('disabled') ? true : false;
+
         $riddle->saveOrFail();
         return redirect('admin');
     }
@@ -67,4 +75,5 @@ class AdminController extends Controller
 
         return redirect('admin');
     }
+
 }
