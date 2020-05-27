@@ -1,5 +1,16 @@
 const {Timer} = require('easytimer.js');
 
+/* retire de la page tout les éléments d'une classe
+Attention: si les éléments en question sont liés à des classe, 
+cette relation n'est pas mise à jour et l'objet existera toujours
+du point de vue de la classe.*/
+function removeElementsByClass(className){
+    var elements = document.getElementsByClassName(className);
+    while(elements.length > 0){
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+}
+
 function formatMS(s) {
     function pad(n, z) {
         z = z || 2;
@@ -31,7 +42,7 @@ const PlayerRiddleFactory = (function () {
     };
 })();
 
-
+//classe gérant une énigme.
 class PlayerRiddle {
     constructor(root, id) {
         // assures that root node is quite correct
@@ -237,7 +248,7 @@ class PlayerRiddle {
         this.root.find('.timer').text(val.toString(fields));
     }
 }
-
+// classe gérant la grille d'enigme  
 class PlayerRiddleGrid {
     constructor(root) {
         if (!(root instanceof jQuery)) {
@@ -257,7 +268,7 @@ class PlayerRiddleGrid {
         });
         this.started = false;
     }
-
+	//ajoute une rangée permettant de contenir des enigmes au même niveaux dans la page
     addRow() {
         const rowNumber = this.root.children().length + 1;
         const container = $('<div>', {class: 'container-fluid jumbotron player-riddle-row'});
@@ -265,7 +276,8 @@ class PlayerRiddleGrid {
         this.root.append(container);
         this.rowNumber++;
     }
-
+	//ajoute une enigme dans la grille
+	//Provoque l'affichage de l'enigme sur la page
     addPlayerRiddle(rowNumber, id) {
         const row = this.root.find('.player-riddle-row:nth-child(' + rowNumber + ') .row').first();
         const playerRiddleNumber = row.children().length + 1;
@@ -274,46 +286,69 @@ class PlayerRiddleGrid {
         return playerRiddle;
     }
 
+	//mis a jour de la grille
+	//gere l'affichage des enigmes et de leurs contenus.
     updateRiddles(riddleJSON) {
         const riddles = riddleJSON.riddles;
         this.updateTimer(riddleJSON.time);
+		
+		//recherche du plus haut niveau de rangée dans les enigmes
+		//récupérées
+		let linemax = 0;
+		riddles.forEach((riddle) => {
+			if (riddle.line > linemax){
+			   linemax = riddle.line;
+			}
+	   
+	    });
+		//suppression de l'affichage des enigmes dans la page
+		removeElementsByClass("card player-riddle-card my-2");
+		//suppression des enigmes de la classe
+		this.playerRiddles.length = 0;
+		
         riddles.forEach((riddle) => {
             let playerRiddle = this.playerRiddles.find((e) => {
                 return e.id === riddle.id;
             });
-            if (playerRiddle === undefined) {
-                if (riddle.line > this.rowNumber)
-                    this.addRow();
-                playerRiddle = this.addPlayerRiddle(riddle.line);
-            }
-            playerRiddle.setAttributes({
-                id: riddle.id,
-                title: riddle.name,
-                description: riddle.description,
-                post_resolution_message: riddle.post_resolution_message,
-                url: riddle.url
-            });
-            if (riddle.start_date) {
-                if (riddle.end_date) {
-                    const start = new Date(riddle.start_date.date);
+			// On affiche que les enigmes de la derniere rangée.
+			if (riddle.line == linemax) {
+				if (playerRiddle === undefined) {
+					//Si il n'y a pas de rangée on en ajoute une
+					if (this.rowNumber ==0)
+					{
+						this.addRow();
+					}
+					playerRiddle = this.addPlayerRiddle(1);
+				}
+				playerRiddle.setAttributes({
+					id: riddle.id,
+					title: riddle.name,
+					description: riddle.description,
+					post_resolution_message: riddle.post_resolution_message,
+					url: riddle.url
+				});
+				if (riddle.start_date) {
+					if (riddle.end_date) {
+						const start = new Date(riddle.start_date.date);
                     
-                    const end = new Date(riddle.end_date.date);
+						const end = new Date(riddle.end_date.date);
                     
-                    playerRiddle.showButtons({
-                        start: false
-                    });
-                    playerRiddle.setTimer(end - start);
+						playerRiddle.showButtons({
+							start: false
+						});
+						playerRiddle.setTimer(end - start);
                     
-                    if (riddle.post_resolution_message) {
-                    	playerRiddle.showPostResolutionMessage();
-                    }
-                } else {
-                    playerRiddle.startTimerFromDate(riddle.start_date.date);
-                    playerRiddle.showButtons({start: false, validate: true, cancel: true});
-                    playerRiddle.showURL();
-                }
-            }
-        });
+						if (riddle.post_resolution_message) {
+							playerRiddle.showPostResolutionMessage();
+						}
+					} else {
+						playerRiddle.startTimerFromDate(riddle.start_date.date);
+						playerRiddle.showButtons({start: false, validate: true, cancel: true});
+						playerRiddle.showURL();
+					}
+				}
+			}
+		});
     };
 
     updateTimer(time) {
