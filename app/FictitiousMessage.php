@@ -12,7 +12,7 @@ class FictitiousMessage extends Model
 
     public function messages()
     {
-        return $this->hasMany('App\Message');
+        return $this->belongsToMany('App\Message', 'messaging');
     }
 
     public function riddle()

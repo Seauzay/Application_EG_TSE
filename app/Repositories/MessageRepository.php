@@ -9,17 +9,15 @@
 namespace App\Repositories;
 
 
-use App\FictitiousMessage;
+use App\FictuousMessage;
 use App\Message;
 use App\Room;
 use App\Team;
-use App\Jobs\GenerateAlert;
-use Illuminate\Support\Carbon;
 
 class MessageRepository
 {
 
-    public static function create(Team $team, Room $room, FictitiousMessage $content)
+    public static function create(Team $team, Room $room, FictuousMessage $content)
     {
         $msg = new Message();
         $msg->date = now('Europe/Paris');
@@ -28,11 +26,6 @@ class MessageRepository
         $msg->message_id = $content->id;
 
         $msg->saveOrFail();
-    }
-
-    public static function generateAlert(Team $team, FictitiousMessage $content)
-    {
-        dispatch(new GenerateAlert($team, $content))->delay(Carbon::now()->addMinutes($content->time));
     }
 
     public static function getMessages(Room $room)

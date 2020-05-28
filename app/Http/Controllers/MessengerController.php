@@ -41,8 +41,7 @@ class MessengerController extends Controller
                 'date' => $msg->date,
                 'content' => $msg->fictitiousMessage->content,
                 'author' => $msg->fictitiousMessage->author,
-                'self' => $msg->team_id == $user_id,
-                'read' => $msg->read
+                'self' => $msg->team_id == $user_id
             ];
         });
 
@@ -68,36 +67,5 @@ class MessengerController extends Controller
             ],
             'rooms' => Auth::user()->rooms
         ]);
-
+    }
 }
-
-public function messageRead($room_id,Request $request)
-{
-    $room = Room::findOrFail($room_id);
-    $user_id = Auth::user()->id;
-    $messages = MessageRepository::getMessages($room)->map(function ($msg) use ($user_id) {
-
-    $msg->read = true;
-    $msg->save();
-        return [
-            'date' => $msg->date,
-            'content' => $msg->fictitiousMessage->content,
-            'author' => $msg->fictitiousMessage->author,
-            'self' => $msg->team_id == $user_id,
-            'read' => $msg->read
-        ];
-
-
-});
-    return JsonResponse::create([
-        'status' => [
-            'type' => 'success',
-            'message' => 'messageRead',
-            'display' => false
-        ],
-        'messages' => $messages
-
-    ]);
-}
-}
-

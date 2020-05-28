@@ -33,6 +33,6 @@ class Message extends Model
 
     public function fictitiousMessage()
     {
-        return $this->belongsTo('App\FictitiousMessage','message_id');
+        return $this->hasOne('App\FictitiousMessage','id');
     }
 }
