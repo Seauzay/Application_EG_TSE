@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MessengerController extends Controller
 {
+
     public function sendMessage($room_id, Request $request)
     {
         $room = Room::findOrFail($room_id);
@@ -38,8 +39,8 @@ class MessengerController extends Controller
         $messages = MessageRepository::getMessages($room)->map(function ($msg) use ($user_id) {
             return [
                 'date' => $msg->date,
-                'content' => $msg->content,
-                'author' => $msg->author->name,
+                'content' => $msg->fictitiousMessage->content,
+                'author' => $msg->fictitiousMessage->author,
                 'self' => $msg->team_id == $user_id
             ];
         });

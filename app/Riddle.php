@@ -25,7 +25,7 @@ class Riddle extends Model
     {
         return $this->belongsToMany('App\Team', 'riddles_teams')->withPivot('start_date', 'end_date');
     }
-    
+
     public function parcours()
     {
         return $this->hasMany('App\Parcours');
@@ -39,5 +39,10 @@ class Riddle extends Model
     public function children()
     {
         return $this->belongsToMany(Riddle::class, 'riddles_riddles', 'parent_id', 'child_id');
+    }
+
+    public function postResolutionMessage()
+    {
+        return $this->hasOne('App\FictitiousMessage');
     }
 }

@@ -12,6 +12,9 @@ class Message extends Model
      * string content
      * datetime date
      */
+
+    protected $table = 'messaging';
+
     public $timestamps = false;
 
     protected $casts = [
@@ -26,5 +29,10 @@ class Message extends Model
     public function room()
     {
         return $this->belongsTo('App\Room');
+    }
+
+    public function fictitiousMessage()
+    {
+        return $this->hasOne('App\FictitiousMessage','id');
     }
 }

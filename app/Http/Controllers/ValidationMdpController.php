@@ -16,6 +16,7 @@ class ValidationMdpController extends Controller
 
         if ($riddledb->code == $request->input('code')) {
             end_riddle($riddledb, Auth::user());
+
             return JsonResponse::create([
                 'status' => [
                     'type' => 'success',
@@ -32,6 +33,17 @@ class ValidationMdpController extends Controller
                 'display' => true
             ]
         ]);
+    }
+
+    private function sendMessage($room_id, Request $request)
+    {
+        $room = Room::findOrFail($room_id);
+        $fictiousMessage = $room->fictiousMessage;
+
+        if(!is_null($fictiousMessage)) {
+            $this->authorize('sendmessage', $room);
+            MessageRepository::create($request->user(), $room, $fictiousMessage);
+        }
     }
 
 }
