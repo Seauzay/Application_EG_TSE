@@ -27,7 +27,8 @@ class RiddleTeamController extends Controller
                         'id' => $team->getAttribute('id'),
                         'name' => $team->getAttribute('name'),
                         'start_date' => $team->getAttribute('start_date'),
-                        'end_date' => $team->getAttribute('end_date')
+                        'end_date' => $team->getAttribute('end_date'),
+						'score' => $team->getAttribute('score')
                     ],
                     'riddles' => $riddles
                 ]);
