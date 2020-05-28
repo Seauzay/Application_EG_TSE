@@ -193,7 +193,8 @@ class GMTeamList {
 
     updateTeams(teamJSON) {
         const names = teamJSON.riddle_names;
-        const data = teamJSON.data;
+        const data = teamJSON.data
+		data.sort(function(a,b){return (b.team.score - a.team.score)});
         data.forEach((data) => {
             const team = data.team;
             const riddles = data.riddles;
