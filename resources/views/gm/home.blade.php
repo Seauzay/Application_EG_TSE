@@ -21,6 +21,7 @@
                 <div class="col align-self-center text-center">
                     <span class="team-name"></span>&nbsp;:
                     <span class="team-time"></span>
+					<span class="team-score"></span>&nbsp; pts
                 </div>
                 <div class="col-8 gm-riddle-col">
                     <div class="row justify-content-center"><span class="current-riddle-title">Énigme actuelle&nbsp;: </span></div>

@@ -101,6 +101,8 @@ class GMTeam {
             this.setRiddleName(options.riddleName);
         if (options.progress)
             this.setProgress(options.progress);
+		if (options.score)
+			this.setScore(options.score);
         if (options.start && options.end) {
             if (this.teamTimer.isRunning()) {
                 this.teamTimer.stop();
@@ -154,6 +156,10 @@ class GMTeam {
     setRiddleName(str) {
         this.root.find('.current-riddle').text(str);
     }
+	
+	setScore(int){
+		this.root.find('.team-score').text(int);
+	}
 
     setProgress(input) {
         let n;
@@ -211,7 +217,8 @@ class GMTeamList {
                 start: team.start_date,
                 end: team.end_date,
                 riddle_start: currentRiddle.start_date,
-                riddle_end: currentRiddle.end_date
+                riddle_end: currentRiddle.end_date,
+				score: team.score
             });
             // détail
             const list = gmteam.root.find('.card-body ul');
