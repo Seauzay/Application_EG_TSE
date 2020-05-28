@@ -107,8 +107,8 @@
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Suivi des équipes', active: true});
+        roomlist.update();
     </script>
-
 
     <script>
         const div = $('<div>');

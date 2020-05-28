@@ -81,7 +81,7 @@ const GMTeamFactory = (function () {
     };
 })();
 
-//Classe encapsulant les données et fonctions liées à l'affichage de 
+//Classe encapsulant les données et fonctions liées à l'affichage de
 //l'avancement d'une équipe
 class GMTeam {
     constructor(root, id) {
@@ -109,7 +109,7 @@ class GMTeam {
             this.root.find('.team-time').text(formatMS(this.teamTimer.getTotalTimeValues().secondTenths * 100));
         });
     }
-	//fonction permettant de modifier plusieurs information pour 
+	//fonction permettant de modifier plusieurs information pour
 	//une équipe en même temps
     setAtributes(options) {
         if (options.teamName)
@@ -175,7 +175,7 @@ class GMTeam {
     setRiddleName(str) {
         this.root.find('.current-riddle').text(str);
     }
-	
+
 	setScore(int){
 		this.root.find('.team-score').text(int);
 	}
@@ -183,7 +183,7 @@ class GMTeam {
 	setClassement(int){
 		this.root.find('.classement').text(classe(int));
 	}
-	
+
     setProgress(input) {
         let n;
         if ((typeof input) === 'string') {
@@ -199,7 +199,7 @@ class GMTeam {
     }
 }
 
-//Fonction encapsulant l'ensemble des équipes ayant commencé le jeu. 
+//Fonction encapsulant l'ensemble des équipes ayant commencé le jeu.
 class GMTeamList {
     constructor(root) {
         // assures that root node is quite correct
@@ -234,7 +234,7 @@ class GMTeamList {
 		let pos = 0;
 		let posegal = 1;
         let scoreprec = 10000000000;
-		data.forEach((data) => { 
+		data.forEach((data) => {
 			if (data.team.score == scoreprec){
 				posegal = posegal + 1;
 			}
@@ -243,8 +243,8 @@ class GMTeamList {
 				posegal = 1;
 			}
 			scoreprec = data.team.score;
-			
-			
+
+
             const team = data.team;
             const riddles = data.riddles;
 
