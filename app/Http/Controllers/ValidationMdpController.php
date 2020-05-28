@@ -6,6 +6,8 @@ use App\Riddle;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use \Datetime;
 
 class ValidationMdpController extends Controller
 {
@@ -13,9 +15,29 @@ class ValidationMdpController extends Controller
     {
         $riddledb = Riddle::find($id);
         $this->authorize('validateRiddle', $riddledb);
-
+        $user=Auth::user();
         if ($riddledb->code == $request->input('code')) {
-            end_riddle($riddledb, Auth::user());
+            end_riddle($riddledb, $user);
+            $format = 'Y-m-d H:i:s';
+            $dateFin = DateTime::createFromFormat($format, DB::table('riddles_teams')->where([
+                ['team_id', '=', $user->id],
+                ['riddle_id', '=', $id],
+            ])->value('end_date'));
+            $dateDebut = DateTime::createFromFormat($format, DB::table('riddles_teams')->where([
+                ['team_id', '=', $user->id],
+                ['riddle_id', '=', $id],
+            ])->value('start_date'));
+            $duration=$dateFin->getTimeStamp()-$dateDebut->getTimestamp();
+            if ($duration<=480){
+                $score=20;
+            } elseif ($duration<=600) {
+                $score=10;
+            }
+            else{
+                $score=-10;
+            }
+            $user->score=$user->score+$score;
+            $user->save();
             return JsonResponse::create([
                 'status' => [
                     'type' => 'success',
