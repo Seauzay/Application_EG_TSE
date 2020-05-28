@@ -20,7 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Room::class => MessengerPolicy::class,
         Riddle::class => RiddlePolicy::class,
-        Team::class => TeamPolicy::class
+        Team::class => TeamPolicy::class,
     ];
 
     /**
