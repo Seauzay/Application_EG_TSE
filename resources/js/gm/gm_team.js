@@ -15,6 +15,8 @@ function formatMS(s) {
     return (hrs > 0 ? pad(hrs) + ':' : '') + pad(mins) + ':' + pad(secs) /*+ '.' + pad(ms, 3)*/;
 }
 
+//fonction atribuant un classement à partir d'un entier
+// 1 -> 1er, 2->2nd, 3->3eme
 function classe(int){
 	const nb = int;
 	switch(nb){
@@ -79,6 +81,8 @@ const GMTeamFactory = (function () {
     };
 })();
 
+//Classe encapsulant les données et fonctions liées à l'affichage de 
+//l'avancement d'une équipe
 class GMTeam {
     constructor(root, id) {
         // assures that root node is quite correct
@@ -105,7 +109,8 @@ class GMTeam {
             this.root.find('.team-time').text(formatMS(this.teamTimer.getTotalTimeValues().secondTenths * 100));
         });
     }
-
+	//fonction permettant de modifier plusieurs information pour 
+	//une équipe en même temps
     setAtributes(options) {
         if (options.teamName)
             this.setTeamName(options.teamName);
@@ -194,6 +199,7 @@ class GMTeam {
     }
 }
 
+//Fonction encapsulant l'ensemble des équipes ayant commencé le jeu. 
 class GMTeamList {
     constructor(root) {
         // assures that root node is quite correct
@@ -207,6 +213,7 @@ class GMTeamList {
         this.gmTeams = [];
     }
 
+	//Ajoute une équipe à GM, provoque l'affichage de l'équipe sur la page.
     addGMTeam(id) {
         const newDiv = $('<div>', {id: id});
         this.root.append(newDiv);
@@ -215,10 +222,15 @@ class GMTeamList {
         return gmTeam;
     }
 
+	//Fonction mettant à jour l'affichage des équipes classé.
+	//Si jamais cette fonction était appelée autrement qu'en mettant toute la page web à jour (refresh)
+	//Il faudra probablement vider la liste gmTeams à chaque appel pour que le classment se mette à jour.
     updateTeams(teamJSON) {
         const names = teamJSON.riddle_names;
         const data = teamJSON.data
+		//classement des équipes dans data en fonction de leurs score
 		data.sort(function(a,b){return (b.team.score - a.team.score)});
+		//pos,posegal,scoreprec servent a afficher la place de l'équipe en prenant en compte les égalités.
 		let pos = 0;
 		let posegal = 1;
         let scoreprec = 10000000000;
@@ -231,6 +243,8 @@ class GMTeamList {
 				posegal = 1;
 			}
 			scoreprec = data.team.score;
+			
+			
             const team = data.team;
             const riddles = data.riddles;
 
