@@ -220,8 +220,17 @@ class GMTeamList {
         const data = teamJSON.data
 		data.sort(function(a,b){return (b.team.score - a.team.score)});
 		let pos = 0;
-        data.forEach((data) => {
-			pos = pos +1;
+		let posegal = 1;
+        let scoreprec = 10000000000;
+		data.forEach((data) => { 
+			if (data.team.score == scoreprec){
+				posegal = posegal + 1;
+			}
+			else{
+				pos = pos + posegal;
+				posegal = 1;
+			}
+			scoreprec = data.team.score;
             const team = data.team;
             const riddles = data.riddles;
 
