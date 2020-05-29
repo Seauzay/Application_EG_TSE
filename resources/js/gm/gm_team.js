@@ -243,8 +243,6 @@ class GMTeamList {
 				posegal = 1;
 			}
 			scoreprec = data.team.score;
-
-
             const team = data.team;
             const riddles = data.riddles;
 
