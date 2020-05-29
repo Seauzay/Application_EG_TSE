@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 
+use App\FictitiousMessage;
 use App\FictuousMessage;
 use App\Message;
 use App\Room;
@@ -17,7 +18,7 @@ use App\Team;
 class MessageRepository
 {
 
-    public static function create(Team $team, Room $room, FictuousMessage $content)
+    public static function create(Team $team, Room $room, FictitiousMessage $content)
     {
         $msg = new Message();
         $msg->date = now('Europe/Paris');
