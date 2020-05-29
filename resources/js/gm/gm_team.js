@@ -15,6 +15,18 @@ function formatMS(s) {
     return (hrs > 0 ? pad(hrs) + ':' : '') + pad(mins) + ':' + pad(secs) /*+ '.' + pad(ms, 3)*/;
 }
 
+function classe(int){
+	const nb = int;
+	switch(nb){
+		case 1: return ('1er');
+				break;
+		case 2: return ('2nd');
+				break;
+		default: return (int+'eme');
+				break;
+	}
+}
+
 const GMTeamFactory = (function () {
     const class_prefix = 'gm-team';
     const accordion_prefix = class_prefix + '-accordion-';
@@ -103,6 +115,8 @@ class GMTeam {
             this.setProgress(options.progress);
 		if (options.score)
 			this.setScore(options.score);
+		if (options.classement)
+			this.setClassement(options.classement);
         if (options.start && options.end) {
             if (this.teamTimer.isRunning()) {
                 this.teamTimer.stop();
@@ -161,6 +175,10 @@ class GMTeam {
 		this.root.find('.team-score').text(int);
 	}
 
+	setClassement(int){
+		this.root.find('.classement').text(classe(int));
+	}
+	
     setProgress(input) {
         let n;
         if ((typeof input) === 'string') {
@@ -201,7 +219,9 @@ class GMTeamList {
         const names = teamJSON.riddle_names;
         const data = teamJSON.data
 		data.sort(function(a,b){return (b.team.score - a.team.score)});
+		let pos = 0;
         data.forEach((data) => {
+			pos = pos +1;
             const team = data.team;
             const riddles = data.riddles;
 
@@ -218,7 +238,8 @@ class GMTeamList {
                 end: team.end_date,
                 riddle_start: currentRiddle.start_date,
                 riddle_end: currentRiddle.end_date,
-				score: team.score
+				score: team.score,
+				classement: pos
             });
             // détail
             const list = gmteam.root.find('.card-body ul');
