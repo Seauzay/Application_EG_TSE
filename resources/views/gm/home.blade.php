@@ -13,8 +13,9 @@
         <div class="container jumbotron gm-team">
             <div class="row align-items-start gm-teams mb-3">
                 <div class="col align-self-center text-center">
-                    <span class="team-name"></span>&nbsp;:
-                    <span class="team-time"></span>
+					<span class="classement"></span>&nbsp; :
+                    <span class="team-name"></span>&nbsp;
+                    <!--<span class="team-time"></span> -->
 					<span class="team-score"></span>&nbsp; pts
                 </div>
                 <div class="col-8 gm-riddle-col">
