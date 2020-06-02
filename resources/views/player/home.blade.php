@@ -89,7 +89,7 @@
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Énigmes', active: true});
-        //tablist.addTab({title: 'Salon de clavardage avec les Game Masters'});
+		const roomlist = new RoomList(tablist);
         roomlist.update();
     </script>
 
