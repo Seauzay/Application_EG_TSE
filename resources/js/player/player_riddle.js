@@ -349,6 +349,16 @@ class PlayerRiddleGrid {
 				}
 			}
 		});
+	    nb_solved=0;
+		nb_riddle=0;
+		riddles.forEach((riddle) => {
+			nb_riddle=nb_riddle+1;
+			if (riddle.end_date) {
+			nb_solved=nb_solved+1;}
+		})
+		width_val=((nb_solved)/8)*100;
+		//val val=progressbar.progressbar("value")|| 0;
+		$('#myBar').css("width", width_val + '%');
     };
 
     updateTimer(time) {
