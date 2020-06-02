@@ -1,11 +1,29 @@
 @extends('layouts.base')
 
+<style>
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#myBar {
+  width: 0%;
+  height: 30px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+
 @section('nav-items')
-    {{-- Timer global --}}
-    <div id="global-timer" class="row justify-content-start">
-        Temps Écoulé&nbsp;:
-        <span class="time"></span>
-    </div>
+<p>Avancement du jeu :
+       
+	   
+	   <div id="myProgress">
+  <div id="myBar"></div>
+</div>
+	
+</p>
 @endsection
 
 @section('content')
