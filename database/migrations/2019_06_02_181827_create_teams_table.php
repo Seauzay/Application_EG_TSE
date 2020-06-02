@@ -21,6 +21,7 @@ class CreateTeamsTable extends Migration
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->integer('score')->default(0);
+
             $table->rememberToken();
         });
     }
