@@ -19,7 +19,7 @@ class MessagesSeeder extends Seeder
             'id' => 1,
             'content' => 'C\'est bon, vous avez retrouvé Théo ?? On est mal, plus qu\'une heure avant de poser le dossier 😱😱😱',
             'author' => 'BDE',
-            'time' => '01:00:00'
+            'time' => 60
         ]);
 
         DB::table('messages')->insert([
@@ -40,7 +40,7 @@ class MessagesSeeder extends Seeder
             'id' => 4,
             'content' => 'L\'administration attend toujours le dossier ! C\'est inadmissible. Je vous rappelle que vous risquez l\'annulation du WEI. Je vous laisse une demi-heure.',
             'author' => 'Bruno Sauviac',
-            'time' => '01:30:00'
+            'time' => 90
         ]);
 
         DB::table('messages')->insert([
@@ -69,6 +69,13 @@ class MessagesSeeder extends Seeder
             'content' => 'Vous avez reçu un nouveau message de Théo. Composez le 06 65 XX XX 11 pour l\'écouter.',
             'author' => 'Théo',
             'riddle_id' => 100
+        ]);
+
+        DB::table('messages')->insert([
+            'id' => 9,
+            'content' => 'Ceci est une alerte test qui doit se déclencher au bout d\'une minute.',
+            'author' => 'Kernel',
+            'time' => 1
         ]);
 
     }
