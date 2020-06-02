@@ -41,7 +41,8 @@ class MessengerController extends Controller
                 'date' => $msg->date,
                 'content' => $msg->fictitiousMessage->content,
                 'author' => $msg->fictitiousMessage->author,
-                'self' => $msg->team_id == $user_id
+                'self' => $msg->team_id == $user_id,
+                'read' => $msg->read
             ];
         });
 
