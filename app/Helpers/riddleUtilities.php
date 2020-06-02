@@ -74,7 +74,7 @@ if (!function_exists('end_riddle')) {
         if (!is_null($riddle_team->pivot->end_start))
             throw new Exception("Riddle already finished");
             $riddle->teams()->updateExistingPivot($team->id, ['end_date' => now('Europe/Paris')]);
-
+            
         if (all(Riddle::all(), function ($r) use ($team) {
             return $r->isDisabled || !is_riddle_in_parcours($r, $team) || is_riddle_completed($r, $team);
         })) {
