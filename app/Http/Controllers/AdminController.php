@@ -35,9 +35,11 @@ class AdminController extends Controller
         $this->authorize('isAdmin', Team::class);
 
         DB::table('messages')->truncate();
+        DB::table('messaging')->truncate();
         DB::table('riddles_teams')->truncate();
         DB::table('rooms')->truncate();
         DB::table('rooms_teams')->truncate();
+        DB::table('jobs')->truncate();
         DB::table('teams')->where('id', '>', '1')->delete();
         Artisan::call('db:seed');
         return redirect('admin');

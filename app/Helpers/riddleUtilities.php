@@ -4,9 +4,9 @@
 use App\Repositories\MessageRepository;
 use App\Riddle;
 use App\Team;
+use App\FictitiousMessage;
 use Illuminate\Support\Carbon;
 use App\Parcours;
-use Illuminate\Support\Facades\Log;
 
 if (!function_exists('is_riddle_completed')) {
     function is_riddle_completed(Riddle $riddle, Team $team)
@@ -50,6 +50,11 @@ if (!function_exists('start_riddle')) {
         if (is_null($team->start_date)) {
             $team->start_date = now('Europe/Paris');
             $team->saveOrFail();
+
+            $alerts = FictitiousMessage::whereNotNull('time')->get();
+            foreach ($alerts as $alert) {
+                MessageRepository::generateAlert($team,$alert);
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ class CreateNewMessagesTable extends Migration
                 $table->text('content');
                 $table->string('author');
                 $table->integer('riddle_id')->unsigned()->nullable()->index('fk_messages_riddles1_idx');
-                $table->time('time')->nullable();
+                $table->integer('time')->nullable();
             });
         Schema::table('messaging', function (Blueprint $table) {
             $table->index('message_id','fk_messaging_messages1_idx');
