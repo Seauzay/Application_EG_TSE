@@ -24,14 +24,14 @@ class MessagesSeeder extends Seeder
 
         DB::table('messages')->insert([
             'id' => 2,
-            'content' => 'Vous avez reçu un Snap de Théo ! <br><a href="href=https://youtu.be/8xkPcRLftHY" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Cliquez ici</a>',
+            'content' => 'Vous avez reçu un Snap de Théo ! <br><a href="https://youtu.be/8xkPcRLftHY" target="_blank" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Cliquez ici</a>',
             'author' => 'Théo',
             'riddle_id' => 2
         ]);
 
         DB::table('messages')->insert([
             'id' => 3,
-            'content' => 'Vous avez reçu un Snap de Théo !<br><a href="href=https://youtu.be/8xkPcRLftHY" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Cliquez ici</a>',
+            'content' => 'Vous avez reçu un Snap de Théo !<br><a href="https://youtu.be/8xkPcRLftHY" target="_blank" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Cliquez ici</a>',
             'author' => 'Théo',
             'riddle_id' => 5
         ]);
