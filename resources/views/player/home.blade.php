@@ -84,12 +84,21 @@
             </form>
         </div>
     </template>
+	
+	{{--template de l'onglet FaQ --}}
+	<template id='QR-template'>
+	<ul id="QR" >
+        <h2 class="question"> </h7>
+		<p class="reponse"></p>
+        
+    </ul>
+	</template>
 
 
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Énigmes', active: true});
-        //tablist.addTab({title: 'Salon de clavardage avec les Game Masters'});
+        tablist.addTab({title: 'FAQ'});
         roomlist.update();
     </script>
 
@@ -100,5 +109,7 @@
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
         const res = playerRiddleGrid.update();
+		
+		tablist.contentOfTab(2).append('<div>',{id:'FaQ'}));
     </script>
 @endsection
