@@ -73,3 +73,4 @@ GMTeamList = require('./gm/gm_team').GMTeamList;
 PlayerRiddle = require('./player/player_riddle').PlayerRiddle;
 PlayerRiddleGrid = require('./player/player_riddle').PlayerRiddleGrid;
 RoomList = require('./messenger/createRoom').RoomList;
+MessageTemplate = require('./messenger/MessageTemplate').MessageTemplate;

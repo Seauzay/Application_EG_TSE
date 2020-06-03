@@ -2,18 +2,19 @@ const MessageTemplate = require('./MessageTemplate').MessageTemplate;
 const MessageForm = require('./MessageForm').MessageForm;
 
 class MessageAPI {
-    constructor(room, container, template, form) {
+    constructor(room, container, template, form,tabList) {
         this.container = (typeof container === 'string' ? document.querySelector(container) : container);
         this.room = room;
-        this.template = new MessageTemplate(template);
         this.form = new MessageForm(form);
         this.refreshTimeout = null;
         this.refreshDelay = 10000; // 10 seconds
-
+        this.tabList = tabList;
+        this.template = new MessageTemplate(template);
         this.form.handler = data => this.refreshMessages();
         this.last = new Date(0);
 
         this.refreshMessages();
+
     }
 
     refreshMessages() {
@@ -36,10 +37,21 @@ class MessageAPI {
                             this.callback();
                         const element = this.template.createMessage(message);
                         this.container.appendChild(element);
+
                     }
                 }
             }
         });
+
+        $.ajax('msg/update/'+this.room, {
+            success: (data) => {
+                //debug
+                console.log(data.messages);
+            }
+        });
+
+
+
 
         this.refreshTimeout = setTimeout(() => this.refreshMessages(), this.refreshDelay);
     }
