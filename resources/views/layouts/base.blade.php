@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{$title ?? config('app.name')}}</title>
     <link rel="shortcut icon" type="image/png" href="{{url('images/favicon.jpg')}}"/>
+
     {{Html::style('css/app.css')}}
     {{Html::script('js/app.js')}}
 </head>

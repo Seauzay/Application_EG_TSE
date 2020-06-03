@@ -11,7 +11,7 @@
                 "-  cliquer sur “lien vers l’énigme”, si l’énigme est hébergée sur une page web</br>" +
                 "une fois l’énigme résolue, entrer dans l’application le code de validation que le Game Master vous donnera.</br>" +
                 "<span style='color:red' ><i>Cette application a été imaginée, prototypée et produite par des étudiants du M1 Design de Communication, des élèves de la DTA et des étudiants de </br>FISE 2. </i></br>Merci à eux !</span>"+
-                "</br>Vous allez être redirigé maintenant vers la page de connexion !</div>",
+                "</br>Vous allez être redirigé maintenant vers la page de jeu !</div>",
                 i = 0,
                 isTag,
                 text;
@@ -20,7 +20,7 @@
                 text = str.slice(0, ++i);
                 if (text === str)
                 {
-                    setTimeout(function(){ return  window.location = "{{ url('/player/login') }}"; }, 4000);
+                    setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
                     return;
 
                 }
@@ -33,7 +33,7 @@
                 if( char === '>' ) isTag = false;
 
                 if (isTag) return type();
-                setTimeout(type, 35);
+                setTimeout(type, 4);
 
 
             }());
