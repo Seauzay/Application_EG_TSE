@@ -71,8 +71,29 @@
             <div>
                 <div class="content">Content</div>
             </div>
+
         </div>
+
+
     </template>
+
+        <!-- Modal -->
+    <div class="modal fade right" id="myModalDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><span class="badge badge-danger">Nouveau !</span></h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     {{-- Template pour les salons --}}
     <template id="room-template">
@@ -86,10 +107,11 @@
     </template>
 
 
+
     {{--Création des onglets--}}
     <script>
+        // tablist.addTab({title: 'Messagerie',active: true});
         tablist.addTab({title: 'Énigmes', active: true});
-        //tablist.addTab({title: 'Salon de clavardage avec les Game Masters'});
         roomlist.update();
     </script>
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\UnauthorizedException;
+use const Grpc\CALL_ERROR;
 
 class AdminController extends Controller
 {
@@ -34,9 +35,11 @@ class AdminController extends Controller
         $this->authorize('isAdmin', Team::class);
 
         DB::table('messages')->truncate();
+        DB::table('messaging')->truncate();
         DB::table('riddles_teams')->truncate();
         DB::table('rooms')->truncate();
         DB::table('rooms_teams')->truncate();
+        DB::table('jobs')->truncate();
         DB::table('teams')->where('id', '>', '1')->delete();
         Artisan::call('db:seed');
         return redirect('admin');

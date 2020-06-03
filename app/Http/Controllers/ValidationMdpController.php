@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\MessageRepository;
 use App\Riddle;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,9 @@ class ValidationMdpController extends Controller
 
         if ($riddledb->code == $request->input('code')) {
             end_riddle($riddledb, Auth::user());
+
+            $this->submitMessage(Auth::user()->rooms->first(),$riddledb,Auth::user());
+
             return JsonResponse::create([
                 'status' => [
                     'type' => 'success',
@@ -32,6 +36,23 @@ class ValidationMdpController extends Controller
                 'display' => true
             ]
         ]);
+    }
+
+    private function submitMessage($room, $riddle, $team)
+    {
+        $fictitiousMessage = $riddle->postResolutionMessage;
+
+        if(!is_null($fictitiousMessage)) {
+            MessageRepository::create($team, $room, $fictitiousMessage);
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'success',
+                    'message' => 'Message envoyé avec succès',
+                    'display' => false
+                ]
+            ]);
+        }
+
     }
 
 }

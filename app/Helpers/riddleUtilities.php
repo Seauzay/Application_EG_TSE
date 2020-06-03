@@ -1,11 +1,12 @@
 <?php
 
 
+use App\Repositories\MessageRepository;
 use App\Riddle;
 use App\Team;
+use App\FictitiousMessage;
 use Illuminate\Support\Carbon;
 use App\Parcours;
-use Illuminate\Support\Facades\Log;
 
 if (!function_exists('is_riddle_completed')) {
     function is_riddle_completed(Riddle $riddle, Team $team)
@@ -17,11 +18,11 @@ if (!function_exists('is_riddle_completed')) {
 
 if (!function_exists('is_riddle_in_parcours')) {
     function is_riddle_in_parcours(Riddle $riddle, Team $team)
-    {        
+    {
         $parcours = Parcours::where('team_id', $team->id)
                                 ->where('riddle_id', $riddle->id)
                                 ->first();
-        
+
         return !is_null($parcours);
     }
 }
@@ -49,6 +50,11 @@ if (!function_exists('start_riddle')) {
         if (is_null($team->start_date)) {
             $team->start_date = now('Europe/Paris');
             $team->saveOrFail();
+
+            $alerts = FictitiousMessage::whereNotNull('time')->get();
+            foreach ($alerts as $alert) {
+                MessageRepository::generateAlert($team,$alert);
+            }
         }
     }
 }
@@ -73,8 +79,9 @@ if (!function_exists('end_riddle')) {
             throw new Exception("Riddle not started");
         if (!is_null($riddle_team->pivot->end_start))
             throw new Exception("Riddle already finished");
-            $riddle->teams()->updateExistingPivot($team->id, ['end_date' => now('Europe/Paris')]);
-            
+
+        $riddle->teams()->updateExistingPivot($team->id, ['end_date' => now('Europe/Paris')]);
+
         if (all(Riddle::all(), function ($r) use ($team) {
             return $r->isDisabled || !is_riddle_in_parcours($r, $team) || is_riddle_completed($r, $team);
         })) {
@@ -93,7 +100,7 @@ if (!function_exists('riddle_info')) {
             'id' => $riddle->id,
             'name' => $riddle->name,
             'description' => $riddle->description,
-            'post_resolution_message' => $riddle->post_resolution_message,
+            'post_resolution_message' => (is_null($riddle->postResolutionMessage) ? NULL : $riddle->postResolutionMessage->content),
             'url' => $riddle->url,
             'start_date' => is_null($riddle_team) || is_null($riddle_team->pivot->start_date) ? null : new Carbon($riddle_team->pivot->start_date),
             'end_date' => is_null($riddle_team) || is_null($riddle_team->pivot->end_date) ? null : new Carbon($riddle_team->pivot->end_date),
