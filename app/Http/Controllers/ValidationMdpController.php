@@ -44,13 +44,6 @@ class ValidationMdpController extends Controller
 
         if(!is_null($fictitiousMessage)) {
             MessageRepository::create($team, $room, $fictitiousMessage);
-            return JsonResponse::create([
-                'status' => [
-                    'type' => 'success',
-                    'message' => 'Message envoyé avec succès',
-                    'display' => false
-                ]
-            ]);
         }
 
     }
