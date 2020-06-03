@@ -17,16 +17,17 @@ class RiddleController extends Controller
         $user = Auth::user();
 
         $riddles = [];
-                
+
         foreach (Riddle::all() as $riddle) {
-            
-            if (!$riddle->disabled 
+
+            if (!$riddle->disabled
                 && is_riddle_in_parcours($riddle, $user)
-                && all($riddle->parents, 
+                && all($riddle->parents,
                         function ($r) use ($user) {
                             return $r->disabled || !is_riddle_in_parcours($r, $user) || is_riddle_completed($r, $user);
                         })
-            ) {                            
+                && has_incomplete_sisters($riddle,$user)
+            ){
                 $riddles[] = riddle_info($riddle, $user);
             }
         }

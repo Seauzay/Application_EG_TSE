@@ -7,6 +7,7 @@ use App\Team;
 use App\FictitiousMessage;
 use Illuminate\Support\Carbon;
 use App\Parcours;
+use Illuminate\Support\Facades\Log;
 
 if (!function_exists('is_riddle_completed')) {
     function is_riddle_completed(Riddle $riddle, Team $team)
@@ -118,5 +119,30 @@ if (!function_exists('riddle_info_for_gm')) {
             'start_date' => is_null($riddle_team) || is_null($riddle_team->pivot->start_date) ? null : new Carbon($riddle_team->pivot->start_date),
             'end_date' => is_null($riddle_team) || is_null($riddle_team->pivot->end_date) ? null : new Carbon($riddle_team->pivot->end_date),
         ];
+    }
+}
+
+if (!function_exists('riddle_sisters')) {
+    function riddle_sisters(Riddle $riddle)
+    {
+        $sisters = [$riddle];
+        foreach ($riddle->parents as $parent){
+            foreach ($parent->children as $child){
+                if(!in_array($child,$sisters,true)){
+                    $sisters[] = $child;
+                }
+            }
+        }
+
+        return $sisters;
+    }
+}
+
+if (!function_exists('has_incomplete_sisters')){
+    function has_incomplete_sisters(Riddle $riddle, Team $team)
+    {
+        return any(riddle_sisters($riddle), function ($r) use ($team) {
+            return is_riddle_in_parcours($r, $team) && !is_riddle_completed($r, $team);
+        });
     }
 }
