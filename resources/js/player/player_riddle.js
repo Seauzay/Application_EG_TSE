@@ -288,19 +288,11 @@ class PlayerRiddleGrid {
 
 	//mis a jour de la grille
 	//gere l'affichage des enigmes et de leurs contenus.
+	//On ne récupere qu'une énigme
     updateRiddles(riddleJSON) {
         const riddles = riddleJSON.riddles;
         this.updateTimer(riddleJSON.time);
 		
-		//recherche du plus haut niveau de rangée dans les enigmes
-		//récupérées
-		let linemax = 0;
-		riddles.forEach((riddle) => {
-			if (riddle.line > linemax){
-			   linemax = riddle.line;
-			}
-	   
-	    });
 		//suppression de l'affichage des enigmes dans la page
 		removeElementsByClass("card player-riddle-card my-2");
 		//suppression des enigmes de la classe
@@ -310,42 +302,38 @@ class PlayerRiddleGrid {
             let playerRiddle = this.playerRiddles.find((e) => {
                 return e.id === riddle.id;
             });
-			// On affiche que les enigmes de la derniere rangée.
-			if (riddle.line == linemax) {
-				if (playerRiddle === undefined) {
-					//Si il n'y a pas de rangée on en ajoute une
-					if (this.rowNumber ==0)
-					{
-						this.addRow();
-					}
-					playerRiddle = this.addPlayerRiddle(1);
+			if (playerRiddle === undefined) {
+				//Si il n'y a pas de rangée on en ajoute une
+				if (this.rowNumber ==0)
+				{
+					this.addRow();
 				}
-				playerRiddle.setAttributes({
-					id: riddle.id,
-					title: riddle.name,
-					description: riddle.description,
-					post_resolution_message: riddle.post_resolution_message,
-					url: riddle.url
-				});
-				if (riddle.start_date) {
-					if (riddle.end_date) {
-						const start = new Date(riddle.start_date.date);
+				playerRiddle = this.addPlayerRiddle(1);
+			}
+			playerRiddle.setAttributes({
+				id: riddle.id,
+				title: riddle.name,
+				description: riddle.description,
+				post_resolution_message: riddle.post_resolution_message,
+				url: riddle.url
+			});
+			if (riddle.start_date) {
+				if (riddle.end_date) {
+					const start = new Date(riddle.start_date.date);    
+					const end = new Date(riddle.end_date.date);
+              
+					playerRiddle.showButtons({
+						start: false
+					});
+					playerRiddle.setTimer(end - start);
                     
-						const end = new Date(riddle.end_date.date);
-                    
-						playerRiddle.showButtons({
-							start: false
-						});
-						playerRiddle.setTimer(end - start);
-                    
-						if (riddle.post_resolution_message) {
-							playerRiddle.showPostResolutionMessage();
-						}
-					} else {
-						playerRiddle.startTimerFromDate(riddle.start_date.date);
-						playerRiddle.showButtons({start: false, validate: true, cancel: true});
-						playerRiddle.showURL();
+					if (riddle.post_resolution_message) {
+						playerRiddle.showPostResolutionMessage();
 					}
+				} else {
+					playerRiddle.startTimerFromDate(riddle.start_date.date);
+					playerRiddle.showButtons({start: false, validate: true, cancel: true});
+					playerRiddle.showURL();
 				}
 			}
 		});
