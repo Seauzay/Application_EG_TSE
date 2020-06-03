@@ -22,6 +22,7 @@ class MessageAPI {
 
         $.ajax('msg/' + this.room, {
             method: 'get',
+            async : false,
             dataType: 'json',
             error: (jqXHR, textStatus, errorThrown) => {
                 console.error(textStatus || errorThrown);
@@ -45,8 +46,6 @@ class MessageAPI {
 
         $.ajax('msg/update/'+this.room, {
             success: (data) => {
-                //debug
-                console.log(data.messages);
             }
         });
 
