@@ -14,7 +14,7 @@ class AddPointsToTeamsTable extends Migration
     public function up()
     {
         Schema::table('teams', function (Blueprint $table) {
-            $table->integer('points')->default('0');
+            $table->integer('score')->default('0');
         });
     }
 
@@ -26,7 +26,7 @@ class AddPointsToTeamsTable extends Migration
     public function down()
     {
         Schema::table('teams', function (Blueprint $table) {
-            $table->dropColumn('points');
+            $table->dropColumn('score');
         });
     }
 }
