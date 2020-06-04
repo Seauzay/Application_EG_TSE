@@ -1,6 +1,6 @@
 @keyframes flicker {
   from {
-    background-color: $tab-bg;
+    background-color: $mediumGray ;
   }
 
   to {
@@ -11,12 +11,26 @@
 .tabs {
   background-color: white !important;
 
+  /*
   .nav {
     margin-bottom: 2rem;
   }
+  */
 
   .nav-link.notifying {
     animation: flicker alternate infinite 1s;
+  }
+  .nav a {
+    background: $lightGray !important;
+    color: $darkGray !important;
+    border:solid 2px $darkGray !important;
+  }
+  .nav a:hover {
+    background: $mediumGray !important;
+    color: $darkGray !important;
+    border:solid 2px $darkGray !important;
+
+
   }
 }
 
