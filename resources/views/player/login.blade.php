@@ -1,5 +1,22 @@
 @extends('layouts.base')
 @section('content')
+    @if(isset(Auth::user()->name))
+        <script>window.location = "/";</script>
+    @endif
+
+
+    @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-block text-center">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Vous devez choisir une couleur et un numéro !</strong>
+        </div>
+    @endif
+
+    @if (count($errors) > 0)
+        <div class="alert alert-danger text-center">
+            <strong>Vous devez choisir une couleur et un numéro !</strong>
+        </div>
+    @endif
     <form class="player-login" method="post" action="{{ url('player/checklogin') }}">
         <div class="container mb-3  mx-auto" data-toggle="buttons">
             <div class="row">
