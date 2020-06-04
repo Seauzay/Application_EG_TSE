@@ -74,3 +74,5 @@ PlayerRiddle = require('./player/player_riddle').PlayerRiddle;
 PlayerRiddleGrid = require('./player/player_riddle').PlayerRiddleGrid;
 RoomList = require('./messenger/createRoom').RoomList;
 MessageTemplate = require('./messenger/MessageTemplate').MessageTemplate;
+QR = require('./player/FaQ').QR;
+QRGrid = require('./player/FaQ').QRGrid;
