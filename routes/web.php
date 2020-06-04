@@ -45,6 +45,8 @@ Route::get('validationEnigme/validationMdp/{id}', 'ValidationMdpController@check
 
 // RiddlesTeams
 Route::get('riddleteam/list', 'RiddleTeamController@listRiddlesTeams');
+Route::get('riddleteam/fullList', 'RiddleTeamController@listAllRiddles');
+
 
 // Player
 Route::get('player/', 'PlayerController@home');
@@ -54,3 +56,5 @@ Route::get('admin', 'AdminController@home');
 Route::post('admin/modifyRiddle', 'AdminController@modifyRiddle');
 Route::post('admin/refreshDB', 'AdminController@refreshDB');
 Route::post('admin/addGM', 'AdminController@addGM');
+Route::get('admin/logout', 'AdminController@logout');
+Route::get('admin/login', 'GameMasterController@login');

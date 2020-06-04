@@ -73,4 +73,7 @@ GMTeamList = require('./gm/gm_team').GMTeamList;
 PlayerRiddle = require('./player/player_riddle').PlayerRiddle;
 PlayerRiddleGrid = require('./player/player_riddle').PlayerRiddleGrid;
 RoomList = require('./messenger/createRoom').RoomList;
+CreateModParcourDisp = require('./modif_parcours/modifParcours').CreateModParcourDisp;
+ModParcourAPI = require('./modif_parcours/modifParcours').ModParcourAPI;
+ModParcourTemplate = require('./modif_parcours/modifParcours').ModParcourTemplate;
 MessageTemplate = require('./messenger/MessageTemplate').MessageTemplate;

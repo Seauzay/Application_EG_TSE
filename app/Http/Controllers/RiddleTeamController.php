@@ -12,8 +12,7 @@ class RiddleTeamController extends Controller
 {
     public function listRiddlesTeams(Request $request)
     {
-        $this->authorize('isGM', Team::class);
-
+        $this->authorize('isGMorAdmin', Team::class);
         $output = [];
         foreach (Team::all() as $team) {
             if ($team->grade > 1) continue;
@@ -45,5 +44,27 @@ class RiddleTeamController extends Controller
             'riddle_names' => DB::table('riddles')->pluck('name'),
             'riddle_number' => Riddle::where('disabled', 0)->count()
         ]);
+    }
+
+    public function listAllRiddles(Request $request)
+    {
+        $this->authorize('isGMorAdmin', Team::class);
+        $riddles = Riddle::all();
+
+        return JsonResponse::create([
+            'status' => [
+                'type' => 'success',
+                'message' => 'Énigmes récupérées avec succès',
+                'display' => false
+            ],
+            'riddles' => $riddles,
+        ]);
+    }
+
+    public function modParcours(Request $request){
+       /* $this->authorize('isGMorAdmin', Team::class);
+        foreach ($request->parcours as $parcour){
+
+        }*/
     }
 }
