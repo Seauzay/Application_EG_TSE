@@ -48,7 +48,8 @@ class ValidationMdpController extends Controller
                     'type' => 'success',
                     'message' => 'Énigme Validée',
                     'display' => true
-                ]
+                ],
+                'score'  => $user->score
             ]);
         }
 

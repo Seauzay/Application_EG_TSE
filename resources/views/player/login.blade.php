@@ -10,7 +10,7 @@
                 <div class="form-group col-md-4  mx-auto">
                     <label for="inputColor">Sélectionnez votre couleur d'équipe :</label>
                     <select id="color" name="color" class="custom-select mr-sm-2">
-                        <option selected>Couleurs</option>
+                        <option  disabled selected hidden>Couleurs</option>
                         <option  name="color" value="1">Rouge</option>
                         <option  name="color" value="2">Vert</option>
                         <option  name="color" value="3">Bleu</option>
@@ -20,7 +20,7 @@
                     <br>
                     <label for="inputNum">Sélectionnez votre numéro d'équipe :</label>
                     <select id="num" name="num" class="custom-select mr-sm-2">
-                        <option selected>Numéro</option>
+                        <option  disabled selected hidden>Numéro</option>
                         <option  name="num" value="1">1</option>
                         <option  name="num" value="2">2</option>
                         <option  name="num" value="3">3</option>
@@ -30,7 +30,7 @@
                         <option  name="num" value="7">7</option>
                         <option  name="num" value="8">8</option>
                         <option  name="num" value="9">9</option>
-                        <option  name="num" value="10">0</option>
+                        <option  name="num" value="10">10</option>
 
                     </select>
                 </div>

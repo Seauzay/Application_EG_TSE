@@ -103,6 +103,9 @@ class PlayerRiddle {
                         success: (data) => {
                             if (data.status.type === 'success') {
                                 this.timer.pause();
+                                let div =document.getElementById("score");
+                                div.innerHTML ='';
+                                div.innerHTML = "Score : "+data.score;
                                 this.showButtons({
                                     start: false,
                                     cancel: false,
@@ -111,6 +114,7 @@ class PlayerRiddle {
                                 this.showURL(false);
                                 playerRiddleGrid.update();
                                 modal.modal('hide');
+
                             }
                             if (data.status.type === 'error') {
                                 if (data.status.display)
@@ -357,6 +361,7 @@ class PlayerRiddleGrid {
                     }
                 });
                 this.displayGlobalTimerTime();
+
             }
         } else {
             $('#global-timer .time').text('00:00');
