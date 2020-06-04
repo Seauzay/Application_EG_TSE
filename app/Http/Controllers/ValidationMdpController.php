@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Repositories\MessageRepository;
 use App\Riddle;
+use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ValidationMdpController extends Controller
 {
@@ -15,6 +17,7 @@ class ValidationMdpController extends Controller
         $riddledb = Riddle::find($id);
         $this->authorize('validateRiddle', $riddledb);
 
+        $user = Auth::user();
         if ($riddledb->code == $request->input('code')) {
             end_riddle($riddledb, Auth::user());
 			$format = 'Y-m-d H:i:s';
