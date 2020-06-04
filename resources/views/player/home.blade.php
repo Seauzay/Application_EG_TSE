@@ -1,6 +1,7 @@
 @extends('layouts.base')
 
 <style>
+#Ajout de la barre de progression
 #myProgress {
   width: 100%;
   background-color: #ddd;
