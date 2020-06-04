@@ -23,4 +23,8 @@ class TeamPolicy
     {
         return !is_null($team) && $team->grade === 2;
     }
+    public function isGMorAdmin(Team $team)
+    {
+        return ($this->isGM($team)||$this->isAdmin($team));
+    }
 }

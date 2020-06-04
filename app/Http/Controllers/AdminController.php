@@ -24,7 +24,8 @@ class AdminController extends Controller
                 'description' => $riddle->description,
                 'code' => $riddle->code,
                 'url' =>$riddle->url,
-                'disabled' => $riddle->disabled
+                'disabled' => $riddle->disabled,
+                'post-msg' => $riddle->post_resolution_message
             ];
         })->all();
 
@@ -58,6 +59,7 @@ class AdminController extends Controller
         $riddle->description = $request->input('description') ?? $riddle->description;
         $riddle->code = $request->input('code') ?? $riddle->code;
         $riddle->url = $request->input('url')?? $riddle->url;
+        $riddle->post_resolution_message = $request->input('post-msg')?? $riddle->post_resolution_message;
         $riddle->disabled = $request->input('disabled') ? true : false;
 
         $riddle->saveOrFail();
@@ -74,6 +76,11 @@ class AdminController extends Controller
         ]);
 
         return redirect('admin');
+    }
+    function logout()
+    {
+        Auth::logout();
+        return redirect('admin/login');
     }
 
 }
