@@ -87,11 +87,11 @@
 	
 	{{--template de l'onglet FaQ --}}
 	<template id='QR-template'>
-	<ul id="QR" >
+	<div id="QR" >
         <h2 class="question"> </h7>
 		<p class="reponse"></p>
         
-    </ul>
+    </div>
 	</template>
 
 

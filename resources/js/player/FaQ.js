@@ -49,6 +49,8 @@ class QR {
         });
 		
 	}
+	
+	
      
     setQuestion(str) {
         this.root.find('.question').text(str);
@@ -84,7 +86,7 @@ class QRGrid {
         this.id = root.prop('id');
 
         this.QRlist = [];
-		const container = $('<ol>', {id: 'Row'});
+		const container = $('<div>', {id: 'Row'});
         this.root.append(container);
        
 	}
