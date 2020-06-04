@@ -13,6 +13,3 @@
     </div>
 </template>
 
-<div class="collection">
-
-</div>
