@@ -86,19 +86,23 @@ class QRGrid {
         this.id = root.prop('id');
 
         this.QRlist = [];
-		const container = $('<div>', {id: 'Row'});
-        this.root.append(container);
+		
        
 	}
 	
 	//ajoute une QR dans la grille
 	//Provoque l'affichage sur la page
     addQR() {
-        const row = this.root.find('.Row').first();
-        const QRNumber = row.children().length + 1;
-        const QR = new QR(row);
+		
+        const newDiv = $('<div>', {id:'rang'});
+		this.root.append(newDiv);
+/*       
+	   const QR = new QR(newDiv);
         this.QRlist.push(QR);
         return QR;
+		*/
+		return newDiv;
+		
     }
 
 	//mis a jour de la grille
@@ -111,7 +115,7 @@ class QRGrid {
 		this.QRlist.length = 0;
 		
 		// Texte des questions réponses pour le remplissage 
-		Qlist = ["vos points", "Decompte du temps", "",""];
+		Qlist = ["Que Signifie le décompte à gauche de l'écran ?", "J'ai résolu une énigme, comment passer à l'étape suivante ?", "Que faire en cas de problème ?"];
 		Rlist = [ "Au fur et à mesure de votre progression, vous gagnez des points en fonction du temps \
 		passé à résoudre les énigmes selon le barème suivant : \n\n\
 		moins de 8 minutes : 20 points \n\
@@ -119,16 +123,41 @@ class QRGrid {
 		plus de 10 minutes : -10 points \n\n\
 		L'icone à côté de votre nombre de points vous indique votre classement\
 		par rapport aux autres équipes",
-		"Decompte du temps"," vide 1","vide 2"];
+		"Vous avez terminé une étape ? Bravo ! Il ne vous reste plus qu'a la valider, grâce au game master de l'énigme :\
+		demandez lui le code de validation, et entrez le dans le champ correspondant pour passer à l'étape suivante.",
+		"Contactez le game master le plus proche. Les game masters sont reconnaissables grâce à leurs badges."];
 		
-		
+		let faq = document.getElementById('FaQ');
+		let conteneur = document.createElement('ol');
+		faq.appendChild(conteneur);
         for (let i = 0; i<Qlist.length;i++){
-			
-			QR = this.addQR();
-			QR.setQuestion(Qlist[i]);
-			QR.setReponse(Rlist[i]);
+			//
+			//QR = this.addQR();
+			//QR.setQuestion(Qlist[i]);
+			//QR.setReponse(Rlist[i]);
 				
+			let QR = document.createElement('li');
+			let Q = document.createElement('h4');
+			Q.textContent = Qlist[i];
+			
+			let R = document.createElement('p');
+			R.textContent= Rlist[i];
+			R.style.display = 'none';
+			
+			Q.addEventListener('click', () => {
+				if (R.style.display === "none") {
+					R.style.display = "block";
+				} else {
+					R.style.display = "none";
+				}
+			});
+			
+			QR.appendChild(Q);
+			QR.appendChild(R);
+			
+			conteneur.appendChild(QR);
 		}
+		
     }
 
     

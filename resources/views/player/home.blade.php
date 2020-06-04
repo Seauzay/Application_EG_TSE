@@ -98,8 +98,11 @@
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Énigmes', active: true});
-        tablist.addTab({title: 'FAQ'});
         roomlist.update();
+		tablist.addTab({title: 'FAQ'});
+		tablist.contentOfTab(2).append($('<div>',{id:'FaQ'}));
+		const QRgGrid = new QRGrid('#FaQ');
+		QRgGrid.remplissageQRgrid();
     </script>
 
     {{--Création des énigmes au chargement de la page--}}
@@ -110,8 +113,6 @@
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
         const res = playerRiddleGrid.update();
 		
-		tablist.contentOfTab(2).append($('<div>',{id:'FaQ'}));
-		const QRgGrid = new QRGrid('#FaQ');
-		QRgGrid.remplissageQRgrid();
+		
     </script>
 @endsection
