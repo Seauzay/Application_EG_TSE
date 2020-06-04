@@ -17,11 +17,11 @@ class Room extends Model
 
     public function teams()
     {
-        return $this->belongsToMany('App\Team', 'rooms_teams');
+        return $this->belongsToMany('App\Team','rooms_teams');
     }
 
     public function messages()
     {
-        return $this->hasMany('App\Message');
+        return $this->hasOne('App\Message');
     }
 }
