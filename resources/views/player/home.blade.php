@@ -110,6 +110,8 @@
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
         const res = playerRiddleGrid.update();
 		
-		tablist.contentOfTab(2).append('<div>',{id:'FaQ'}));
+		tablist.contentOfTab(2).append($('<div>',{id:'FaQ'}));
+		const QRgGrid = new QRGrid('#FaQ');
+		QRgGrid.remplissageQRgrid();
     </script>
 @endsection

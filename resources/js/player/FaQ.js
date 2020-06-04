@@ -14,23 +14,22 @@ function removeElementsByClass(className){
 
 const QRFactory = (function () {
     return {
-        construct: function (root, id, url) {
+        construct: function (root) {
             // fills the node
             const template = $('#QR-template');
             if (!template.exists())
                 throw Error('player-riddle-template does not exist');
             template.clone().appendTo(root);
-			//?
-            const QRRoot = root.find('.player-riddle-card').last();
-            playerRiddleRoot.attr('id', id);
-            return playerRiddleRoot;
+            const QRRoot = root.find('.QR').last();
+            QRRoot.attr('id', 'QR');
+            return QRRoot;
         }
     };
 })();
 
 //classe gérant une question/reponse.
 class QR {
-    constructor(root, id) {
+    constructor(root) {
         // assures that root node is quite correct
         if (!(root instanceof jQuery)) {
             if (typeof root !== 'string')
@@ -38,32 +37,29 @@ class QR {
             root = $(root);
         }
 
-        // saves id
-        this.id = id;
 
        
         // constructs
-        this.root = QRFactory.construct(root, id);
+        this.root = QRFactory.construct(root);
 
         // titre button
-        this.root.find('.Question').click(() => {
+        this.root.find('.question').click(() => {
             
             this.toogleReponse();
         });
 		
-		this.root.find('.Reponse').style.display = 'none';
 	}
      
     setQuestion(str) {
-        this.root.find('.Question').text(str);
+        this.root.find('.question').text(str);
     }
 
     setReponse(str) {
-        this.root.find('.Reponse').text(str);
+        this.root.find('.reponse').text(str);
     }
 
 	toogleReponse(){
-		let x = this.root.find('.Reponse');
+		let x = this.root.find('.reponse');
 		if (x.style.display === "none") {
 			x.style.display = "block";
 		} else {
@@ -72,10 +68,7 @@ class QR {
 	}
     
 
-    setID(id) {
-        this.id = id;
-        this.root.find('.player-riddle-card').last().attr('id', id);
-    }
+  
 
 
 }
@@ -98,12 +91,12 @@ class QRGrid {
 	
 	//ajoute une QR dans la grille
 	//Provoque l'affichage sur la page
-    addQR(rowNumber, id) {
+    addQR() {
         const row = this.root.find('.Row').first();
         const QRNumber = row.children().length + 1;
-        const QRi = new QR(row, id);
-        this.QRlist.push(QRi);
-        return QRi;
+        const QR = new QR(row);
+        this.QRlist.push(QR);
+        return QR;
     }
 
 	//mis a jour de la grille
@@ -111,9 +104,9 @@ class QRGrid {
     remplissageQRgrid() {
         
 		//suppression de l'affichage des enigmes dans la page
-		removeElementsByClass("card player-riddle-card my-2");
+		removeElementsByClass("QR");
 		//suppression des enigmes de la classe
-		this.playerRiddles.length = 0;
+		this.QRlist.length = 0;
 		
 		// Texte des questions réponses pour le remplissage 
 		Qlist = ["vos points", "Decompte du temps", "",""];
@@ -128,15 +121,13 @@ class QRGrid {
 		
 		
         for (let i = 0; i<Qlist.length;i++){
-            let QR = this.QRlist.find((e) => {
-                return e.id === QR.id;
-            });
-			QR = this.addQR(1);
+			
+			QR = this.addQR();
 			QR.setQuestion(Qlist[i]);
 			QR.setReponse(Rlist[i]);
 				
 		}
-    };
+    }
 
     
 }
