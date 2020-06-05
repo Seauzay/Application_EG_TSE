@@ -88,7 +88,11 @@ if (!function_exists('end_riddle')) {
         })) {
             $team->end_date = now('Europe/Paris');
             $team->saveOrFail();
+			return true;
         }
+		else{
+			return false;
+		}
     }
 }
 

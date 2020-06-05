@@ -123,4 +123,9 @@ class TeamController extends Controller
 
         return redirect('/');
     }
+	
+	function finishJourney()
+	{
+		return view('player.endPage', ['logout_url' => 'player/logout']);
+	}
 }

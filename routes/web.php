@@ -23,6 +23,7 @@ Route::get('player/login', 'TeamController@login');
 Route::post('player/checklogin', 'TeamController@checklogin');
 Route::get('player/logout', 'TeamController@logout');
 Route::get('player/message','TeamController@firstMessage');
+Route::get('player/endPage','TeamController@finishJourney');
 // GameMaster Login :
 Route::get('gm', 'GameMasterController@home');
 Route::get('gm/login', 'GameMasterController@login');
