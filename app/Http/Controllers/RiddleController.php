@@ -18,10 +18,9 @@ class RiddleController extends Controller
 
         $riddles = [];
 
-        foreach (Riddle::all() as $riddle) {
-
+        foreach ($user->parcours as $parcrous) {
+            $riddle = $parcrous->riddle;
             if (!$riddle->disabled
-                && is_riddle_in_parcours($riddle, $user)
                 && all($riddle->parents,
                         function ($r) use ($user) {
                             return $r->disabled || !is_riddle_in_parcours($r, $user) || is_riddle_completed($r, $user);
@@ -42,7 +41,7 @@ class RiddleController extends Controller
             'time' => [
                 'start_date' => $user->start_date,
                 'end_date' => $user->end_date
-            ]
+            ],
         ]);
     }
 
