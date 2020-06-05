@@ -219,7 +219,6 @@ class GMTeamList {
         this.root = root;
 
         this.gmTeams = [];
-    }
 
         //Temporary until implementing broadcasting.
         this.refreshTimeout = null;
