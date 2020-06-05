@@ -41,7 +41,7 @@ class RiddleController extends Controller
             'time' => [
                 'start_date' => $user->start_date,
                 'end_date' => $user->end_date
-            ],
+            ]
         ]);
     }
 
