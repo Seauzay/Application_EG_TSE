@@ -1,79 +1,6 @@
 
 
-/* retire de la page tout les éléments d'une classe
-Attention: si les éléments en question sont liés à des classe, 
-cette relation n'est pas mise à jour et l'objet existera toujours
-du point de vue de la classe.*/
-function removeElementsByClass(className){
-    var elements = document.getElementsByClassName(className);
-    while(elements.length > 0){
-        elements[0].parentNode.removeChild(elements[0]);
-    }
-}
 
-
-const QRFactory = (function () {
-    return {
-        construct: function (root) {
-            // fills the node
-            const template = $('#QR-template');
-            if (!template.exists())
-                throw Error('player-riddle-template does not exist');
-            template.clone().appendTo(root);
-            const QRRoot = root.find('.QR').last();
-            QRRoot.attr('id', 'QR');
-            return QRRoot;
-        }
-    };
-})();
-
-//classe gérant une question/reponse.
-class QR {
-    constructor(root) {
-        // assures that root node is quite correct
-        if (!(root instanceof jQuery)) {
-            if (typeof root !== 'string')
-                throw 'Invalid parameter in constructor of TabList.';
-            root = $(root);
-        }
-
-
-       
-        // constructs
-        this.root = QRFactory.construct(root);
-
-        // titre button
-        this.root.find('.question').click(() => {
-            
-            this.toogleReponse();
-        });
-		
-	}
-	
-	
-     
-    setQuestion(str) {
-        this.root.find('.question').text(str);
-    }
-
-    setReponse(str) {
-        this.root.find('.reponse').text(str);
-    }
-
-	toogleReponse(){
-		let x = this.root.find('.reponse');
-		if (x.style.display === "none") {
-			x.style.display = "block";
-		} else {
-			x.style.display = "none";
-		}
-	}
-    
-
-  
-
-
-}
 // classe gérant la grille de questions  
 class QRGrid {
     constructor(root) {
@@ -89,30 +16,10 @@ class QRGrid {
 		
        
 	}
-	
-	//ajoute une QR dans la grille
-	//Provoque l'affichage sur la page
-    addQR() {
-		
-        const newDiv = $('<div>', {id:'rang'});
-		this.root.append(newDiv);
-/*       
-	   const QR = new QR(newDiv);
-        this.QRlist.push(QR);
-        return QR;
-		*/
-		return newDiv;
-		
-    }
 
-	//mis a jour de la grille
-	//gere l'affichage des enigmes et de leurs contenus.
+	//remplissage de la grille
     remplissageQRgrid() {
         
-		//suppression de l'affichage des enigmes dans la page
-		removeElementsByClass("QR");
-		//suppression des enigmes de la classe
-		this.QRlist.length = 0;
 		
 		// Texte des questions réponses pour le remplissage 
 		Qlist = ["Que Signifie le décompte à gauche de l'écran ?", "J'ai résolu une énigme, comment passer à l'étape suivante ?", "Que faire en cas de problème ?"];
@@ -131,10 +38,7 @@ class QRGrid {
 		let conteneur = document.createElement('div');
 		faq.appendChild(conteneur);
         for (let i = 0; i<Qlist.length;i++){
-			//
-			//QR = this.addQR();
-			//QR.setQuestion(Qlist[i]);
-			//QR.setReponse(Rlist[i]);
+			
 				
 			let QR = document.createElement('div');
 			let Q = document.createElement('h4');
@@ -163,5 +67,4 @@ class QRGrid {
     
 }
 
-exports.QR = QR;
 exports.QRGrid = QRGrid;

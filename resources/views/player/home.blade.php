@@ -84,15 +84,6 @@
             </form>
         </div>
     </template>
-	
-	{{--template de l'onglet FaQ --}}
-	<template id='QR-template'>
-	<div id="QR" >
-        <h2 class="question"> </h7>
-		<p class="reponse"></p>
-        
-    </div>
-	</template>
 
 
     {{--Création des onglets--}}
