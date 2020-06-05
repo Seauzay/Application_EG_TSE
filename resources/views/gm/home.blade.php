@@ -8,13 +8,7 @@
 @endsection
 
 @section('content')
-    {{--div pour une énigme gm--}}
-    {{--<div id="timer-handler">
-         <form action="{{ url('gm/home') }}" method="post" style="margin-bottom: 2rem;">
-             <button id="btn-timer"class="btn btn-primary validate-button my-1" type="submit">Lancer le timer</button>
-             {{-- <span class="team-time"></span>--}}
-    {{--   </form>
-   </div> --}}
+    {{--template pour une énigme gm--}}
     <template id="gm-team-template">
         <div class="container jumbotron gm-team">
             <div class="row align-items-start gm-teams mb-3">

@@ -205,7 +205,6 @@ class GMTeam {
         n = Math.min(Math.max(n, 0), 100);
         this.root.find('.progress-bar').attr('style', 'width: ' + +n + '%').attr('aria-valuenow', n);
     }
-
 }
 
 //Fonction encapsulant l'ensemble des équipes ayant commencé le jeu.
@@ -220,6 +219,7 @@ class GMTeamList {
         this.root = root;
 
         this.gmTeams = [];
+    }
 
         //Temporary until implementing broadcasting.
         this.refreshTimeout = null;
