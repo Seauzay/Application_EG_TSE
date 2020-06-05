@@ -1,26 +1,32 @@
 @keyframes flicker {
   from {
-    background-color: $mediumGray ;
+    background-color: $lightGray !important;
   }
 
   to {
-    background-color: $tab-notify-bg;
+    background-color: $mediumGray;
   }
 }
 
 .tabs {
   background-color: white !important;
+  .nav a {
+    background: $lightGray ;
+    color: $darkGray ;
+    border:solid 2px $darkGray !important;
+  }
 
-  /*
+
   .nav {
     margin-bottom: 2rem;
+
   }
-  */
+
 
   .nav-link.notifying {
     animation: flicker alternate infinite 1s;
   }
-  .nav a {
+/*  .nav a {
     background: $lightGray !important;
     color: $darkGray !important;
     border:solid 2px $darkGray !important;
@@ -29,10 +35,12 @@
     background: $mediumGray !important;
     color: $darkGray !important;
     border:solid 2px $darkGray !important;
+    }
+    */
 
 
   }
-}
+
 
 #tablist > ul {
   position: sticky;
@@ -41,4 +49,12 @@
   z-index: 99;
   padding-top: 10px;
   transform: translateY(-10px);
+}
+
+#tablist > a{
+  a {
+    background: $mediumGray ;
+    color: $darkGray ;
+    border:solid 2px $darkGray !important;
+  }
 }
