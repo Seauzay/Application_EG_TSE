@@ -128,7 +128,7 @@ class QRGrid {
 		"Contactez le game master le plus proche. Les game masters sont reconnaissables grâce à leurs badges."];
 		
 		let faq = document.getElementById('FaQ');
-		let conteneur = document.createElement('ol');
+		let conteneur = document.createElement('div');
 		faq.appendChild(conteneur);
         for (let i = 0; i<Qlist.length;i++){
 			//
@@ -136,7 +136,7 @@ class QRGrid {
 			//QR.setQuestion(Qlist[i]);
 			//QR.setReponse(Rlist[i]);
 				
-			let QR = document.createElement('li');
+			let QR = document.createElement('div');
 			let Q = document.createElement('h4');
 			Q.textContent = Qlist[i];
 			
