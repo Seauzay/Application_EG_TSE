@@ -104,7 +104,6 @@
             <div class="message-container"></div>
 
             <form action="msg/send/{id}" method="post" class="message-form">
-                <input type="text" name="content">
             </form>
         </div>
     </template>
