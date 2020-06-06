@@ -22,6 +22,10 @@
                     <form class="col">
                         <div class="form-group">
                             <label for="validation-modal-code" class="form-control-label">Veuillez entrer le code que vous avez reçu à la fin de cette énigme</label>
+
+                            <div class='alert alert-danger alert-block text-center'>
+                               Code invalide !
+                            </div>
                             <input type="text" class="form-control" name="code" id="validation-modal-code" placeholder="Entrez le code ici">
                         </div>
                         <button type="submit" class="btn btn-secondary pull-right">Vérifier</button>
