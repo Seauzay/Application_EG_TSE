@@ -112,6 +112,10 @@
         // tablist.addTab({title: 'Messagerie',active: true});
         tablist.addTab({title: 'Énigmes', active: true});
         roomlist.update();
+		tablist.addTab({title: 'FAQ'});
+		tablist.contentOfTab(2).append($('<div>',{id:'FaQ'}));
+		const QRgGrid = new QRGrid('#FaQ');
+		QRgGrid.remplissageQRgrid();
     </script>
 
     {{--Création des énigmes au chargement de la page--}}
@@ -121,5 +125,7 @@
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
         const res = playerRiddleGrid.update();
+		
+		
     </script>
 @endsection
