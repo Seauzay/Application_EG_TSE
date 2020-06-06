@@ -116,8 +116,9 @@ if (!function_exists('riddle_info_for_gm')) {
         $riddle_team = $riddle->teams->where('id', $team->id)->first();
         return [
             'id' => $riddle->id,
-            'start_date' => is_null($riddle_team) || is_null($riddle_team->pivot->start_date) ? null : new Carbon($riddle_team->pivot->start_date),
-            'end_date' => is_null($riddle_team) || is_null($riddle_team->pivot->end_date) ? null : new Carbon($riddle_team->pivot->end_date),
+            'name' => $riddle->name,
+            'start_date' => is_null($riddle_team) || is_null($riddle_team->pivot->start_date) ? null : $riddle_team->pivot->start_date,
+            'end_date' => is_null($riddle_team) || is_null($riddle_team->pivot->end_date) ? null : $riddle_team->pivot->end_date,
         ];
     }
 }
@@ -142,7 +143,26 @@ if (!function_exists('has_incomplete_sisters')){
     function has_incomplete_sisters(Riddle $riddle, Team $team)
     {
         return any(riddle_sisters($riddle), function ($r) use ($team) {
-            return is_riddle_in_parcours($r, $team) && !is_riddle_completed($r, $team);
+            return is_riddle_in_parcours($r, $team) && !is_riddle_completed($r, $team) && !$r->disabled;
         });
+    }
+}
+
+if (!function_exists('team_progression')){
+    function team_progression(Team $team)
+    {
+        $progression = 0;
+        $count = 0;
+        $parcrouss = $team->parcours;
+        foreach ($parcrouss as $parcours){
+            if(!$parcours->riddle->disabled){
+                $count += 1;
+            }
+            if (is_riddle_completed($parcours->riddle,$team)){
+                $progression += 1;
+            }
+        }
+        $progression = $progression/$count;
+        return $progression;
     }
 }
