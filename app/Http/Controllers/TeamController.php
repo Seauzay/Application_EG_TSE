@@ -101,7 +101,7 @@ class TeamController extends Controller
             $user = Auth::user();
             switch ($user->grade){
                 case 0:
-                    return view('player.message', ['logout_url' => 'player/logout']);
+                    return view('player.message', ['logout_url' => 'logout']);
                     break;
                 case 1:
                     return view('gm.home', ['logout_url' => 'gm/logout']);
@@ -114,7 +114,7 @@ class TeamController extends Controller
             }
         } else
            // return redirect('player/play');
-        return view('player.message', ['logout_url' => 'player/logout']);
+        return view('player.message', ['logout_url' => 'logout']);
     }
     function logout()
     {

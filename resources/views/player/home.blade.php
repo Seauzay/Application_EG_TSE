@@ -5,6 +5,7 @@
     <div id="global-timer" class="row justify-content-start">
         <p><img src="{{url('/images/timer.png')}}" alt="timer" height="20"></p><span class="time"></span>
     </div>
+    <div id="score">Score : {{ Auth::user()->score }}</div>
 @endsection
 
 @section('content')
@@ -30,6 +31,8 @@
             </div>
         </div>
     </div>
+
+
 
     {{--template pour une énigme joueur--}}
     <template id="player-riddle-template">
