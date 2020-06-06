@@ -3,8 +3,7 @@
 @section('nav-items')
     {{-- Timer global --}}
     <div id="global-timer" class="row justify-content-start">
-        Temps Écoulé&nbsp;:
-        <span class="time"></span>
+        <p><img src="{{url('/images/timer.png')}}" alt="timer" height="20"></p><span class="time"></span>
     </div>
 @endsection
 
@@ -25,7 +24,7 @@
                             <label for="validation-modal-code" class="form-control-label">Veuillez entrer le code que vous avez reçu à la fin de cette énigme</label>
                             <input type="text" class="form-control" name="code" id="validation-modal-code" placeholder="Entrez le code ici">
                         </div>
-                        <button type="submit" class="btn btn-primary pull-right">Vérifier</button>
+                        <button type="submit" class="btn btn-secondary pull-right">Vérifier</button>
                     </form>
                 </div>
             </div>
@@ -46,13 +45,13 @@
                 <a class="btn btn-info player-riddle-url my-1" target="_blank" style="display: none;">Lien vers l'énigme</a>
 
                 <div class="row mx-auto">
-                    <button class="btn btn-primary start-button my-1">Commencer l'énigme</button>
+                    <button class="btn btn-secondary start-button my-1">Commencer l'énigme</button>
                 </div>
                 <div class="row mx-auto">
-                    <button class="btn btn-primary validate-button my-1" data-toggle="modal" data-target="#validation-modal" style="display: none;">Valider l'énigme</button>
+                    <button class="btn btn-outline-secondary btn-block validate-button my-1" style="color: #F9C11C !important; background-color: white !important;border :white; display: none;" data-toggle="modal" data-target="#validation-modal" >Vous avez terminé l'énigme? Validez-là ici! </button>
                 </div>
                 <div class="row mx-auto">
-                    <button class="btn btn-primary cancel-button my-1" style="display: none;">Annuler l'énigme</button>
+                    <button class="btn btn-secondary cancel-button my-1" style="display: none;">Annuler l'énigme</button>
                 </div>
             </div>
         </div>
@@ -71,8 +70,29 @@
             <div>
                 <div class="content">Content</div>
             </div>
+
         </div>
+
+
     </template>
+
+        <!-- Modal -->
+    <div class="modal fade right" id="myModalDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><span class="badge badge-danger">Nouveau !</span></h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     {{-- Template pour les salons --}}
     <template id="room-template">
@@ -86,8 +106,10 @@
     </template>
 
 
+
     {{--Création des onglets--}}
     <script>
+        // tablist.addTab({title: 'Messagerie',active: true});
         tablist.addTab({title: 'Énigmes', active: true});
         roomlist.update();
 		tablist.addTab({title: 'FAQ'});

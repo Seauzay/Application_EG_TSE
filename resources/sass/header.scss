@@ -1,6 +1,6 @@
 header {
-  background-color: $teal;
-  color: mintcream;
+  background-color: $gray;
+  color: $darkGray;
   padding: 1rem;
   @include media-breakpoint-up(sm) {
     padding: 2rem;

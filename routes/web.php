@@ -12,13 +12,17 @@
 */
 
 //Player Login :
-Route::get('/', 'TeamController@firstMessage');
+/*Route::get('/', 'TeamController@login');
+Route::get('player/login', 'TeamController@firstMessage');
+Route::post('player/checklogin', 'TeamController@checklogin');
+Route::get('player/logout', 'TeamController@logout');
+Route::get('player/message','TeamController@firstMessage');*/
+
+Route::get('/', 'TeamController@home');
 Route::get('player/login', 'TeamController@login');
 Route::post('player/checklogin', 'TeamController@checklogin');
 Route::get('player/logout', 'TeamController@logout');
-//Route::get('player/play','TeamController@home');
-
-
+Route::get('player/message','TeamController@firstMessage');
 // GameMaster Login :
 Route::get('gm', 'GameMasterController@home');
 Route::get('gm/login', 'GameMasterController@login');
@@ -29,6 +33,7 @@ Route::get('gm/logout', 'GameMasterController@logout');
 Route::get('msg/list', 'MessengerController@listRooms');
 Route::post('msg/send/{room}', 'MessengerController@sendMessage');
 Route::get('msg/{room}', 'MessengerController@getMessages');
+Route::get('msg/update/{room}','MessengerController@messageRead');
 
 // Riddle
 Route::get('riddle/list', 'RiddleController@listRiddles');
@@ -40,6 +45,8 @@ Route::get('validationEnigme/validationMdp/{id}', 'ValidationMdpController@check
 
 // RiddlesTeams
 Route::get('riddleteam/list', 'RiddleTeamController@listRiddlesTeams');
+Route::get('riddleteam/fullList', 'RiddleTeamController@listAllRiddles');
+
 
 // Player
 Route::get('player/', 'PlayerController@home');
@@ -49,3 +56,5 @@ Route::get('admin', 'AdminController@home');
 Route::post('admin/modifyRiddle', 'AdminController@modifyRiddle');
 Route::post('admin/refreshDB', 'AdminController@refreshDB');
 Route::post('admin/addGM', 'AdminController@addGM');
+Route::get('admin/logout', 'AdminController@logout');
+Route::get('admin/login', 'GameMasterController@login');

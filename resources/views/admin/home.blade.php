@@ -1,77 +1,154 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Administration</title>
-</head>
+@extends('layouts.base')
+@section('nav-items')
+    {{-- Timer global --}}
+    <div id="global-timer" class="row justify-content-start">
 
-<body>
-
-<header style="text-align: center;">
-    <h1>Administration</h1>
-    <form action={{url('gm/logout')}}>
-        <button type="submit">Déconnexion</button>
-    </form>
-</header>
-
-
-<h2>Réinitialiser la base de données ? (cette action est irréversible)</h2>
-<form id="refreshDB" action="{{ url('/admin/refreshDB') }}" method="post">
-    <button id="refreshButton" onclick="confirm(e)">Je veux réinitialiser la base de données</button>
-</form>
-
-<script>
-    document.querySelector('#refreshButton').addEventListener('click', function (e) {
-        e.preventDefault();
-        this.style.display = 'none';
-        const newButton = document.createElement('button');
-        newButton.textContent = 'Je comprends les conséquences tragiques de mon acte et je souhaite tout recommencer';
-        newButton.type = 'submit';
-        document.querySelector('#refreshDB').appendChild(newButton);
-    });
-</script>
-
-<h2>Ajouter Game Master</h2>
-<form action="{{url('admin/addGM')}}" method="post">
-    <div>
-        <label for="name">Identifiant : </label>
-        <input type="text" id="name" name="name">
     </div>
-    <div>
-        <label for="password">Mot de passe : </label>
-        <input type="password" id="password" name="password">
+@endsection
+
+@section('content')
+    <div id="reinit-base" >
+        <div class="card-admin">
+            <h2>Réinitialiser la base de données ? (cette action est irréversible)</h2>
+            <form id="refreshDB" action="{{ url('/admin/refreshDB') }}" method="post">
+                <button class="btn btn-danger" id="refreshButton" onclick="confirm(e)">Je veux réinitialiser la base de données</button>
+            </form>
+
+            <script>
+                document.querySelector('#refreshButton').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    this.style.display = 'none';
+                    const newButton = document.createElement('button');
+                    newButton.textContent = 'Je comprends les conséquences tragiques de mon acte et je souhaite tout recommencer';
+                    newButton.type = 'submit';
+                    document.querySelector('#refreshDB').appendChild(newButton);
+                });
+            </script>
+        </div>
     </div>
-    <button type="submit">Envoyer</button>
-</form>
 
-<h2>Énigmes</h2>
-@foreach($riddles as $riddle)
-    <form action="{{ url('/admin/modifyRiddle') }}" method="post" style="margin-bottom: 2rem;">
-        <input type="number" name="id" value="{{$riddle['id']}}" hidden>
-        <div>
-            <div>Ancien nom : {{$riddle['name']}}</div>
-            <label for="name{{$loop->index}}">Nouveau nom : </label>
-            <input type="text" id="name{{$loop->index}}" name="name">
+    <div id="add-GM">
+        <div class="card-admin">
+            <h2>Ajouter Game Master</h2>
+            <form action="{{url('admin/addGM')}}" method="post">
+                <div>
+                    <input class="form-control" type="text" id="name" name="name" placeholder="Identifiant">
+                </div>
+                <div>
+                    <input class="form-control" type="password" id="password" name="password" placeholder="Password">
+                </div>
+                <button class="btn btn-primary validate-button my-1 center-block" type="submit">Ajouter</button>
+            </form>
         </div>
-        <div>
-            <div>Ancienne description : {{$riddle['description']}}</div>
-            <label for="description{{$loop->index}}">Nouvelle description : </label>
-            <input type="text" id="description{{$loop->index}}" name="description">
-        </div>
-        <div>
-            <div>Ancien code : {{$riddle['code']}}</div>
-            <label for="code{{$loop->index}}">Nouveau code : </label>
-            <input type="text" id="code{{$loop->index}}" name="code">
-        </div>
-        <div>
-            <label for="disable{{$loop->index}}">Désactiver ?</label>
-            <input type="checkbox" id="disable{{$loop->index}}" name="disabled" {{$riddle['disabled'] ? 'checked' : ''}}>
-        </div>
-        <button type="submit">Envoyer</button>
-    </form>
-@endforeach
+    </div>
+    <div id="mod-riddles">
+        @foreach($riddles as $riddle)
+            <div class="card-admin">
+                <form action="{{ url('/admin/modifyRiddle') }}" method="post" style="margin-bottom: 2rem;">
+                    <input type="number" name="id" value="{{$riddle['id']}}" hidden>
+                    <h2 class="current-ridlle-name">{{$riddle['name']}}</h2>
+                    <div class="current-riddle-info">
+                        <div class="current-riddle-descr">{{$riddle['description']}}</div>
+                        <div class="current-riddle-code">{{$riddle['code']}}</div>
+                        <div class="current-riddle-post-msg" > {{($riddle['post-msg'])?$riddle['post-msg']:'Aucun message de résolution'}}</div>
+                        <a class="current-riddle-url" href="{{$riddle['url']}}">URL</a>
+                        <div class="current-riddle-disable-cb">
+                            <label for="disable{{$loop->index}}">Désactiver ?</label>
+                            <input type="checkbox" id="disable{{$loop->index}}" name="disabled" {{$riddle['disabled'] ? 'checked' : ''}}>
+                        </div>
+                    </div>
+                    <div class="mod-riddle-info">
+                        <input type="text" class="form-control" id="name{{$loop->index}}" name="name" placeholder="Nouveau nom">
+                        <input type="text" class="form-control" id="description{{$loop->index}}" name="description" placeholder="Nouvelle description">
+                        <input type="text" class="form-control" id="code{{$loop->index}}" name="code" placeholder="Nouveau code">
+                        <input type="text" class="form-control" id="post-msg{{$loop->index}}" name="post-msg" placeholder="Nouveau message de résolution">
+                        <input type="url" class="form-control" id="url{{$loop->index}}" name="url" placeholder="Nouvel URL">
+                    </div>
 
-</body>
+                    <button class="btn btn-primary validate-button my-1" type="submit">Modifier</button>
+                </form>
+            </div>
+        @endforeach
+    </div>
+
+    {{-- Template pour la modification de parcours--}}
+    <div id="mod-parcour-display-template">
+        <div class="mod-parcour-container">
+            <template id="mod-parcour-template">
+                <div class="card-admin" draggable="true" ondragstart="drag(event)" ondragover="dragOver(event)" ondragend="dragEnd(event)">
+                    <h2 class="current-riddle-name">title</h2>
+                    <span class="id-card" hidden></span>
+                    <div class="current-riddle-info">
+                        <div class="current-riddle-descr">descr</div>
+                        <div class="current-riddle-code">code</div>
+                        <div class="current-riddle-post-msg">Msg de resolution</div>
+                        <a draggable="false" class="current-riddle-url" >URL</a>
+                        <div class="current-riddle-disable-cb">
+                            <label {{--for="disable{{$loop->index}}" --}}>Désactiver :</label>
+                            <input type="checkbox" class="current-riddle-activated" {{-- id="disable{{$loop->index}}" name="disabled" {{$riddle['disabled'] ? 'checked' : ''}}--}}>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+
+            <div id="parcour-mod-div">
+                <ul id="possible-riddle" class="riddle-list"  ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <li>
+                        <h2>Enigmes disponibles</h2>
+                    </li>
+                </ul>
+
+                <ul id="mod-parcours" class="riddle-list"  ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <li id="header-mod-parcours">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {{--Création des onglets--}}
+    <script>
+        tablist.addTab({title: 'Ajouter GM', active: true});
+        tablist.addTab({title: 'Modifier les énigmes', active: false});
+        tablist.addTab({title: 'Réinitialiser', active: false});
+        roomlist.update();
+    </script>
+
+    <script>
+        tablist.contentOfTab(1).append(document.querySelector('#add-GM'));
+        tablist.contentOfTab(2).append(document.querySelector('#mod-riddles'));
+        tablist.contentOfTab(3).append(document.querySelector('#reinit-base'));
+    </script>
+
+    <script>
+        const createParcours = new CreateModParcourDisp(tablist);
+        function allowDrop(ev) {
+            createParcours.allowDrop(ev);
+        }
+
+        function drag(ev) {
+            createParcours.drag(ev);
+        }
+
+        function drop(ev) {
+            createParcours.drop(ev);
+        }
+
+        function dragOver(ev){
+            createParcours.dragOver(ev);
+        }
+
+        function dragEnd(ev){
+            var shadowContainer = document.getElementById('drag-over-shadow');
+            if(shadowContainer != null){
+                var parentCont = shadowContainer.parentNode;
+                if(parentCont!=null)
+                    parentCont.removeChild(shadowContainer);
+                shadowContainer = null;
+            }
+
+        }
+    </script>
+
+@endsection

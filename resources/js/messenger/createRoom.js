@@ -6,17 +6,19 @@ class RoomList {
     constructor(tablist) {
         this.tablist = tablist;
         this.rooms = [];
+
     }
 
     addRoom(id, name) {
         if (this.rooms.indexOf(id) === -1) {
-            const pos = this.tablist.addTab({title: name, position : 1});
+            const pos = this.tablist.addTab({title: "Messagerie", position : 1});
             const api = createRoom(this.tablist.contentOfTab(pos + 1), id);
             api.callback = () => {
                 this.tablist.notify(pos+1);
             };
             this.rooms.push(id);
         }
+
     }
 
     update() {
@@ -24,6 +26,7 @@ class RoomList {
             success: (data) => {
                 data.rooms.forEach(room => {
                     this.addRoom(room.id, room.name);
+
                 });
             }
         });
@@ -43,8 +46,7 @@ function createRoom(where, room_id) {
     form.attr('action', new_action);
 
     where.append(node);
-
-    return new MessageAPI(room_id, where.find('.message-container')[0], window.messageTemplate, where.find('.message-form')[0]);
+    return new MessageAPI(room_id, where.find('.message-container')[0], window.messageTemplate, where.find('.message-form')[0],tablist);
 }
 
 exports.createRoom = createRoom;

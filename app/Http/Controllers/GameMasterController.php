@@ -48,4 +48,5 @@ class GameMasterController extends Controller
         Auth::logout();
         return redirect('gm/login');
     }
+
 }
