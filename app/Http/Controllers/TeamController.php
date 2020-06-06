@@ -101,7 +101,11 @@ class TeamController extends Controller
             $user = Auth::user();
             switch ($user->grade){
                 case 0:
-                    return view('player.message', ['logout_url' => 'player/logout']);
+                    if ($user->end_date == NULL){
+						return view('player.message', ['logout_url' => 'logout']);
+					}else{
+						return view('player.endPage', ['logout_url' => 'logout']);
+					}
                     break;
                 case 1:
                     return view('gm.home', ['logout_url' => 'gm/logout']);
@@ -114,7 +118,11 @@ class TeamController extends Controller
             }
         } else
            // return redirect('player/play');
-        return view('player.message', ['logout_url' => 'player/logout']);
+		if ($user->end_date == NULL){
+			return view('player.message', ['logout_url' => 'logout']);
+		}else{
+		   return view('player.endPage', ['logout_url' => 'logout']);
+		}
     }
     function logout()
     {
@@ -126,6 +134,6 @@ class TeamController extends Controller
 	
 	function finishJourney()
 	{
-		return view('player.endPage', ['logout_url' => 'player/logout']);
+		return view('player.endPage', ['logout_url' => 'logout']);
 	}
 }
