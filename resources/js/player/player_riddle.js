@@ -337,6 +337,9 @@ class PlayerRiddleGrid {
 				}
 			}
 		});
+		progression=riddleJSON.progression*100;
+		width_val=progression
+		$('#myBar').css("width", width_val + '%');
     };
 
     updateTimer(time) {

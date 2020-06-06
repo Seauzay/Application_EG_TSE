@@ -5,6 +5,13 @@
     <div id="global-timer" class="row justify-content-start">
         <p><img src="{{url('/images/timer.png')}}" alt="timer" height="20"></p><span class="time"></span>
     </div>
+
+		   <p>Avancement du jeu:
+   	   <div id="myProgress">
+  <div id="myBar"></div>
+</div> 
+
+</p>
 @endsection
 
 @section('content')
