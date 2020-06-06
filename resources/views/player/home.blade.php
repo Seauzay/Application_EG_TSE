@@ -83,8 +83,6 @@
         </div>
     </div>
 
-
-
     {{--template pour une énigme joueur--}}
     <template id="player-riddle-template">
         <div class="card player-riddle-card my-2">
@@ -200,5 +198,7 @@
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
         const res = playerRiddleGrid.update();
+
+
     </script>
 @endsection
