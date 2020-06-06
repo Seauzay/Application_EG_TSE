@@ -1,10 +1,41 @@
 @extends('layouts.base')
 
 @section('nav-items')
+
     {{-- Timer global --}}
     <div id="global-timer" class="row justify-content-start">
         <p><img src="{{url('/images/timer.png')}}" alt="timer" height="20"></p><span class="time"></span>
     </div>
+    <div id="emoji">
+        rang :
+        <span class="rank"></span>
+    </div>
+
+    <script>
+
+        Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
+
+            $rank ={{DB::table('teams')->where(
+            'score', '>',  Auth::user()->score
+            )->count()}}+1;
+
+
+
+            if($rank==1)
+                $('#emoji .rank').text('🥇');
+            else if ($rank==2)
+                $('#emoji .rank').text('🥈');
+            else if ($rank==3)
+                $('#emoji .rank').text('🥉');
+            else
+                $('#emoji .rank').text('💩');
+
+
+
+            console.log(e);
+        });
+
+    </script>
 @endsection
 
 @section('content')
