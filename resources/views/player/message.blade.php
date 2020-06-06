@@ -2,10 +2,10 @@
 
 @section('content')
 
-    <form class="player-login" method="GET" action="{{ url('player/play') }}">
+    <form class="player-login text-center" method="GET" action="{{ url('player/play') }}">
         <div class="row">
 
-        <div id="typewriter" class="container-fluid text-center" data-toggle="buttons">
+        <div id="typewriter" class="container text-center" data-toggle="buttons">
 
         <script>
             var str = "<p class ='consigne'>Bienvenue sur l’application de l’Escape Game TSE ! </br>Elle vous permettra de résoudre certaines énigmes, de progresser dans le jeu… et d’obtenir des indices !</p>" +
