@@ -3,9 +3,11 @@
 @section('nav-items')
     {{-- Timer global --}}
     <div id="global-timer" class="row justify-content-start">
-        <p><img src="{{url('/images/timer.png')}}" alt="timer" height="20"></p><span class="time"></span>
+      <span><img src="{{url('/images/timer.png')}}" alt="timer" height="20"></span>  <span class="time"></span>
     </div>
-    <div id="score">Score : {{ Auth::user()->score }}</div>
+    <div  class="row justify-content-start"><span id="score">Score : {{ Auth::user()->score }}</span>
+    </div>
+
 @endsection
 
 @section('content')
