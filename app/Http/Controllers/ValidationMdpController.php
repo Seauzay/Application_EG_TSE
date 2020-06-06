@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SuccessEvent;
 use App\Repositories\MessageRepository;
 use App\Riddle;
 use DateTime;
@@ -19,7 +20,7 @@ class ValidationMdpController extends Controller
 
         $user = Auth::user();
         if ($riddledb->code == $request->input('code')) {
-            end_riddle($riddledb, Auth::user());
+            end_riddle($riddledb, $user);
 			$format = 'Y-m-d H:i:s';
             $dateFin = DateTime::createFromFormat($format, DB::table('riddles_teams')->where([
                 ['team_id', '=', $user->id],
@@ -40,7 +41,7 @@ class ValidationMdpController extends Controller
             }
             $user->score=$user->score+$score;
             $user->save();
-
+            event(new SuccessEvent($user));
             $this->submitMessage(Auth::user()->rooms->first(),$riddledb,Auth::user());
 
             return JsonResponse::create([

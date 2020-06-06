@@ -10,7 +10,37 @@
     </div>
     <div  class="row justify-content-start"><span id="score">Score : {{ Auth::user()->score }} pts</span>
     </div>
+    <div id="score">Score : {{ Auth::user()->score }}</div>
+    <div id="emoji">
+        rang :
+        <span class="rank"></span>
+    </div>
 
+    <script>
+
+        Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
+
+            $rank ={{DB::table('teams')->where(
+            'score', '>',  Auth::user()->score
+            )->count()}}+1;
+
+
+
+            if($rank==1)
+                $('#emoji .rank').text('🥇');
+            else if ($rank==2)
+                $('#emoji .rank').text('🥈');
+            else if ($rank==3)
+                $('#emoji .rank').text('🥉');
+            else
+                $('#emoji .rank').text('💩');
+
+
+
+            console.log(e);
+        });
+
+    </script>
 @endsection
 
 @section('content')
@@ -153,7 +183,7 @@
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
         const res = playerRiddleGrid.update();
-		
-		
+
+
     </script>
 @endsection
