@@ -15,17 +15,29 @@
 
         Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
 
-            $rank ={{DB::table('teams')->where(
+
+            $.ajax('player/classement', {method: 'GET', success: function(response){
+                    if(response.rank==1)
+                        $('#emoji .rank').text('🥇');
+                    else if (response.rank==2)
+                        $('#emoji .rank').text('🥈');
+                    else if (response.rank==3)
+                        $('#emoji .rank').text('🥉');
+                    else
+                        $('#emoji .rank').text('💩');
+                }});
+
+            var rank ={{DB::table('teams')->where(
             'score', '>',  Auth::user()->score
             )->count()}}+1;
 
 
 
-            if($rank==1)
+            if(rank==1)
                 $('#emoji .rank').text('🥇');
-            else if ($rank==2)
+            else if (rank==2)
                 $('#emoji .rank').text('🥈');
-            else if ($rank==3)
+            else if (rank==3)
                 $('#emoji .rank').text('🥉');
             else
                 $('#emoji .rank').text('💩');
