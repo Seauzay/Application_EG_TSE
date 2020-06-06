@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Room;
 use App\Team;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -122,5 +123,19 @@ class TeamController extends Controller
         Auth::logout();
 
         return redirect('/');
+    }
+
+    function classement(Request $request){
+        $user = Auth::user();
+        $rank = calculerClassement($user);
+
+        return JsonResponse::create([
+            'status' => [
+                'type' => 'success',
+                'message' => 'Classement envoyé avec succès',
+                'display' => false
+            ],
+            'classement' => $rank
+        ]);
     }
 }
