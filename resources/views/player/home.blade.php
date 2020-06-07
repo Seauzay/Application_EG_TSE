@@ -3,9 +3,14 @@
 @section('nav-items')
     {{-- Timer global --}}
     <div id="global-timer" class="row justify-content-start">
-        <p><img src="{{url('/images/timer.png')}}" alt="timer" height="20"></p><span class="time"></span>
+      <span><svg class="bi bi-clock" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+  <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+</svg> <span class="time"></span></span>
     </div>
-    <div id="score">Score : {{ Auth::user()->score }}</div>
+    <div  class="row justify-content-start"><span id="score">Score : {{ Auth::user()->score }} pts</span>
+    </div>
+
 @endsection
 
 @section('content')
@@ -76,7 +81,7 @@
         </div>
     </template>
 
-        <!-- Modal -->
+        <!-- Modal pop up system -->
     <div class="modal fade right" id="myModalDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -93,6 +98,27 @@
 
             </div>
         </div>
+{{--TOO LATE--}}
+    <div class="modal fade right" id="tooLate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" STYLE="background-color: #f44336 !important;color: white !important;">
+                    <h4 class="modal-title">Vous avez dépassé deux heures <svg class="bi bi-emoji-frown" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683z"/>
+                            <path d="M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                        </svg></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" STYLE="background-color: #f44336 !important;color: white !important;">
+                    <p></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     {{-- Template pour les salons --}}
     <template id="room-template">
