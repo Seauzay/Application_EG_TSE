@@ -50,12 +50,12 @@
     <template id="player-riddle-template">
         <div class="card player-riddle-card my-2">
             <div class="card-body">
-                <div class="row mx-auto justify-content-space-between">
-                    <div class="col-md-auto">
+                <div class="row">
+                    <div class="col-auto mr-auto">
                     <h5 class="card-title" style="color: #182949 !important;"></h5>
                     </div>
-                    <div class="col col-lg-2">
-                    <span class="timer badge badge-pill badge-light "></span>
+                    <div class="col-auto">
+                    <span class="timer badge badge-light "></span>
                     </div>
                 </div>
                 <h6 class="card-subtitle mb-2 text-muted">
@@ -74,9 +74,10 @@
                 <div class="row ">
                     <button class="ml-lg-0 btn btn-light btn-block validate-button my-1" style="color: #182949 !important; background-color: white !important;border :white; display: none;" data-toggle="modal" data-target="#validation-modal" >Vous avez terminé l'énigme? Validez-là ici! </button>
                 </div>
-                <div class="row mx-auto ">
-                    <div class="col-lg-2">
-                    <a href="#" class="ml-lg-1 badge badge-light cancel-button " style="display: none;">Annuler l'énigme</a>
+                <hr>
+                <div class="row ">
+                    <div class="ml-auto mb-0">
+                    <a href="#" class="ml-lg-1 badge  badge-secondary cancel-button " style="display: none;">Annuler l'énigme</a>
                     </div>
                 </div>
             </div>
@@ -149,9 +150,10 @@
     </template>
 
     <script>
-        function emoji()
+        let rank = {{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1;
+         function emoji(rank)
         {
-            let rank = {{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1;;
+           // rank = {{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1;;
             if(rank==1)
                 $('#emoji .rank').text('🥇');
             else if (rank==2)
@@ -162,10 +164,10 @@
                 $('#emoji .rank').text('💩');
             console.log(rank);
         }
-        emoji();
+        emoji(rank);
 
         Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
-        emoji();
+        emoji({{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1);
      });
     </script>
     {{--Création des onglets--}}
