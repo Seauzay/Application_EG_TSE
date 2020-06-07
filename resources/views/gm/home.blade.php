@@ -93,11 +93,6 @@
         </div>
     </div>
 
-
-
-
-
-
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Suivi des équipes', active: true});
@@ -109,6 +104,10 @@
         div.appendTo(tablist.contentOfTab(1));
         const gmTeamList = new GMTeamList(div);
         gmTeamList.update();
+
+        Echo.channel('application_tracking_escape_game_tse_database_gm-change').listen('.change', function(e) {
+            gmTeamList.update();
+        });
 
         const createParcours = new CreateModParcourDisp(tablist);
         function allowDrop(ev) {

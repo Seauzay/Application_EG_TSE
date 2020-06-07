@@ -9,21 +9,17 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Integer;
 
-class SuccessEvent implements ShouldBroadcast
+class NewMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    private $user;
-    public function __construct($user)
+    private $roomId;
+
+    public function __construct($roomId)
     {
-    $this->user=$user;
+        $this->roomId = $roomId;//
     }
 
     /**
@@ -33,12 +29,10 @@ class SuccessEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('validation-enigme');
+        return new Channel('message-'.strval($this->roomId));
     }
 
     public function broadcastAs() {
-        return 'emoji';
+        return 'newMessage';
     }
-
-
 }

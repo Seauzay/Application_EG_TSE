@@ -61,15 +61,6 @@ class TeamController extends Controller
             $room = new Room();
             $room->name = 'Conversation ' . $name;
             $user->rooms()->save($room);
-            $room_id = $room->id;
-
-            $gms = Team::where('grade', '=', 1)->get();
-            foreach ($gms as $gm){
-                DB::table('rooms_teams')->insert([
-                    'team_id' => $gm->id,
-                    'room_id' => $room_id
-                ]);
-            }
         }
         Auth::login($user);
         return redirect('/player/message');
@@ -124,7 +115,7 @@ class TeamController extends Controller
 
         return redirect('/');
     }
-
+/*
     function classement(Request $request){
         $user = Auth::user();
         $rank = calculerClassement($user);
@@ -138,4 +129,5 @@ class TeamController extends Controller
             'classement' => $rank
         ]);
     }
+*/
 }
