@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Events\ChangeEvent;
 use App\Repositories\MessageRepository;
 use App\Riddle;
 use App\Team;
@@ -57,6 +58,7 @@ if (!function_exists('start_riddle')) {
                 MessageRepository::generateAlert($team,$alert);
             }
         }
+        event(new ChangeEvent());
     }
 }
 
@@ -69,6 +71,7 @@ if (!function_exists('cancel_riddle')) {
         if (!is_null($riddle_team->pivot->end_start))
             throw new Exception("Riddle already finished");
         $riddle->teams()->updateExistingPivot($team->id, ['start_date' => null]);
+        event(new ChangeEvent());
     }
 }
 
@@ -89,6 +92,7 @@ if (!function_exists('end_riddle')) {
             $team->end_date = now('Europe/Paris');
             $team->saveOrFail();
         }
+        event(new ChangeEvent());
     }
 }
 

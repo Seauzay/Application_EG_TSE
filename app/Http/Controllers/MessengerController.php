@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewMessage;
 use App\Repositories\MessageRepository;
 use App\Room;
 use Illuminate\Http\JsonResponse;

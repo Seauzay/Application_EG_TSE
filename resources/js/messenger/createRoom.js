@@ -16,6 +16,9 @@ class RoomList {
             api.callback = () => {
                 this.tablist.notify(pos+1);
             };
+            Echo.channel('application_tracking_escape_game_tse_database_message-'+id).listen('.newMessage',function(e){
+                api.refreshMessages();
+            });
             this.rooms.push(id);
         }
 

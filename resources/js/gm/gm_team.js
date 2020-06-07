@@ -329,9 +329,7 @@ class GMTeamList {
     }
 
     update() {
-        clearTimeout(this.refreshTimeout);
         $.ajax('riddleteam/list', {method: 'GET', success: (response) => this.updateTeams(response)});
-        this.refreshTimeout = setTimeout(() => this.update(), this.refreshDelay);
     }
 }
 
