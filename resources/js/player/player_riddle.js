@@ -106,7 +106,7 @@ class PlayerRiddle {
                                 this.timer.pause();
                                 let div =document.getElementById("score");
                                 div.innerHTML ='';
-                                div.innerHTML = "Score : "+data.score;
+                                div.innerHTML = data.score+" pts";
                                 this.showButtons({
                                     start: false,
                                     cancel: false,
@@ -293,6 +293,7 @@ class PlayerRiddleGrid {
     addRow() {
         const rowNumber = this.root.children().length + 1;
         const container = $('<div>', {class: 'container-fluid jumbotron player-riddle-row'});
+        container.attr('style',"margin-top: -10 !important");
         container.append($('<div>', {class: 'row justify-content-around'}));
         this.root.append(container);
         this.rowNumber++;
@@ -358,10 +359,12 @@ class PlayerRiddleGrid {
 				}
 			}
 		});
-		progression=riddleJSON.progression*100;
-		width_val=progression
-		$('#myBar').css("width", width_val + '%');
-    };
+        let progressBarVal= riddleJSON.progression*100;
+        let html="<div class='progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow= '"+Math.abs(progressBarVal)+" ' aria-valuemin = '0' aria-valuemax='100' style='width:"+Math.abs(progressBarVal)+"%; background-color: #fdcc47 !important;'></div>";
+        $(".progress").append(html);
+
+
+};
 
     updateTimer(time) {
         if (time.start_date && time.start_date.date && time.end_date && time.end_date.date) {

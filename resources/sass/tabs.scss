@@ -14,11 +14,12 @@
     background: $lightGray ;
     color: $darkGray ;
     border:solid 2px $darkGray !important;
+
   }
 
 
   .nav {
-    margin-bottom: 2rem;
+    margin-bottom: 0rem;
 
   }
 
@@ -45,10 +46,12 @@
 #tablist > ul {
   position: sticky;
   top: 60px;
-  background-color: white;
+  background-color: $lightGray !important;
   z-index: 99;
   padding-top: 10px;
   transform: translateY(-10px);
+  margin-bottom: 0 !important;
+
 }
 
 #tablist > a{
