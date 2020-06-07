@@ -15,6 +15,13 @@
         rang :
         <span class="rank"></span>
     </div>
+
+		   <p>Avancement du jeu:
+   	   <div id="myProgress">
+  <div id="myBar"></div>
+</div> 
+
+</p>
 @endsection
 
 @section('content')
