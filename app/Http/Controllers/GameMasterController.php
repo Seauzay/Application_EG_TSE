@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StartChrono;
+use App\Team;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,6 +50,70 @@ class GameMasterController extends Controller
     {
         Auth::logout();
         return redirect('gm/login');
+    }
+
+    function startChrono(Request $request){
+
+        $this->authorize('isGM', Team::class);
+
+        $this->validate($request, [
+            'teams' => 'required',
+        ]);
+
+        $date = now('Europe/Paris');
+
+        if(all($request->teams, function($teamId){
+            $team = App\Teams::find($teamId);
+            return is_null($team->start_date);
+        }))
+        {
+            foreach ($request->teams as $teamId){
+                $team = App\Teams::find($teamId);
+                $team->start_date = $date;
+                $team->saveOrFail();
+                $alerts = FictitiousMessage::whereNotNull('time')->get();
+                foreach ($alerts as $alert) {
+                    MessageRepository::generateAlert($team,$alert);
+                }
+            }
+            event(new StartChrono());
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'success',
+                    'message' => 'Liste des équipes récupérée avec succès!',
+                    'display' => true
+                ],
+                'teams' => App\Teams::whereNull('updated_at')->whereNotIn('id', [1, 2])->pluck('id', 'name')->get()
+            ]);
+        }
+        else{
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'error',
+                    'message' => 'Une des équipes a déjà commencé!',
+                    'display' => true
+                ],
+                'teams' => App\Teams::whereNull('updated_at')->whereNotIn('id', [1, 2])->pluck('id', 'name')->get()
+            ]);
+        }
+
+
+    }
+
+    function listPlayersNotYetStarted(Request $request){
+
+        $this->authorize('isGM', Team::class);
+
+        $teams = App\Teams::whereNull('updated_at')->whereNotIn('id', [1, 2])->pluck('id', 'name')->get();
+
+        JsonResponse::create([
+            'status' => [
+            'type' => 'success',
+            'message' => 'Liste des équipes récupérée avec succès!',
+            'display' => false
+        ],
+            'teams' => $teams
+        ]);
     }
 
 }

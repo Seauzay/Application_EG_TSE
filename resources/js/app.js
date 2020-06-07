@@ -78,3 +78,4 @@ CreateModParcourDisp = require('./modif_parcours/modifParcours').CreateModParcou
 ModParcourAPI = require('./modif_parcours/modifParcours').ModParcourAPI;
 ModParcourTemplate = require('./modif_parcours/modifParcours').ModParcourTemplate;
 MessageTemplate = require('./messenger/MessageTemplate').MessageTemplate;
+ChronometrageForm = require('./gm/ChronometrageForm').ChronometrageForm;

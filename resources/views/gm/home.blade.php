@@ -96,14 +96,20 @@
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Suivi des équipes', active: true});
+        tablist.addTab({title: 'Chronométrage', active: true});
         //roomlist.update();
     </script>
 
     <script>
-        const div = $('<div>');
+        const divSuivi = $('<div>');
         div.appendTo(tablist.contentOfTab(1));
-        const gmTeamList = new GMTeamList(div);
+        const gmTeamList = new GMTeamList(divSuivi);
         gmTeamList.update();
+
+        const divChrono = $('<div>');
+        divChrono.appendTo(tablist.contentOfTab(2));
+        const chronometrage = new ChronometrageForm(divChrono);
+        chronometrage.update();
 
         Echo.channel('application_tracking_escape_game_tse_database_gm-change').listen('.change', function(e) {
             gmTeamList.update();
