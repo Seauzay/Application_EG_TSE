@@ -89,6 +89,7 @@ class PlayerRiddle {
         
         //  validate button modifies the modal when clicking
         this.root.find('.validate-button').click(() => {
+            $('.alert').hide();
             const modal = $('#validation-modal');
             modal.find('.modal-title').text('Validez ' + this.root.find('.card-title').text() + '\u00A0:');
             const form = modal.find('form');
@@ -118,9 +119,12 @@ class PlayerRiddle {
                             }
                             if (data.status.type === 'error') {
                                 if (data.status.display)
-                                    alert(data.status.message);
+                                    $('.alert').show()
                                 else
-                                    alert('Code invalide');
+                                    // alert('Code invalide');
+                                {
+                                    $('.alert').show()
+                                }
                             }
                         },
                         error: (data) => {
