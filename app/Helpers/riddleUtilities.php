@@ -146,3 +146,13 @@ if (!function_exists('has_incomplete_sisters')){
         });
     }
 }
+if (!function_exists('calculerClassement')) {
+    function calculerClassement($user)
+    {
+        $fin = $res = substr($user->id, -1);
+        return (DB::table('teams')->where([
+                    ['external_id', 'regexp', $fin . '$'],
+                    ['score', '>', $user->score]]
+            )->count() + 1);
+    }
+}

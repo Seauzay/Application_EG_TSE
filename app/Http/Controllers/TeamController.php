@@ -125,10 +125,10 @@ class TeamController extends Controller
         return redirect('/');
     }
 
-    function classement(Request $request){
+    function classement(Request $request)
+    {
         $user = Auth::user();
         $rank = calculerClassement($user);
-
         return JsonResponse::create([
             'status' => [
                 'type' => 'success',
