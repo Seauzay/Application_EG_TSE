@@ -425,9 +425,6 @@ class PlayerRiddleGrid {
                 playerRiddle.showButtons({start: false, validate: false, cancel: false});
                 playerRiddle.showTimer(false);
                 $('#global-timer .time').text('02:00:00');
-                if (this.globalTimer.isRunning()) {
-                    this.globalTimer.stop();
-                }
             }
         }});
     }
