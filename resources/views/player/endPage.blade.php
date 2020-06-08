@@ -2,9 +2,10 @@
 @section('content')
 
 
-	<div id='endContent'>
+	<div id='endContent' class="container my-auto text-center">
 
-		<img  src="{{url('images/victory_image.png')}}" id = 'Victory'/></img>
+		<img  src="{{url('images/victory_image.png')}}" id = 'Victory' style="  max-width:100%;
+  height:auto;"/>
 
         <div id="typewriter" class="container my-auto text-center">
 
