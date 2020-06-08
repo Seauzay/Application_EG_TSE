@@ -22,6 +22,7 @@
 </div>
 
 </p>
+
 @endsection
 
 @section('content')
@@ -69,7 +70,7 @@
                     <button class="btn btn-secondary start-button my-1">Commencer l'énigme</button>
                 </div>
                 <div class="row mx-auto">
-                    <button class="btn btn-outline-secondary btn-block validate-button my-1" style="color: #F9C11C !important; background-color: white !important;border :white; display: none;" data-toggle="modal" data-target="#validation-modal" >Vous avez terminé l'énigme? Validez-là ici! </button>
+                    <button class="btn btn-outline-secondary btn-block validate-button my-1" style="color: #f9c11c !important; background-color: #ffffff !important;border :white; display: none;" data-toggle="modal" data-target="#validation-modal" >Vous avez terminé l'énigme? Validez-là ici! </button>
                 </div>
                 <div class="row mx-auto">
                     <button class="btn btn-secondary cancel-button my-1" style="display: none;">Annuler l'énigme</button>
@@ -143,32 +144,6 @@
         </div>
     </template>
 
-    <script>
-        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.emoji', function(e) {
-            /*
-            $.ajax('player/classement', {method: 'GET', success: function(response){
-                    if(response.rank==1)
-                        $('#emoji .rank').text('🥇');
-                    else if (response.rank==2)
-                        $('#emoji .rank').text('🥈');
-                    else if (response.rank==3)
-                        $('#emoji .rank').text('🥉');
-                    else
-                        $('#emoji .rank').text('💩');
-                }});
-             */
-            let rank ={{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1;
-            if(rank==1)
-                $('#emoji .rank').text('🥇');
-            else if (rank==2)
-                $('#emoji .rank').text('🥈');
-            else if (rank==3)
-                $('#emoji .rank').text('🥉');
-            else
-                $('#emoji .rank').text('💩');
-            console.log(rank);
-        });
-    </script>
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Énigmes', active: true});
@@ -196,5 +171,13 @@
         Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.resetChrono',function(){
             document.location.reload(true);
         });
+    </script>
+
+    <script>
+        emoji.display();
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.emoji', function(e) {
+            emoji.display();
+        });
+
     </script>
 @endsection

@@ -129,7 +129,6 @@ class TeamController extends Controller
         return redirect('/');
     }
 
-
 	function finishJourney()
 	{
 		return view('player.endPage', ['logout_url' => 'logout']);
@@ -148,19 +147,17 @@ class TeamController extends Controller
         ]);
     }
 
-/*
-    function classement(Request $request){
+function classement(Request $request)
+    {
         $user = Auth::user();
         $rank = calculerClassement($user);
-
         return JsonResponse::create([
             'status' => [
                 'type' => 'success',
                 'message' => 'Classement envoyé avec succès',
                 'display' => false
             ],
-            'classement' => $rank
+            'rank' => $rank
         ]);
     }
-*/
 }

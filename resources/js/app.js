@@ -78,4 +78,5 @@ CreateModParcourDisp = require('./modif_parcours/modifParcours').CreateModParcou
 ModParcourAPI = require('./modif_parcours/modifParcours').ModParcourAPI;
 ModParcourTemplate = require('./modif_parcours/modifParcours').ModParcourTemplate;
 MessageTemplate = require('./messenger/MessageTemplate').MessageTemplate;
+DisplayEmoji = require('./player/display_emoji').DisplayEmoji;
 ChronometrageForm = require('./gm/ChronometrageForm').ChronometrageForm;

@@ -150,6 +150,18 @@ if (!function_exists('has_incomplete_sisters')){
     }
 }
 
+if (!function_exists('calculerClassement')) {
+    function calculerClassement($user)
+    {
+        $fin = substr($user->id, -1) . '$';
+        return (DB::table('teams')->distinct('score')->where([
+                    ['id', 'regexp', $fin],
+                    ['score', '>', $user->score]
+                ]
+            )->count() + 1);
+    }
+}
+
 if (!function_exists('team_progression')){
     function team_progression(Team $team)
     {
