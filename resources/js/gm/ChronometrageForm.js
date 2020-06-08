@@ -37,7 +37,7 @@ class ChronometrageForm {
             '</div>');
         let copyThis = this;
         console.log($("#triggerButton"));
-        //$(document).ready(function(){
+        $(document).ready(function(){
             $("#triggerButton").on('click',function() {
                 console.log('test');
                 let formData = $('#chronoForm').serializeArray();
@@ -50,7 +50,7 @@ class ChronometrageForm {
                 formData.push({ name: this.name, value: this.value });
                 copyThis.submitForm(formData);
             });
-        //});
+        });
         $(container).append(form);
         this.root.append(container);
     }
