@@ -9,9 +9,8 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Facades\DB;
 
-class SuccessEvent implements ShouldBroadcast
+class ChangeEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,10 +19,9 @@ class SuccessEvent implements ShouldBroadcast
      *
      * @return void
      */
-    private $user;
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user=$user;
+        //
     }
 
     /**
@@ -33,12 +31,10 @@ class SuccessEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('channel-equipe');
+        return new Channel('gm-change');
     }
 
     public function broadcastAs() {
-        return 'emoji';
+        return 'change';
     }
-
-
 }

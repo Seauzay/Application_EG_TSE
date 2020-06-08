@@ -7,6 +7,7 @@ use App\Team;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RiddleTeamController extends Controller
 {
@@ -26,7 +27,9 @@ class RiddleTeamController extends Controller
                         'id' => $team->getAttribute('id'),
                         'name' => $team->getAttribute('name'),
                         'start_date' => $team->getAttribute('start_date'),
-                        'end_date' => $team->getAttribute('end_date')
+                        'end_date' => $team->getAttribute('end_date'),
+						'score' => $team->getAttribute('score'),
+                        'progression' => team_progression($team)
                     ],
                     'riddles' => $riddles
                 ]);

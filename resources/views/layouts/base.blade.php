@@ -30,7 +30,6 @@
 <div id="tablist"></div>
 <script>
     const tablist = new TabList('#tablist');
-    const roomlist = new RoomList(tablist);
 </script>
 
 @yield('content')

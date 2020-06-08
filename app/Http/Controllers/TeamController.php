@@ -61,15 +61,6 @@ class TeamController extends Controller
             $room = new Room();
             $room->name = 'Conversation ' . $name;
             $user->rooms()->save($room);
-            $room_id = $room->id;
-
-            $gms = Team::where('grade', '=', 1)->get();
-            foreach ($gms as $gm){
-                DB::table('rooms_teams')->insert([
-                    'team_id' => $gm->id,
-                    'room_id' => $room_id
-                ]);
-            }
         }
         Auth::login($user);
         return redirect('/player/message');
@@ -81,7 +72,11 @@ class TeamController extends Controller
             $user = Auth::user();
             switch ($user->grade){
                 case 0:
-                    return view('player.home', ['logout_url' => 'player/logout']);
+                    if ($user->end_date == NULL){
+                        return view('player.home', ['logout_url' => 'player/logout']);
+                    }else{
+                        return redirect('player/endPage');
+                    }
                     break;
                 case 1:
                     return view('gm.home', ['logout_url' => 'gm/logout']);
@@ -102,7 +97,11 @@ class TeamController extends Controller
             $user = Auth::user();
             switch ($user->grade){
                 case 0:
-                    return view('player.message', ['logout_url' => 'player/logout']);
+                    if ($user->end_date == NULL){
+						return view('player.message', ['logout_url' => 'logout']);
+					}else{
+						return redirect('player/endPage');
+					}
                     break;
                 case 1:
                     return view('gm.home', ['logout_url' => 'gm/logout']);
@@ -114,8 +113,13 @@ class TeamController extends Controller
                     throw new UnauthorizedException();
             }
         } else
-           // return redirect('player/play');
-        return view('player.message', ['logout_url' => 'player/logout']);
+            return view('player.message', ['logout_url' => 'logout']);;
+           /*
+		if ($user->end_date == NULL){
+			return view('player.message', ['logout_url' => 'logout']);
+		}else{
+		   return view('player.endPage', ['logout_url' => 'logout']);
+		}*/
     }
     function logout()
     {
@@ -125,7 +129,25 @@ class TeamController extends Controller
         return redirect('/');
     }
 
-    function classement(Request $request)
+	function finishJourney()
+	{
+		return view('player.endPage', ['logout_url' => 'logout']);
+	}
+
+    function getStartDate(Request $request){
+        return JsonResponse::create([
+            'status' => [
+                'type' => 'success',
+                'message' => 'Date de début récupérée',
+                'display' => false
+            ],
+            'time' => [
+                'start_date' => Auth::user()->start_date
+            ]
+        ]);
+    }
+
+function classement(Request $request)
     {
         $user = Auth::user();
         $rank = calculerClassement($user);

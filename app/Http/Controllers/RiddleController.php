@@ -17,11 +17,21 @@ class RiddleController extends Controller
         $user = Auth::user();
 
         $riddles = [];
+		$longueur_parcours=0;
+		$nb_completes=0;
 
-        foreach (Riddle::all() as $riddle) {
-
+        foreach ($user->parcours as $parcrous) {
+			
+            $riddle = $parcrous->riddle;
+			if (!$riddle->disabled
+                && is_riddle_in_parcours($riddle, $user)){
+			$longueur_parcours=$longueur_parcours+1;
+			}
+			if (!$riddle->disabled
+                && is_riddle_in_parcours($riddle, $user)&& is_riddle_completed($riddle, $user)) {
+			$nb_completes=$nb_completes+1;
+			}
             if (!$riddle->disabled
-                && is_riddle_in_parcours($riddle, $user)
                 && all($riddle->parents,
                         function ($r) use ($user) {
                             return $r->disabled || !is_riddle_in_parcours($r, $user) || is_riddle_completed($r, $user);
@@ -42,7 +52,8 @@ class RiddleController extends Controller
             'time' => [
                 'start_date' => $user->start_date,
                 'end_date' => $user->end_date
-            ]
+            ],
+			'progression' => $nb_completes/$longueur_parcours
         ]);
     }
 

@@ -2,6 +2,7 @@
   @include media-breakpoint-down(md) {
     margin-left: 2rem;
     margin-right: 2rem;
+    padding-bottom : 2rem;
   }
 
   @include media-breakpoint-up(sm) {
@@ -83,8 +84,8 @@
     background-color: $darkGray;
     padding: 1.125em 1.5em;
     font-size: 0.8em;
-    border-radius: 1rem;
-    box-shadow:	0 0.125rem 0.5rem rgba(0, 0, 0, .3), 0 0.0625rem 0.125rem rgba(0, 0, 0, .2);
+    border-radius: 1em;
+    box-shadow:	0 0.125em 0.5em rgba(0, 0, 0, .3), 0 0.0625em 0.125em rgba(0, 0, 0, .2);
     color: white;
 
   }
@@ -102,13 +103,13 @@
 
     // looks
     border-bottom-color: $darkGray;
-    filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, .1));
+    filter: drop-shadow(0 -0.0625em 0.0625rem rgba(0, 0, 0, .1));
   }
 
   .consigne{
     // layout
     position: relative;
-    max-width: 30em;
+    max-width: 25em;
 
     // looks
     background-color: $darkGray;
@@ -117,7 +118,7 @@
     border-radius: 1rem;
     box-shadow:	0 0.125rem 0.5rem rgba(0, 0, 0, .3), 0 0.0625rem 0.125rem rgba(0, 0, 0, .2);
     color: white;
-    left: 20em;
+   // left: 20em;
 
   }
 
@@ -137,5 +138,8 @@
     filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, .1));
   }
 
+    #goButton{
+        word-spacing: 3px !important;
+    }
 
 }
