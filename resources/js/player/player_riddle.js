@@ -115,7 +115,9 @@ class PlayerRiddle {
                                 this.showURL(false);
                                 playerRiddleGrid.update();
                                 modal.modal('hide');
-
+								if(data.fin){
+									window.location.href = 'player/endPage'; 
+								}
                             }
                             if (data.status.type === 'error') {
                                 if (data.status.display)
