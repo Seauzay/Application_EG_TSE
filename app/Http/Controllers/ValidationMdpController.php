@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ChangeEvent;
+use App\Events\SuccessEvent;
 use App\Repositories\MessageRepository;
 use App\Riddle;
 use DateTime;
@@ -40,15 +42,18 @@ class ValidationMdpController extends Controller
             }
             $user->score=$user->score+$score;
             $user->save();
-
             $this->submitMessage(Auth::user()->rooms->first(),$riddledb,Auth::user());
-			return JsonResponse::create([
+            event(new SuccessEvent($user));
+            event(new ChangeEvent());
+
+            return JsonResponse::create([
                 'status' => [
                     'type' => 'success',
                     'message' => 'Énigme Validée',
-                    'display' => true,
-					'fin' => $finParcours,
-                ]
+                    'display' => true
+                ],
+                'score'  => $user->score,
+              'fin' => $finParcours
             ]);
 			
 			

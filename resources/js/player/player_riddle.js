@@ -89,6 +89,7 @@ class PlayerRiddle {
         
         //  validate button modifies the modal when clicking
         this.root.find('.validate-button').click(() => {
+            $('.alert').hide();
             const modal = $('#validation-modal');
             modal.find('.modal-title').text('Validez ' + this.root.find('.card-title').text() + '\u00A0:');
             const form = modal.find('form');
@@ -103,6 +104,9 @@ class PlayerRiddle {
                         success: (data) => {
                             if (data.status.type === 'success') {
                                 this.timer.pause();
+                                let div =document.getElementById("score");
+                                div.innerHTML ='';
+                                div.innerHTML = "Score : "+data.score;
                                 this.showButtons({
                                     start: false,
                                     cancel: false,
@@ -111,15 +115,18 @@ class PlayerRiddle {
                                 this.showURL(false);
                                 playerRiddleGrid.update();
                                 modal.modal('hide');
-								if(data.status.fin){
+								if(data.fin){
 									window.location.href = 'player/endPage'; 
 								}
                             }
                             if (data.status.type === 'error') {
                                 if (data.status.display)
-                                    alert(data.status.message);
+                                    $('.alert').show()
                                 else
-                                    alert('Code invalide');
+                                    // alert('Code invalide');
+                                {
+                                    $('.alert').show()
+                                }
                             }
                         },
                         error: (data) => {
@@ -251,6 +258,15 @@ class PlayerRiddle {
         this.root.find('.timer').text(val.toString(fields));
     }
 }
+
+function countdownResult() {
+    const modal = $('#tooLate');
+        $('#tooLate').modal('show');
+
+
+
+}
+
 // classe gérant la grille d'enigme  
 class PlayerRiddleGrid {
     constructor(root) {
@@ -269,8 +285,12 @@ class PlayerRiddleGrid {
         this.globalTimer.addEventListener('secondsUpdated', () => {
             this.displayGlobalTimerTime();
         });
+        this.globalTimer.addEventListener('targetAchieved', function (e) {
+        countdownResult();
+        });
         this.started = false;
     }
+
 	//ajoute une rangée permettant de contenir des enigmes au même niveaux dans la page
     addRow() {
         const rowNumber = this.root.children().length + 1;
@@ -340,31 +360,49 @@ class PlayerRiddleGrid {
 				}
 			}
 		});
+		progression=riddleJSON.progression*100;
+		width_val=progression
+		$('#myBar').css("width", width_val + '%');
     };
 
     updateTimer(time) {
         if (time.start_date && time.start_date.date && time.end_date && time.end_date.date) {
             this.started = true;
             $('#global-timer .time').text(formatMS(new Date(time.end_date.date) - new Date(time.start_date.date)));
+
             if (this.globalTimer.isRunning()) {
                 this.globalTimer.stop();
+
             }
         } else if (time.start_date && time.start_date.date) {
             this.started = true;
             if (!this.globalTimer.isRunning()) {
                 const ms = Date.now() - new Date(time.start_date.date);
                 const sec = Math.floor(ms / 1000);
-                this.globalTimer.start({
-                    startValues: {
-                        seconds: sec
-                    }
-                });
+                if(7200 - sec > 0) {
+                    this.globalTimer.start({
+                        countdown: true,
+                        startValues: {
+                            seconds: 7200 - sec
+                        }
+                    });
+                }
+                else
+                {
+                    countdownResult();
+                }
+
                 this.displayGlobalTimerTime();
+
             }
         } else {
             $('#global-timer .time').text('00:00');
+
             if (this.globalTimer.isRunning()) {
                 this.globalTimer.stop();
+
+
+
             }
         }
     }

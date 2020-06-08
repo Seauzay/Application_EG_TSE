@@ -14,12 +14,9 @@ class MessageAPI {
         this.last = new Date(0);
 
         this.refreshMessages();
-
     }
 
     refreshMessages() {
-        clearTimeout(this.refreshTimeout);
-
         $.ajax('msg/' + this.room, {
             method: 'get',
             async : false,
@@ -48,11 +45,6 @@ class MessageAPI {
             success: (data) => {
             }
         });
-
-
-
-
-        this.refreshTimeout = setTimeout(() => this.refreshMessages(), this.refreshDelay);
     }
 }
 

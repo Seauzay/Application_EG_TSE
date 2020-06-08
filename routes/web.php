@@ -19,6 +19,7 @@ Route::get('player/logout', 'TeamController@logout');
 Route::get('player/message','TeamController@firstMessage');*/
 
 Route::get('/', 'TeamController@home');
+
 Route::get('player/login', 'TeamController@login');
 Route::post('player/checklogin', 'TeamController@checklogin');
 Route::get('player/logout', 'TeamController@logout');
@@ -51,6 +52,11 @@ Route::get('riddleteam/fullList', 'RiddleTeamController@listAllRiddles');
 
 // Player
 Route::get('player/', 'PlayerController@home');
+Route::get('player/login', 'TeamController@login');
+Route::post('player/checklogin', 'TeamController@checklogin');
+Route::get('player/logout', 'TeamController@logout');
+Route::get('player/message','TeamController@firstMessage');
+//Route::get('player/classement','TeamController@classement');
 
 //  Admin
 Route::get('admin', 'AdminController@home');

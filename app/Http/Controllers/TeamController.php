@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Room;
 use App\Team;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -60,15 +61,6 @@ class TeamController extends Controller
             $room = new Room();
             $room->name = 'Conversation ' . $name;
             $user->rooms()->save($room);
-            $room_id = $room->id;
-
-            $gms = Team::where('grade', '=', 1)->get();
-            foreach ($gms as $gm){
-                DB::table('rooms_teams')->insert([
-                    'team_id' => $gm->id,
-                    'room_id' => $room_id
-                ]);
-            }
         }
         Auth::login($user);
         return redirect('/player/message');
@@ -136,4 +128,19 @@ class TeamController extends Controller
 	{
 		return view('player.endPage', ['logout_url' => 'logout']);
 	}
+/*
+    function classement(Request $request){
+        $user = Auth::user();
+        $rank = calculerClassement($user);
+
+        return JsonResponse::create([
+            'status' => [
+                'type' => 'success',
+                'message' => 'Classement envoyé avec succès',
+                'display' => false
+            ],
+            'classement' => $rank
+        ]);
+    }
+*/
 }

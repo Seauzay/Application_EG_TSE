@@ -78,18 +78,18 @@ class TabList {
             root = $(root);
         }
         root.addClass('tabs');
-        const navlist = root.find('.nav-fill');
+        const navlist = root.find('.nav-tabs');
         if (navlist.length === 0) {
-            root.append($('<ul>', {class: 'nav nav-fill shadow-sm'})
+            root.append($('<ul>', {class: 'nav nav-tabs nav-fill shadow-sm'})
                 .attr('role', 'tablist')
                 .sortable({
-                    connectWith: root.find('.nav-fill'),
+                    connectWith: root.find('.nav-tabs'),
                     axis: 'x'
                 }));
             root.append($('<div>', {class: 'tab-content'}))
         } else {
             navlist.sortable({
-                connectWith: root.find('.nav-fill')
+                connectWith: root.find('.nav-tabs')
             });
         }
 
