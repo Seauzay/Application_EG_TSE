@@ -27,6 +27,7 @@ function formatMS(s) {
 }
 
 
+
 const PlayerRiddleFactory = (function () {
     return {
         construct: function (root, id, url) {
@@ -392,3 +393,4 @@ class PlayerRiddleGrid {
 
 exports.PlayerRiddle = PlayerRiddle;
 exports.PlayerRiddleGrid = PlayerRiddleGrid;
+

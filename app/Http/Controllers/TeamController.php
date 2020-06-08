@@ -135,7 +135,7 @@ class TeamController extends Controller
                 'message' => 'Classement envoyé avec succès',
                 'display' => false
             ],
-            'classement' => $rank
+            'rank' => $rank
         ]);
     }
 }

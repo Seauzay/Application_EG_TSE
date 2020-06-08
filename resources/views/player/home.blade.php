@@ -8,31 +8,14 @@
     </div>
     <div id="emoji">
         rang :
-        <span class="rank"></span>
+        <span class="rank">
+            <script>
+                emoji.display();
+            </script>
+        </span>
     </div>
 
-    <script>
 
-
-        Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
-
-
-            $.ajax('player/classement', {method: 'GET', success: function(response) {
-                    console.log('ajax');
-                    if (response.rank == 1)
-                        $('#emoji .rank').text('🥇');
-                    else if (response.rank == 2)
-                        $('#emoji .rank').text('🥈');
-                    else if (response.rank == 3)
-                        $('#emoji .rank').text('🥉');
-                    else
-                        $('#emoji .rank').text('😖');
-
-                }});
-            console.log('listener');
-        });
-
-    </script>
 @endsection
 
 @section('content')
@@ -149,5 +132,16 @@
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
         const res = playerRiddleGrid.update();
+    </script>
+
+    <script>
+
+
+        Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
+
+            emoji.display();
+
+        });
+
     </script>
 @endsection
