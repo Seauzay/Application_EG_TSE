@@ -26,13 +26,11 @@
     <div class="sticky-top">
         @include('layouts.logout')
     </div>
-
-<div id="tablist"></div>
+<div id="tablist">
 <script>
     const tablist = new TabList('#tablist');
 </script>
-
+</div>
 @yield('content')
-
 </body>
 </html>
