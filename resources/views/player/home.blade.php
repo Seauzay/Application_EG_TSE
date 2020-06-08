@@ -19,7 +19,7 @@
 		   <p>Avancement du jeu:
    	   <div id="myProgress">
   <div id="myBar"></div>
-</div> 
+</div>
 
 </p>
 @endsection
@@ -144,7 +144,7 @@
     </template>
 
     <script>
-        Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.emoji', function(e) {
             /*
             $.ajax('player/classement', {method: 'GET', success: function(response){
                     if(response.rank==1)
@@ -186,6 +186,15 @@
         tablist.contentOfTab(1).append($('<div>', {id: 'mySuperRiddleGrid'}));
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
-        const res = playerRiddleGrid.update();
+        const res = playerRiddleGrid.waitForActivation();
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.startChrono',function(){
+            $.ajax('player/startDate', {method: 'GET', success:function(response){
+                playerRiddleGrid.updateTimer(response.time);
+                playerRiddleGrid.update();
+            }});
+        });
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.resetChrono',function(){
+            document.location.reload(true);
+        });
     </script>
 @endsection
