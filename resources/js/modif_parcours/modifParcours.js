@@ -2,7 +2,7 @@ class CreateModParcourDisp{
     constructor(tabList) {
         this.tablist = tablist;
         this.parcourAPI = null;
-        const pos = this.tablist.addTab({title: "Gestion parcour"});
+        const pos = this.tablist.addTab({title: "Gestion des parcours"});
         //const api = createRoom(this.tablist.contentOfTab(pos + 1), id);
         this.createDisplay(this.tablist.contentOfTab(pos + 1))
     }

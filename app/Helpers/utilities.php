@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+
 if (!function_exists('all')) {
     function all($collection, callable $predicate)
     {

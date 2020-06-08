@@ -1,7 +1,7 @@
 const {Timer} = require('easytimer.js');
 
 /* retire de la page tout les éléments d'une classe
-Attention: si les éléments en question sont liés à des classe, 
+Attention: si les éléments en question sont liés à des classe,
 cette relation n'est pas mise à jour et l'objet existera toujours
 du point de vue de la classe.*/
 function removeElementsByClass(className){
@@ -27,6 +27,7 @@ function formatMS(s) {
 }
 
 
+
 const PlayerRiddleFactory = (function () {
     return {
         construct: function (root, id, url) {
@@ -48,7 +49,7 @@ class PlayerRiddle {
         // assures that root node is quite correct
         if (!(root instanceof jQuery)) {
             if (typeof root !== 'string')
-                throw 'Invalid parameter in constructor of TabList.';
+                throw 'Invalid parameter in constructor of PlayerRiddle.';
             root = $(root);
         }
 
@@ -83,19 +84,19 @@ class PlayerRiddle {
         });
 
         $('#validation-modal').on('show.bs.modal', function (e) {
-        	
+
         	$('#validation-modal-code').val('');
     	})
-        
+
         //  validate button modifies the modal when clicking
         this.root.find('.validate-button').click(() => {
             $('.alert').hide();
             const modal = $('#validation-modal');
             modal.find('.modal-title').text('Validez ' + this.root.find('.card-title').text() + '\u00A0:');
             const form = modal.find('form');
-            
+
             form.off('submit');
-            
+
             form.on('submit', (e) => {
                 e.preventDefault();
                 if (form.find('#validation-modal-code').val()) {
@@ -115,7 +116,9 @@ class PlayerRiddle {
                                 this.showURL(false);
                                 playerRiddleGrid.update();
                                 modal.modal('hide');
-
+								if(data.fin){
+									window.location.href = 'player/endPage'; 
+								}
                             }
                             if (data.status.type === 'error') {
                                 if (data.status.display)
@@ -182,11 +185,11 @@ class PlayerRiddle {
     setDescription(str) {
         this.root.find('.card-text').text(str);
     }
-    
+
     setPostResolutionMessage(str) {
-        this.root.find('.card-post-resolution-message').html(str);        
+        this.root.find('.card-post-resolution-message').html(str);
     }
-    
+
     showPostResolutionMessage() {
     	this.root.find('.card-post-resolution-message').show();
     }
@@ -196,7 +199,7 @@ class PlayerRiddle {
         this.root.find('.player-riddle-card').last().attr('id', id);
     }
 
-    setTimer(ms) {    	
+    setTimer(ms) {
         this.root.find('.timer').text(formatMS(ms));
     }
 
@@ -265,7 +268,7 @@ function countdownResult() {
 
 }
 
-// classe gérant la grille d'enigme  
+// classe gérant la grille d'enigme
 class PlayerRiddleGrid {
     constructor(root) {
         if (!(root instanceof jQuery)) {
@@ -314,44 +317,34 @@ class PlayerRiddleGrid {
     updateRiddles(riddleJSON) {
         const riddles = riddleJSON.riddles;
         this.updateTimer(riddleJSON.time);
-		
+
 		//suppression de l'affichage des enigmes dans la page
 		removeElementsByClass("card player-riddle-card my-2");
 		//suppression des enigmes de la classe
 		this.playerRiddles.length = 0;
-		
+
         riddles.forEach((riddle) => {
             let playerRiddle = this.playerRiddles.find((e) => {
                 return e.id === riddle.id;
             });
 			if (playerRiddle === undefined) {
-				//Si il n'y a pas de rangée on en ajoute une
-				if (this.rowNumber ==0)
-				{
-					this.addRow();
-				}
 				playerRiddle = this.addPlayerRiddle(1);
 			}
 			playerRiddle.setAttributes({
 				id: riddle.id,
 				title: riddle.name,
 				description: riddle.description,
-				post_resolution_message: riddle.post_resolution_message,
 				url: riddle.url
 			});
 			if (riddle.start_date) {
 				if (riddle.end_date) {
-					const start = new Date(riddle.start_date.date);    
+					const start = new Date(riddle.start_date.date);
 					const end = new Date(riddle.end_date.date);
-              
+
 					playerRiddle.showButtons({
 						start: false
 					});
 					playerRiddle.setTimer(end - start);
-                    
-					if (riddle.post_resolution_message) {
-						playerRiddle.showPostResolutionMessage();
-					}
 				} else {
 					playerRiddle.startTimerFromDate(riddle.start_date.date);
 					playerRiddle.showButtons({start: false, validate: true, cancel: true});
@@ -363,8 +356,6 @@ class PlayerRiddleGrid {
         let html="<div class='progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow= '"+Math.abs(progressBarVal)+" ' aria-valuemin = '0' aria-valuemax='100' style='width:"+Math.abs(progressBarVal)+"%; background-color: #fdcc47 !important;'></div>";
         $(".progress").empty();
         $(".progress").append(html);
-
-
 };
 
     updateTimer(time) {
@@ -376,7 +367,6 @@ class PlayerRiddleGrid {
 
             if (this.globalTimer.isRunning()) {
                 this.globalTimer.stop();
-
             }
         } else if (time.start_date && time.start_date.date) {
             this.started = true;
@@ -390,22 +380,13 @@ class PlayerRiddleGrid {
                             seconds: 7200 - sec
                         }
                     });
+                    this.displayGlobalTimerTime();
                 }
                 else
                 {
                     countdownResult();
+                    $('#global-timer .time').text('00:00');
                 }
-
-                this.displayGlobalTimerTime();
-
-            }
-        } else {
-            $('#global-timer .time').text('00:00');
-
-            if (this.globalTimer.isRunning()) {
-                this.globalTimer.stop();
-
-
 
             }
         }
@@ -432,6 +413,27 @@ class PlayerRiddleGrid {
 
     update() {
         $.ajax('riddle/list', {method: 'GET', success: (response) => this.updateRiddles(response)});
+    }
+
+    waitForActivation(){
+        let copyThis = this;
+        $.ajax('riddle/list', {method: 'GET', success: function(response){
+            let time = response.time;
+            copyThis.addRow();
+            if (time.start_date && time.start_date.date){
+                copyThis.updateRiddles(response);
+            }
+            else{
+                let playerRiddle = copyThis.addPlayerRiddle(1);
+                playerRiddle.setAttributes({
+                    title: 'Jeu en attente',
+                    description: "Veuillez attendre le lancement du jeu par le game master.",
+                });
+                playerRiddle.showButtons({start: false, validate: false, cancel: false});
+                playerRiddle.showTimer(false);
+                $('#global-timer .time').text('02:00:00');
+            }
+        }});
     }
 }
 

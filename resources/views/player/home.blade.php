@@ -149,27 +149,6 @@
         </div>
     </template>
 
-    <script>
-        let rank = {{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1;
-         function emoji(rank)
-        {
-           // rank = {{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1;;
-            if(rank==1)
-                $('#emoji .rank').text('🥇');
-            else if (rank==2)
-                $('#emoji .rank').text('🥈');
-            else if (rank==3)
-                $('#emoji .rank').text('🥉');
-            else
-                $('#emoji .rank').text('💩');
-            console.log(rank);
-        }
-        emoji(rank);
-
-        Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
-        emoji({{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1);
-     });
-    </script>
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Énigmes', active: true});
@@ -187,6 +166,23 @@
         tablist.contentOfTab(1).append($('<div>', {id: 'mySuperRiddleGrid'}));
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
-        const res = playerRiddleGrid.update();
+        const res = playerRiddleGrid.waitForActivation();
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.startChrono',function(){
+            $.ajax('player/startDate', {method: 'GET', success:function(response){
+                playerRiddleGrid.updateTimer(response.time);
+                playerRiddleGrid.update();
+            }});
+        });
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.resetChrono',function(){
+            document.location.reload(true);
+        });
+    </script>
+
+    <script>
+        emoji.display();
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.emoji', function(e) {
+            emoji.display();
+        });
+
     </script>
 @endsection
