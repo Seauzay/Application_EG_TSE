@@ -84,6 +84,5 @@ class MessagesSeeder extends Seeder
             'author' => 'GameMaster',
             'time' => 0
         ]);
-
     }
 }
