@@ -13,11 +13,7 @@
     <div id="score">Score : {{ Auth::user()->score }}</div>
     <div id="emoji">
         rang :
-        <span class="rank">
-            <script>
-                emoji.display();
-            </script>
-        </span>
+        <span class="rank"></span>
     </div>
 
 		   <p>Avancement du jeu:
@@ -148,32 +144,6 @@
         </div>
     </template>
 
-    <script>
-        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.emoji', function(e) {
-            /*
-            $.ajax('player/classement', {method: 'GET', success: function(response){
-                    if(response.rank==1)
-                        $('#emoji .rank').text('🥇');
-                    else if (response.rank==2)
-                        $('#emoji .rank').text('🥈');
-                    else if (response.rank==3)
-                        $('#emoji .rank').text('🥉');
-                    else
-                        $('#emoji .rank').text('💩');
-                }});
-             */
-            let rank ={{DB::table('teams')->where('score', '>',  Auth::user()->score)->count()}}+1;
-            if(rank==1)
-                $('#emoji .rank').text('🥇');
-            else if (rank==2)
-                $('#emoji .rank').text('🥈');
-            else if (rank==3)
-                $('#emoji .rank').text('🥉');
-            else
-                $('#emoji .rank').text('💩');
-            console.log(rank);
-        });
-    </script>
     {{--Création des onglets--}}
     <script>
         tablist.addTab({title: 'Énigmes', active: true});
@@ -204,12 +174,9 @@
     </script>
 
     <script>
-
-
-        Echo.channel('application_tracking_escape_game_tse_database_validation-enigme').listen('.emoji', function(e) {
-
+        emoji.display();
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.emoji', function(e) {
             emoji.display();
-
         });
 
     </script>
