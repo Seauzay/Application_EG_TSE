@@ -324,18 +324,12 @@ class PlayerRiddleGrid {
                 return e.id === riddle.id;
             });
 			if (playerRiddle === undefined) {
-				//Si il n'y a pas de rangée on en ajoute une
-				if (this.rowNumber ==0)
-				{
-					this.addRow();
-				}
 				playerRiddle = this.addPlayerRiddle(1);
 			}
 			playerRiddle.setAttributes({
 				id: riddle.id,
 				title: riddle.name,
 				description: riddle.description,
-				post_resolution_message: riddle.post_resolution_message,
 				url: riddle.url
 			});
 			if (riddle.start_date) {
@@ -347,10 +341,6 @@ class PlayerRiddleGrid {
 						start: false
 					});
 					playerRiddle.setTimer(end - start);
-
-					if (riddle.post_resolution_message) {
-						playerRiddle.showPostResolutionMessage();
-					}
 				} else {
 					playerRiddle.startTimerFromDate(riddle.start_date.date);
 					playerRiddle.showButtons({start: false, validate: true, cancel: true});
@@ -358,8 +348,8 @@ class PlayerRiddleGrid {
 				}
 			}
 		});
-		progression=riddleJSON.progression*100;
-		width_val=progression
+		let progression = riddleJSON.progression*100;
+		let width_val = progression
 		$('#myBar').css("width", width_val + '%');
     };
 
@@ -370,7 +360,6 @@ class PlayerRiddleGrid {
 
             if (this.globalTimer.isRunning()) {
                 this.globalTimer.stop();
-
             }
         } else if (time.start_date && time.start_date.date) {
             this.started = true;
@@ -384,22 +373,13 @@ class PlayerRiddleGrid {
                             seconds: 7200 - sec
                         }
                     });
+                    this.displayGlobalTimerTime();
                 }
                 else
                 {
                     countdownResult();
+                    $('#global-timer .time').text('00:00');
                 }
-
-                this.displayGlobalTimerTime();
-
-            }
-        } else {
-            $('#global-timer .time').text('00:00');
-
-            if (this.globalTimer.isRunning()) {
-                this.globalTimer.stop();
-
-
 
             }
         }
@@ -426,6 +406,30 @@ class PlayerRiddleGrid {
 
     update() {
         $.ajax('riddle/list', {method: 'GET', success: (response) => this.updateRiddles(response)});
+    }
+
+    waitForActivation(){
+        let copyThis = this;
+        $.ajax('riddle/list', {method: 'GET', success: function(response){
+            let time = response.time;
+            copyThis.addRow();
+            if (time.start_date && time.start_date.date){
+                copyThis.updateRiddles(response);
+            }
+            else{
+                let playerRiddle = copyThis.addPlayerRiddle(1);
+                playerRiddle.setAttributes({
+                    title: 'Jeu en attente',
+                    description: "Veuillez attendre le lancement du jeu par le game master.",
+                });
+                playerRiddle.showButtons({start: false, validate: false, cancel: false});
+                playerRiddle.showTimer(false);
+                $('#global-timer .time').text('02:00:00');
+                if (this.globalTimer.isRunning()) {
+                    this.globalTimer.stop();
+                }
+            }
+        }});
     }
 }
 

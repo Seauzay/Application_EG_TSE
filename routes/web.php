@@ -25,7 +25,6 @@ Route::get('gm/login', 'GameMasterController@login');
 Route::post('gm/checklogin', 'GameMasterController@checklogin');
 Route::get('gm/logout', 'GameMasterController@logout');
 Route::get('gm/startChrono','GameMasterController@startChrono');
-Route::get('gm/listPlayersNotYetStarted','GameMasterController@listPlayersNotYetStarted');
 
 // Messenger
 Route::get('msg/list', 'MessengerController@listRooms');

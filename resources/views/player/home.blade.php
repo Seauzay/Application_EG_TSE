@@ -186,10 +186,11 @@
         tablist.contentOfTab(1).append($('<div>', {id: 'mySuperRiddleGrid'}));
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
-        const res = playerRiddleGrid.update();
+        const res = playerRiddleGrid.waitForActivation();
         Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.startChrono',function(){
-            $.ajax('player/classement', {method: 'GET', success:function(response){
+            $.ajax('player/startDate', {method: 'GET', success:function(response){
                 playerRiddleGrid.updateTimer(response.time);
+                playerRiddleGrid.update();
             }});
         })
     </script>

@@ -78,5 +78,12 @@ class MessagesSeeder extends Seeder
             'time' => 1
         ]);
 
+        DB::table('messages')->insert([
+            'id' => 10,
+            'content' => 'Vous pouvez désormais commencer votre première énigme.',
+            'author' => 'GameMaster',
+            'time' => 0
+        ]);
+
     }
 }
