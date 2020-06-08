@@ -115,6 +115,20 @@ class TeamController extends Controller
 
         return redirect('/');
     }
+
+    function getStartDate(Request $request){
+        return JsonResponse::create([
+            'status' => [
+                'type' => 'success',
+                'message' => 'Date de début récupérée',
+                'display' => false
+            ],
+            'time' => [
+                'start_date' => Auth::user()->start_date
+            ]
+        ]);
+    }
+
 /*
     function classement(Request $request){
         $user = Auth::user();

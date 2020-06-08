@@ -61,7 +61,7 @@
         </div>
         {{ csrf_field() }}
         <div class="container text-center">
-            <button type="submit" class="btn btn-danger">Go!:)</button>
+            <button type="submit" class="btn btn-danger" id="goButton">Go! :)</button>
         </div>
     </form>
 @endsection
