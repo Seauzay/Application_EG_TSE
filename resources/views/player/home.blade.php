@@ -192,6 +192,9 @@
                 playerRiddleGrid.updateTimer(response.time);
                 playerRiddleGrid.update();
             }});
-        })
+        });
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.resetChrono',function(){
+            document.location.reload(true);
+        });
     </script>
 @endsection

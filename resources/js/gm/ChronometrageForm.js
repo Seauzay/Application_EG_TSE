@@ -15,6 +15,7 @@ class ChronometrageForm {
         container.setAttribute("id","ChronometrageContainer");
         container.setAttribute("class","jumbotron");
         let form = document.createElement('form');
+        form.setAttribute("id","chronoForm");
         $(form).append('<div class="form-group">' +
             '<label for="FormControlSelectVague">Choix de la vague</label>' +
             '<select class="form-control" name="selectedVague" id="FormControlSelectVague">' +
@@ -30,31 +31,46 @@ class ChronometrageForm {
             '  <option value ="10">10</option>' +
             '</select>' +
             '</div>' +
-            '<button type="submit" class="btn btn-primary">Déclencher le timer</button>');
-        $(form).submit(function(e) {
-
-            e.preventDefault(); // avoid to execute the actual submit of the form.
-
-            $.ajax('gm/startChrono',{
-                data: $(form).serialize(), // serializes the form's elements.
-                success: function(data) // show response from the php script.
-                {
-                    if (data.status.type === 'success') {
-                        // show modal for success
-                        alert(data.status.message);
-
-                    }
-                    if (data.status.type === 'error') {
-                        // show modal for error
-                        alert(data.status.message);
-                    }
-                }
+            '<div class ="form-group">'+
+            '<button type="button" id="triggerButton" class="btn btn-primary" name="action" value="trigger">Déclencher le timer</input>' +
+            '<button type="button" id="resetButton" class="btn btn-primary" name="action" value="reset">Remettre le timer à zéro</input>' +
+            '</div>');
+        let copyThis = this;
+        console.log($("#triggerButton"));
+        //$(document).ready(function(){
+            $("#triggerButton").on('click',function() {
+                console.log('test');
+                let formData = $('#chronoForm').serializeArray();
+                formData.push({ name: this.name, value: this.value });
+                copyThis.submitForm(formData);
             });
-
-
-        });
+            $("#resetButton").on('click',function() {
+                console.log('test');
+                let formData = $('#chronoForm').serializeArray();
+                formData.push({ name: this.name, value: this.value });
+                copyThis.submitForm(formData);
+            });
+        //});
         $(container).append(form);
         this.root.append(container);
+    }
+
+    submitForm(formData){
+        $.ajax('gm/startChrono',{
+            data: formData, // serializes the form's elements.
+            success: function(data) // show response from the php script.
+            {
+                if (data.status.type === 'success') {
+                    // show modal for success
+                    alert(data.status.message);
+
+                }
+                if (data.status.type === 'error') {
+                    // show modal for error
+                    alert(data.status.message);
+                }
+            }
+        });
     }
 }
 

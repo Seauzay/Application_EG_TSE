@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ResetChrono;
 use App\Events\StartChrono;
 use App\Repositories\MessageRepository;
 use App\Team;
@@ -9,6 +10,7 @@ use App\FictitiousMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Exception;
 
 class GameMasterController extends Controller
 {
@@ -58,45 +60,75 @@ class GameMasterController extends Controller
 
         $this->authorize('isGM', Team::class);
 
+        if ($request->input( 'action') == 'reset'){
+            return $this->resetChrono($request);
+        }
+        else if($request->input('action') == 'trigger'){
+            $ids = [];
+            for($i = 1; $i<=5; $i++){
+                $ids[] = $i*100 + intval($request->input('selectedVague'));
+            }
+
+            $teams = Team::whereIn('id', $ids)->get();
+
+            if(all($teams, function($team){
+                return is_null($team->start_date);
+            })
+            ){
+                $alerts = FictitiousMessage::whereNotNull('time')->get();
+                $date = now('Europe/Paris');
+                foreach ($teams as $team){
+                    $team->start_date = $date;
+                    $team->saveOrFail();
+                    foreach ($alerts as $alert) {
+                        MessageRepository::generateAlert($team,$alert);
+                    }
+                }
+                event(new StartChrono());
+                return JsonResponse::create([
+                    'status' => [
+                        'type' => 'success',
+                        'message' => 'Le timer de cette vague est lancé avec succès!',
+                        'display' => true
+                    ],
+                ]);
+            }
+            else{
+                return JsonResponse::create([
+                    'status' => [
+                        'type' => 'error',
+                        'message' => 'Cette vague d\'équipes a déjà commencé!',
+                        'display' => true
+                    ]
+                ]);
+            }
+        }
+        else{
+            throw new Exception('Not valid input in startChrono');
+        }
+
+    }
+
+    private function resetChrono(Request $request){
         $ids = [];
         for($i = 1; $i<=5; $i++){
             $ids[] = $i*100 + intval($request->input('selectedVague'));
         }
 
         $teams = Team::whereIn('id', $ids)->get();
-
-        if(all($teams, function($team){
-                return is_null($team->start_date);
-            })
-        ){
-            $alerts = FictitiousMessage::whereNotNull('time')->get();
-            $date = now('Europe/Paris');
-            foreach ($teams as $team){
-                $team->start_date = $date;
-                $team->saveOrFail();
-                foreach ($alerts as $alert) {
-                    MessageRepository::generateAlert($team,$alert);
-                }
-            }
-            event(new StartChrono());
-            return JsonResponse::create([
-                'status' => [
-                    'type' => 'success',
-                    'message' => 'Le timer de cette vague est lancé avec succès!',
-                    'display' => true
-                ],
-            ]);
-        }
-        else{
-            return JsonResponse::create([
-                'status' => [
-                    'type' => 'error',
-                    'message' => 'Cette vague d\'équipes a déjà commencé!',
-                    'display' => true
-                ]
-            ]);
+        foreach ($teams as $team) {
+            $team->start_date = null;
+            $team->saveOrFail();
         }
 
+        event(new ResetChrono());
 
+        return JsonResponse::create([
+            'status' => [
+                'type' => 'success',
+                'message' => 'Le timer de cette vague a été remis à zéro avec succès!',
+                'display' => true
+            ],
+        ]);
     }
 }
