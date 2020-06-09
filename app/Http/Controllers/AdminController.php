@@ -80,6 +80,7 @@ class AdminController extends Controller
 
         return redirect('admin');
     }
+
     function logout()
     {
         Auth::logout();

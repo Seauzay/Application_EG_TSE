@@ -73,6 +73,13 @@
 
     {{-- Template pour la modification de parcours--}}
     <div id="mod-parcour-display-template">
+        <div id="mod-bdd">
+            <button id="btn-mod-bdd"class="btn btn-primary validate-button my-1" onclick="modParcours()">Modifier</button>
+            <button id="btn-reset-display"class="btn btn-primary validate-button my-1" onclick="resetParcours()">Reset</button>
+
+        </div>
+
+
         <div class="mod-parcour-container">
             <template id="mod-parcour-template">
                 <div class="card-admin" draggable="true" ondragstart="drag(event)" ondragover="dragOver(event)" ondragend="dragEnd(event)">
@@ -148,6 +155,12 @@
                 shadowContainer = null;
             }
 
+        }
+        function modParcours(){
+            createParcours.modParcours();
+        }
+        function resetParcours(){
+            createParcours.resetParcours();
         }
     </script>
 
