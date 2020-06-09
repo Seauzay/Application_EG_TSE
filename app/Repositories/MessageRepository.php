@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 
+use App\Events\NewMessage;
 use App\FictitiousMessage;
 use App\Message;
 use App\Room;
@@ -28,6 +29,7 @@ class MessageRepository
         $msg->message_id = $content->id;
 
         $msg->saveOrFail();
+        event(new NewMessage($room->id));
     }
 
     public static function generateAlert(Team $team, FictitiousMessage $content)

@@ -80,7 +80,7 @@ class TabList {
         root.addClass('tabs');
         const navlist = root.find('.nav-tabs');
         if (navlist.length === 0) {
-            root.append($('<ul>', {class: 'nav nav-tabs shadow-sm'})
+            root.append($('<ul>', {class: 'nav nav-tabs nav-fill shadow-sm'})
                 .attr('role', 'tablist')
                 .sortable({
                     connectWith: root.find('.nav-tabs'),

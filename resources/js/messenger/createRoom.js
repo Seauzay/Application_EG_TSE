@@ -11,11 +11,14 @@ class RoomList {
 
     addRoom(id, name) {
         if (this.rooms.indexOf(id) === -1) {
-            const pos = this.tablist.addTab({title: "Messagerie"});
+            const pos = this.tablist.addTab({title: "Messages reçus", position : 1});
             const api = createRoom(this.tablist.contentOfTab(pos + 1), id);
             api.callback = () => {
                 this.tablist.notify(pos+1);
             };
+            Echo.channel('application_tracking_escape_game_tse_database_message-'+id).listen('.newMessage',function(e){
+                api.refreshMessages();
+            });
             this.rooms.push(id);
         }
 
