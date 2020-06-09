@@ -30,6 +30,7 @@
 
 
                 document.getElementById('typewriter').innerHTML = text;
+                //document.scrollTop = document.getElementById('typewriter').scrollHeight;
 
                 var char = text.slice(-1);
                 if( char === '<' ) isTag = true;

@@ -7,7 +7,7 @@ du point de vue de la classe.*/
 function removeElementsByClass(className){
     var elements = document.getElementsByClassName(className);
     while(elements.length > 0){
-        elements[0].parentNode.removeChild(elements[0]);
+        $(elements[0]).remove();
     }
 }
 
@@ -117,7 +117,7 @@ class PlayerRiddle {
                                 playerRiddleGrid.update();
                                 modal.modal('hide');
 								if(data.fin){
-									window.location.href = 'player/endPage'; 
+									window.location.href = 'player/endPage';
 								}
                             }
                             if (data.status.type === 'error') {
