@@ -21,7 +21,7 @@ class RiddleController extends Controller
 		$nb_completes=0;
 
         foreach ($user->parcours as $parcrous) {
-			
+
             $riddle = $parcrous->riddle;
 			if (!$riddle->disabled
                 && is_riddle_in_parcours($riddle, $user)){
@@ -38,7 +38,11 @@ class RiddleController extends Controller
                         })
                 && has_incomplete_sisters($riddle,$user)
             ){
-                $riddles[] = riddle_info($riddle, $user);
+                $sisters = riddle_sisters($riddle);
+                $can_start = !any(array_slice(($sisters),1),function($r) use($user){
+                    return is_riddle_started($r,$user) && !is_riddle_completed($r,$user);
+                });
+                $riddles[] = riddle_info($riddle, $user,$can_start);
             }
         }
 

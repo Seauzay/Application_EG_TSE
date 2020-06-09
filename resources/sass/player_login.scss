@@ -1,7 +1,7 @@
 .player-login {
   @include media-breakpoint-down(md) {
-    margin-left: 2rem;
-    margin-right: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
     padding-bottom : 2rem;
   }
 
@@ -138,8 +138,15 @@
     filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, .1));
   }
 
-    #goButton{
-        word-spacing: 3px !important;
-    }
+  #goButton{
+    word-spacing: 3px;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
 
+  label{
+    display: block;
+    margin-bottom: 0 !important;
+    margin-top: 8px !important;
+  }
 }

@@ -1,4 +1,16 @@
 const {Timer} = require('easytimer.js');
+var moment = require('moment');
+
+function dateNow(){
+    let date;
+    $.ajax('whatistimenow/', {
+        method: 'GET',
+        async : false,
+        dataType: 'json',
+        success: function(data) {date=data.now.date;}
+    });
+    return moment(date,"YYYY-MM-DD hh:mm:ss");
+}
 
 function formatMS(s) {
     function pad(n, z) {
@@ -132,10 +144,10 @@ class GMTeam {
             if (this.teamTimer.isRunning()) {
                 this.teamTimer.stop();
             }
-            this.root.find('.team-time').text(formatMS(new Date(options.end) - new Date(options.start)));
+            this.root.find('.team-time').text(formatMS(moment(options.end,"YYYY-MM-DD hh:mm:ss").diff(moment(options.start,"YYYY-MM-DD hh:mm:ss"))));
         } else if (isValidProperty(options,'start')) {
             if (!this.teamTimer.isRunning()) {
-                const ms = Date.now() - new Date(options.start);
+                const ms = dateNow().diff(moment(options.start,"YYYY-MM-DD hh:mm:ss"));
                 const sec = Math.floor(ms / 1000);
                 this.teamTimer.start({
                     startValues: {
@@ -154,12 +166,13 @@ class GMTeam {
             if (this.riddleTimer.isRunning()) {
                 this.riddleTimer.stop();
             }
-            this.root.find('.current-riddle-time').text(formatMS(new Date(options.riddle_end) - new Date(options.riddle_start)));
+            this.root.find('.current-riddle-time').text(formatMS(moment(options.riddle_end,"YYYY-MM-DD hh:mm:ss").diff(moment(options.riddle_start,"YYYY-MM-DD hh:mm:ss"
+            ))));
         } else if (isValidProperty(options,'riddle_start')) {
             if (this.riddleTimer.isRunning()) {
                 this.riddleTimer.stop();
             }
-            const ms = Date.now() - new Date(options.riddle_start);
+            const ms = dateNow().diff(moment(options.riddle_start,"YYYY-MM-DD hh:mm:ss"));
             const sec = Math.floor(ms / 1000);
             this.riddleTimer.start({
                 startValues: {
@@ -318,9 +331,9 @@ class GMTeamList {
             list.empty();
             riddles.forEach((riddle) => {
                 const content = $('<li>');
-                const start = new Date(riddle.start_date);
-                const end = new Date(riddle.end_date);
-                content.text(riddle.name + ' en ' + formatMS(end - start));
+                const start = moment(riddle.start_date,"YYYY-MM-DD hh:mm:ss");
+                const end = moment(riddle.end_date,"YYYY-MM-DD hh:mm:ss");
+                content.text(riddle.name + ' en ' + formatMS(end.diff(start)));
                 list.append(content);
             });
         });

@@ -19,6 +19,7 @@ Route::get('player/logout', 'TeamController@logout');
 Route::get('player/message','TeamController@firstMessage');*/
 
 Route::get('/', 'TeamController@home');
+Route::get('/whatistimenow','TimeController@now');
 
 Route::get('player/login', 'TeamController@login');
 Route::post('player/checklogin', 'TeamController@checklogin');
