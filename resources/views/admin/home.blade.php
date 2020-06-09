@@ -119,7 +119,7 @@
         tablist.addTab({title: 'Ajouter GM', active: true});
         tablist.addTab({title: 'Modifier les énigmes', active: false});
         tablist.addTab({title: 'Réinitialiser', active: false});
-        roomlist.update();
+        //roomlist.update();
     </script>
 
     <script>
