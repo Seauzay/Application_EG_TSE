@@ -28,7 +28,7 @@
                         '<footer id="sticky-footer" style="background-color: #e3e9ec">' +
                         '<div class="media">' +
                         // '  <div class="media-left media-middle">' +
-                        '      <img class="d-flex align-self-center mr-3 ml-2" src="/images/dev1.png" alt="Dev" height= "43px" width= "64px">' +
+                        '      <img class="d-flex align-self-center mr-3 ml-2" src="{{url('images/dev1.png')}}" alt="Dev" height= "43px" width= "64px">' +
 /*                        '    </a>' +
                             '</div>'+*/
                     ' <div class="" style="color: #e3342f; font-size=0.5em">' +
@@ -36,7 +36,7 @@
                         '  </div>'+
                         '  </div>'+
                        ' </footer>');
-                  //  setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
+                    setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
                     return;
 
                 }
