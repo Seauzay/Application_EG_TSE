@@ -86,7 +86,7 @@ class PlayerRiddle {
         $('#validation-modal').on('show.bs.modal', function (e) {
 
         	$('#validation-modal-code').val('');
-    	})
+    	});
 
         //  validate button modifies the modal when clicking
         this.root.find('.validate-button').click(() => {

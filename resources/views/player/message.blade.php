@@ -25,18 +25,18 @@
                 if (text === str)
                 {
                     $(document.body).append(
-                        '<footer id="sticky-footer" class="bg-light">' +
+                        '<footer id="sticky-footer" style="background-color: #e3e9ec">' +
                         '<div class="media">' +
-                        '  <div class="media-left media-middle">' +
-                        '      <img class="media-object" src="/images/dev.png" alt="Dev" height= "64px" width= "64px">' +
-                        '    </a>' +
-                            '</div>'+
-                    ' <div class="media-body">' +
-                        '  <strong class="media-heading" style="color:#e3342f"> Cette application a été imaginée, prototypée et produite par des étudiants du M1 Design de Communication, des élèves de la DTA et des étudiants de FISE 2. Merci à eux !</strong>' +
+                        // '  <div class="media-left media-middle">' +
+                        '      <img class="d-flex align-self-center mr-3 ml-2" src="/images/dev1.png" alt="Dev" height= "43px" width= "64px">' +
+/*                        '    </a>' +
+                            '</div>'+*/
+                    ' <div class="" style="color: #e3342f; font-size=0.5em">' +
+                        ' <strong class="text-justify"> Cette application a été imaginée, prototypée et produite par des étudiants du M1 Design de Communication, des élèves de la DTA et des étudiants de FISE 2. Merci à eux !</strong>' +
                         '  </div>'+
                         '  </div>'+
                        ' </footer>');
-                    setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
+                  //  setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
                     return;
 
                 }
