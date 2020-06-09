@@ -52,8 +52,8 @@
     {{-- Template pour la modification de parcours--}}
     <div id="mod-parcour-display-template">
         <div id="mod-bdd">
-                <button id="btn-mod-bdd"class="btn btn-primary validate-button my-1" onclick="modBDD()">Modifier</button>
-                <button id="btn-reset-display"class="btn btn-primary validate-button my-1" onclick="resetBDD()">Reset</button>
+                <button id="btn-mod-bdd"class="btn btn-primary validate-button my-1" onclick="modParcours()">Modifier</button>
+                <button id="btn-reset-display"class="btn btn-primary validate-button my-1" onclick="resetParcours()">Reset</button>
 
         </div>
 
@@ -142,11 +142,11 @@
             }
         }
 
-        function modBDD(){
-            createParcours.modBDD();
+        function modParcours(){
+            createParcours.modParcours();
         }
-        function resetBDD(){
-            createParcours.resetBDD();
+        function resetParcours(){
+            createParcours.resetParcours();
         }
     </script>
 @endsection
