@@ -8,6 +8,8 @@
 @endsection
 
 @section('content')
+	 
+
     {{--template pour une énigme gm--}}
     <template id="gm-team-template">
         <div class="container jumbotron gm-team">
@@ -95,15 +97,44 @@
 
     {{--Création des onglets--}}
     <script>
+		
         tablist.addTab({title: 'Suivi des équipes', active: true});
+		
+		
+		
         //roomlist.update();
-    </script>
-
-    <script>
+   
         const div = $('<div>');
         div.appendTo(tablist.contentOfTab(1));
         const gmTeamList = new GMTeamList(div);
         gmTeamList.update();
+
+
+		//Partie bouton pour la récuperation des données des équipes dans un fichier csv
+		let cont_but = document.createElement('div');
+		cont_but.id = "cont_but";
+		let but = document.createElement('button');
+		but.innerHTML  = 'écriture sur fichier CSV';
+		but.class = "btn btn-secondary pull-right";
+		but.addEventListener("click",function(){
+			//console.log('click');
+			$.ajax('admin/CSV', {method: 'GET', success :  startDownload()});
+		} );
+		function startDownload(){
+			let frame = document.createElement('iframe');
+			frame.style.display = "none";
+			frame.src = "{{url('/report.csv')}}";
+			frame.id = 'frame'
+			div.appendChild(frame);
+			
+			$("#frame").click()
+
+		};
+		
+		cont_but.appendChild(but);
+		tablist.contentOfTab(1).append(cont_but);
+
+
 
         Echo.channel('application_tracking_escape_game_tse_database_gm-change').listen('.change', function(e) {
             gmTeamList.update();
@@ -141,6 +172,11 @@
         }
         function resetBDD(){
             createParcours.resetBDD();
-        }
+			
+		}	
+		
+		
+		
+        
     </script>
 @endsection

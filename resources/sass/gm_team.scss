@@ -52,3 +52,21 @@
   }
 
 }
+
+#cont_but {
+	display : block;
+	
+	 
+	button {
+		position : absolute;
+		left : 40%;
+		    border: 1px solid $red;
+		color: $red;
+
+		&:hover, &.active{
+			background-color: $red;
+			color: white;
+		}
+	}
+	
+}
