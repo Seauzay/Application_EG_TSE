@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\UnauthorizedException;
+use RefreshDBSeeder;
 use const Grpc\CALL_ERROR;
 
 class AdminController extends Controller
@@ -40,15 +41,8 @@ class AdminController extends Controller
     public function refreshDB()
     {
         $this->authorize('isAdmin', Team::class);
-
-        DB::table('messages')->truncate();
-        DB::table('messaging')->truncate();
-        DB::table('riddles_teams')->truncate();
-        DB::table('rooms')->truncate();
-        DB::table('rooms_teams')->truncate();
-        DB::table('jobs')->truncate();
-        DB::table('teams')->where('id', '>', '1')->delete();
-        Artisan::call('db:seed');
+        $seeder = new refreshDBSeeder();
+        $seeder->run();
         return redirect('admin');
     }
 
@@ -72,12 +66,19 @@ class AdminController extends Controller
     function addGM(Request $request){
         $this->authorize('isAdmin', Team::class);
 
-        DB::table('teams')->insert([
-            'name' => $request->input('name'),
-            'password' => bcrypt($request->input('password')),
-            'grade' => 1,
-        ]);
-
+        $alreadyInDbGM = Team::where('grade','=',1)
+            ->where('name','=',$request->input('name'))->get()->first();
+        if(is_null($alreadyInDbGM)){
+            DB::table('teams')->insert([
+                'id' => DB::table('teams')->where('id','<',101)->max('id')+1,
+                'name' => $request->input('name'),
+                'password' => bcrypt($request->input('password')),
+                'grade' => 1,
+            ]);
+        }else{
+            $alreadyInDbGM->password = bcrypt($request->input('password'));
+            $alreadyInDbGM->saveOrFail();
+        }
         return redirect('admin');
     }
 

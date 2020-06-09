@@ -6,13 +6,12 @@ use Illuminate\Database\Seeder;
 class MessagesSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
      *
      * @return void
      */
     public function run()
     {
-        $faker = Faker::create();
         DB::table('messages')->truncate();
 
         DB::table('messages')->insert([
@@ -73,13 +72,6 @@ class MessagesSeeder extends Seeder
 
         DB::table('messages')->insert([
             'id' => 9,
-            'content' => 'Ceci est une alerte test qui doit se déclencher au bout d\'une minute.',
-            'author' => 'Kernel',
-            'time' => 1
-        ]);
-
-        DB::table('messages')->insert([
-            'id' => 10,
             'content' => 'Vous pouvez désormais commencer votre première énigme.',
             'author' => 'GameMaster',
             'time' => 0

@@ -1,4 +1,16 @@
 const {Timer} = require('easytimer.js');
+var moment = require('moment');
+
+function dateNow(){
+    let date;
+    $.ajax('whatistimenow/', {
+        method: 'GET',
+        async : false,
+        dataType: 'json',
+        success: function(data) {date=data.now.date;}
+    });
+    return moment(date,"YYYY-MM-DD hh:mm:ss");
+}
 
 /* retire de la page tout les éléments d'une classe
 Attention: si les éléments en question sont liés à des classe,
@@ -76,11 +88,11 @@ class PlayerRiddle {
                 cancel: true
             });
             this.showURL(true);
-            this.showTimer();
             this.setTimer(0);
-            this.startTimerFromDate(Date.now());
+            this.startTimerFromDate(dateNow());
             $.ajax('riddle/' + this.id + '/start'); //TODO Error handling
             playerRiddleGrid.start();
+            playerRiddleGrid.update();
         });
 
         $('#validation-modal').on('show.bs.modal', function (e) {
@@ -152,6 +164,7 @@ class PlayerRiddle {
             this.timer.stop();
             this.showTimer(false);
             $.ajax('riddle/' + this.id + '/cancel'); //TODO Error handling
+            playerRiddleGrid.update();
         })
     }
 
@@ -239,9 +252,9 @@ class PlayerRiddle {
     }
 
     startTimerFromDate(date) {
-        if (!(date instanceof Date))
-            date = new Date(date);
-        const ms = Date.now() - date.getTime();
+        if (!(moment.isMoment(date)))
+            date = moment(date,"YYYY-MM-DD hh:mm:ss");
+        const ms = dateNow().diff(date);
         const sec = Math.floor(ms / 1000);
         this.timer.start({
             startValues: {
@@ -263,8 +276,6 @@ class PlayerRiddle {
 function countdownResult() {
     const modal = $('#tooLate');
         $('#tooLate').modal('show');
-
-
 
 }
 
@@ -349,19 +360,23 @@ class PlayerRiddleGrid {
 			});
 			if (riddle.start_date) {
 				if (riddle.end_date) {
-					const start = new Date(riddle.start_date.date);
-					const end = new Date(riddle.end_date.date);
+					const start = moment(riddle.start_date.date,"YYYY-MM-DD hh:mm:ss");
+					const end = moment(riddle.end_date.date,"YYYY-MM-DD hh:mm:ss");
 
 					playerRiddle.showButtons({
 						start: false
 					});
-					playerRiddle.setTimer(end - start);
+					playerRiddle.setTimer(end.diff(start));
 				} else {
 					playerRiddle.startTimerFromDate(riddle.start_date.date);
 					playerRiddle.showButtons({start: false, validate: true, cancel: true});
 					playerRiddle.showURL();
 				}
-			}
+			}else{
+			    if(!riddle.can_start){
+                    playerRiddle.showButtons({start: false, validate: false, cancel: false});
+                }
+            }
 		});
         let progressBarVal= riddleJSON.progression*100;
         let html="<div class='progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow= '"+Math.abs(progressBarVal)+" ' aria-valuemin = '0' aria-valuemax='100' style='width:"+Math.abs(progressBarVal)+"%; background-color: #fdcc47 !important;'></div>";
@@ -372,9 +387,9 @@ class PlayerRiddleGrid {
     updateTimer(time) {
         if (time.start_date && time.start_date.date && time.end_date && time.end_date.date) {
             this.started = true;
-            console.log(new Date(time.end_date.date) - new Date(time.start_date.date));
-            console.log(7200 - (new Date(time.end_date.date) - new Date(time.start_date.date)));
-            $('#global-timer .time').text(formatMS( (7200000 - (new Date(time.end_date.date) - new Date(time.start_date.date)))));
+            console.log(moment(time.end_date.date,"YYYY-MM-DD hh:mm:ss").diff(moment((time.start_date.date,"YYYY-MM-DD hh:mm:ss"))));
+            console.log(7200000 - (moment(time.end_date.date,"YYYY-MM-DD hh:mm:ss").diff(moment(time.start_date.date,"YYYY-MM-DD hh:mm:ss"))));
+            $('#global-timer .time').text(formatMS(7200000 - (moment(time.end_date.date,"YYYY-MM-DD hh:mm:ss").diff(moment(time.start_date.date,"YYYY-MM-DD hh:mm:ss")))));
 
             if (this.globalTimer.isRunning()) {
                 this.globalTimer.stop();
@@ -382,7 +397,7 @@ class PlayerRiddleGrid {
         } else if (time.start_date && time.start_date.date) {
             this.started = true;
             if (!this.globalTimer.isRunning()) {
-                const ms = Date.now() - new Date(time.start_date.date);
+                const ms = dateNow().diff(moment(time.start_date.date,"YYYY-MM-DD hh:mm:ss"));
                 const sec = Math.floor(ms / 1000);
                 if(7200 - sec >0) {
                     this.globalTimer.start({
@@ -416,7 +431,7 @@ class PlayerRiddleGrid {
             this.started = true;
             this.updateTimer({
             	start_date: {
-            		date: Date.now()
+            		date: dateNow()
             	}
             });
         }

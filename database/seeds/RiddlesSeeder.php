@@ -6,17 +6,15 @@ use Illuminate\Database\Seeder;
 class RiddlesSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     *  !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
      *
      * @return void
      */
     public function run()
     {
         DB::table('riddles')->truncate();
-        $faker = Faker::create();
 
-        
-        
+
         // mootse : ligne seule
         DB::table('riddles')->insert([
             'id' => 1,
@@ -36,7 +34,7 @@ class RiddlesSeeder extends Seeder
             'url' => null,
             'code' => 0,
             'line' => 2
-        ]);        
+        ]);
 
         DB::table('riddles')->insert([
             'id' => 3,
@@ -45,8 +43,8 @@ class RiddlesSeeder extends Seeder
             'url' => null,
             'code' => 0,
             'line' => 2
-        ]);        
-        
+        ]);
+
         DB::table('riddles')->insert([
             'id' => 4,
             'name' => 'TD synthèse d\'image en A119 (Bâtiment A)',
@@ -55,18 +53,18 @@ class RiddlesSeeder extends Seeder
             'code' => 0,
             'line' => 2
         ]);
-        
+
         DB::table('riddles')->insert([
             'id' => 5,
             'name' => 'Rendez-vous à l\'administration',
             'description' => 'Trouvez les lettres cachées',
             'post_resolution_message' => 'Vous avez reçu un Snap de Théo ! <a href="https://youtu.be/8xkPcRLftHY" target="_new">Cliquez ici</a>',
-            'url' => null,            
+            'url' => null,
             'code' => 0,
             'line' => 2
         ]);
 
-        /* Enigme supprimée         
+        /* Enigme supprimée
         DB::table('riddles')->insert([
             'id' => 6,
             'name' => 'Révisions à la bibliothèque',
@@ -105,7 +103,7 @@ class RiddlesSeeder extends Seeder
             'code' => 0,
             'line' => 4
         ]);
-        
+
         DB::table('riddles')->insert([
             'id' => 88, // pour les verts
             'name' => 'La Tour', // + arcade (détecteur de distance)
@@ -123,8 +121,8 @@ class RiddlesSeeder extends Seeder
             'code' => 0,
             'line' => 4
         ]);
-        
-        
+
+
         DB::table('riddles')->insert([
             'id' => 10, // pour les jaunes
             'name' => 'La Fabrique de l\'Innovation', // code source
@@ -142,7 +140,7 @@ class RiddlesSeeder extends Seeder
             'code' => 0,
             'line' => 4
         ]);
-        
+
         DB::table('riddles')->insert([
             'id' => 100, // pour les rouges
             'name' => 'La Fabrique de l\'Innovation', // code source
@@ -155,7 +153,7 @@ class RiddlesSeeder extends Seeder
         DB::table('riddles')->insert([
             'id' => 8888, // pour les rouges
             'name' => 'La Tour', // + arcade (détecteur de distance)
-            'description' => 'Trouvez une partie du numéro de Théo',            
+            'description' => 'Trouvez une partie du numéro de Théo',
             'url' => null,
             'code' => 0,
             'line' => 4

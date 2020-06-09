@@ -1,3 +1,4 @@
+var moment = require('moment');
 class MessageTemplate {
     constructor(param) {
         if (param instanceof MessageTemplate)
@@ -22,7 +23,7 @@ class MessageTemplate {
         }, time);
     }
     createMessage(message) {
-        const date = new Date(message.date.date);
+        const date = moment(message.date.date,"YYYY-MM-DD hh:mm:ss");
         const element = document.importNode(this.template.content, true);
         const modal = $('#myModalDialog');
 
@@ -53,7 +54,7 @@ class MessageTemplate {
     }
 
     static renderTime(date) {
-        let min = date.getHours() * 60 + date.getMinutes();
+        let min = date.hours() * 60 + date.minutes();
         const hour = Math.floor(min / 60);
         min %= 60;
         return this.renderWithZero(hour) + ':' + this.renderWithZero(min);

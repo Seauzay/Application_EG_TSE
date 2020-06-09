@@ -5,13 +5,12 @@ use Illuminate\Database\Seeder;
 class MessagingSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     *  !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
      *
      * @return void
      */
     public function run()
     {
-        $faker = Faker::create();
         DB::table('messaging')->truncate();
     }
 }

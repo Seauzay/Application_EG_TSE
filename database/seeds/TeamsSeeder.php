@@ -6,14 +6,14 @@ use Illuminate\Database\Seeder;
 class TeamsSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     *  !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
      *
      * @return void
      */
     public function run()
     {
-        $faker = Faker::create();
         DB::table('teams')->truncate();
+
         DB::table('teams')->insert([
             'id' => 1,
             'name' => 'admin',
@@ -30,7 +30,7 @@ class TeamsSeeder extends Seeder
             'remember_token' => "",
 
         ]);
-        
+
         $colors = [
             (object)array("name" => "Rouge", "base" => 100),
             (object)array("name" => "Jaune", "base" => 200),
@@ -38,13 +38,13 @@ class TeamsSeeder extends Seeder
             (object)array("name" => "Vert", "base" => 400),
             (object)array("name" => "Violet", "base" => 500),
         ];
-        
+
         $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        
+
         foreach ($colors as $color) {
-            
+
             foreach($numbers as $number) {
-                
+
                 DB::table('teams')->insert([
                     'id' => $color->base + $number,
                     'name' => $color->name.' '.$number,
