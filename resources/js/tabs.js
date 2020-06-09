@@ -112,7 +112,8 @@ class TabList {
             title: tab_lang.default_title,
             closeable: false,
             active: false,
-            position: 'end'
+            position: 'end',
+            icon : ''
         }, options);
 
         if (settings.position === 'end')
@@ -135,7 +136,7 @@ class TabList {
                 .attr('role', 'tab')
                 .attr('data-toggle', 'tab')
                 .attr('aria-controls', settings.id.match('(nav-.*)-tab')[1])
-                .text(settings.title);
+                .html(settings.icon+'&nbsp;'+settings.title);
 
             if (settings.closeable) {
                 let cross = $('<span>', {class: 'ui-icon ui-icon-closethick ml-2'});

@@ -281,13 +281,24 @@ class PlayerRiddleGrid {
 
         this.playerRiddles = [];
         this.rowNumber = 0;
-
+        this.before = 1;
         this.globalTimer = new Timer();
+        this.NegativTimer = new Timer();
         this.globalTimer.addEventListener('secondsUpdated', () => {
-            this.displayGlobalTimerTime();
+            this.displayGlobalTimerTime(this.before);
         });
-        this.globalTimer.addEventListener('targetAchieved', function (e) {
-        countdownResult();
+        this.globalTimer.addEventListener('targetAchieved', () => {
+            countdownResult();
+            this.before = 0;
+            this.globalTimer.start({
+                countdown: false,
+                startValues: {
+                    seconds: 0
+                }
+            });
+            countdownResult();
+            this.displayGlobalTimerTime(this.before);
+
         });
         this.started = false;
     }
@@ -373,23 +384,31 @@ class PlayerRiddleGrid {
             if (!this.globalTimer.isRunning()) {
                 const ms = Date.now() - new Date(time.start_date.date);
                 const sec = Math.floor(ms / 1000);
-                if(7200 - sec > 0) {
+                if(7200 - sec >0) {
                     this.globalTimer.start({
                         countdown: true,
                         startValues: {
                             seconds: 7200 - sec
                         }
                     });
-                    this.displayGlobalTimerTime();
+                    this.displayGlobalTimerTime(this.before);
+                } else {
+                        this.before = 0;
+                        this.globalTimer.start({
+                            countdown: false,
+                            startValues: {
+                                seconds: sec
+                            }
+                        });
+                        countdownResult();
+                        this.displayGlobalTimerTime(this.before);
+
+
                 }
-                else
-                {
-                    countdownResult();
-                    $('#global-timer .time').text('00:00');
                 }
 
             }
-        }
+
     }
 
     start() {
@@ -402,13 +421,23 @@ class PlayerRiddleGrid {
             });
         }
     }
-
-    displayGlobalTimerTime() {
+displayNegative(timerN){
+    const val = timerN.getTimeValues();
+    const fields = val.hours > 0 ? ['hours'] : [];
+    fields.push('minutes');
+    fields.push('seconds');
+    $('#global-timer .time').text('-'+val.toString(fields));
+}
+    displayGlobalTimerTime(before) {
         const val = this.globalTimer.getTimeValues();
         const fields = val.hours > 0 ? ['hours'] : [];
         fields.push('minutes');
         fields.push('seconds');
+        if(before === 1)
         $('#global-timer .time').text(val.toString(fields));
+        if(before === 0)
+            $('#global-timer .time').text('- '+val.toString(fields));
+
     }
 
     update() {

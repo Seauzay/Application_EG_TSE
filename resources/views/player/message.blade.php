@@ -8,6 +8,7 @@
         <div id="typewriter" class="container text-center" data-toggle="buttons">
 
         <script>
+
             var str = "<p class ='consigne'>Bienvenue sur l’application de l’Escape Game TSE ! </br>Elle vous permettra de résoudre certaines énigmes, de progresser dans le jeu… et d’obtenir des indices !</p>" +
                 "<p class ='consigne'>Vous allez être amené à découvrir plusieurs lieux, dans l’Ecole et son quartier. Pour chaque lieu, il vous faudra :</p>" +
                 "<p class ='consigne' style='left:3.5em'> cliquer sur “commencer l’énigme”</p>" +
@@ -23,6 +24,18 @@
                 text = str.slice(0, ++i);
                 if (text === str)
                 {
+                    $(document.body).append(
+                        '<footer id="sticky-footer" class="bg-light">' +
+                        '<div class="media">' +
+                        '  <div class="media-left media-middle">' +
+                        '      <img class="media-object" src="/images/dev.png" alt="Dev" height= "64px" width= "64px">' +
+                        '    </a>' +
+                            '</div>'+
+                    ' <div class="media-body">' +
+                        '  <strong class="media-heading" style="color:#e3342f"> Cette application a été imaginée, prototypée et produite par des étudiants du M1 Design de Communication, des élèves de la DTA et des étudiants de FISE 2. Merci à eux !</strong>' +
+                        '  </div>'+
+                        '  </div>'+
+                       ' </footer>');
                     setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
                     return;
 
