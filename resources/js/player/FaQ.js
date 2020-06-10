@@ -45,7 +45,7 @@ class QRGrid {
 			"    <div class='card-header' id='headingOne' style='background-color: #e3e9ec !important'>" +
 			"      <h5 class='mb-0'>" +
 			"        <button class='btn btn-link' data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne' style='color: #4c5356'>" +
-			"          I - Que Signifie le décompte à gauche de l'écran ?" +
+			"          I - Que signifie le décompte à gauche de l'écran ?" +
 			"        </button>" +
 			"      </h5>" +
 			"    </div>" +

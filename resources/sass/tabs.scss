@@ -9,9 +9,9 @@
 }
 
 .tabs {
-  background-color: $lightGray !important;
+  //background-color: $lightGray ;
   .nav a {
-    background: $lightGray !important;
+    background: $lightGray ;
     color: $darkGray ;
     border:solid 2px $darkGray !important;
 
@@ -19,12 +19,12 @@
 
   .jumbotron
   {
-    background-color: $lightGray !important;
+    background-color: $lightGray ;
   }
 
   .nav {
     margin-bottom: 0rem;
-    background: $lightGray !important;
+    background: $lightGray ;
 
 
   }

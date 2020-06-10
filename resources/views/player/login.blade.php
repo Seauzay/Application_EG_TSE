@@ -26,11 +26,11 @@
                         <label for="inputColor">Sélectionnez votre couleur d'équipe:</label>
                         <select id="color" name="color" class="custom-select mr-sm-2">
                             <option  disabled selected hidden>Couleurs</option>
-                            <option  name="color" value="1">Rouge</option>
-                            <option  name="color" value="2">Vert</option>
-                            <option  name="color" value="3">Bleu</option>
-                            <option  name="color" value="4">Jaune</option>
-                            <option  name="color" value="5">Violet</option>
+                            <option style="background-color: #e43a37;color: white" name="color" value="1">Rouge</option>
+                            <option style="background-color: #4bd73f;color: white" name="color" value="2">Vert</option>
+                            <option style="background-color: #50a3d6;color: white" name="color" value="3">Bleu</option>
+                            <option style="background-color: #f5d312;color: white" name="color" value="4">Jaune</option>
+                            <option style="background-color: #d36dc7;color: white" name="color" value="5">Violet</option>
                         </select>
                         <label for="inputNum">Sélectionnez votre numéro d'équipe:</label>
                         <select id="num" name="num" class="custom-select mr-sm-2">
@@ -47,20 +47,23 @@
                             <option  name="num" value="10">10</option>
 
                         </select>
+
+                    </div>
+
                     </div>
                 </div>
-            </div>
+
 
             <div class="form-group col-md-4" data-toggle="buttons">
             </div>
-            <div class="container text-center">
-            <p class="firstMessage">
-                1 téléphone par équipe connecté à l'appli :)
-            </p>
+            <div class="container text-center mx-auto ">
+                <p class="firstMessage">
+                    1 téléphone par équipe connecté à l'appli :)
+                </p>
             </div>
             {{ csrf_field() }}
             <div class="container text-center">
-                <button type="submit" class="btn btn-danger" id="goButton">Go! :)</button>
+                <button type="submit" class="btn btn-danger" id="goButton">Go&nbsp;! :)</button>
             </div>
         </form>
 @endsection
