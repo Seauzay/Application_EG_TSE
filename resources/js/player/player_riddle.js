@@ -294,12 +294,10 @@ class PlayerRiddleGrid {
         this.rowNumber = 0;
         this.before = 1;
         this.globalTimer = new Timer();
-        this.NegativTimer = new Timer();
         this.globalTimer.addEventListener('secondsUpdated', () => {
             this.displayGlobalTimerTime(this.before);
         });
         this.globalTimer.addEventListener('targetAchieved', () => {
-            countdownResult();
             this.before = 0;
             this.globalTimer.start({
                 countdown: false,
@@ -309,7 +307,6 @@ class PlayerRiddleGrid {
             });
             countdownResult();
             this.displayGlobalTimerTime(this.before);
-
         });
         this.started = false;
     }
@@ -387,9 +384,11 @@ class PlayerRiddleGrid {
     updateTimer(time) {
         if (time.start_date && time.start_date.date && time.end_date && time.end_date.date) {
             this.started = true;
-            console.log(moment(time.end_date.date,"YYYY-MM-DD hh:mm:ss").diff(moment((time.start_date.date,"YYYY-MM-DD hh:mm:ss"))));
-            console.log(7200000 - (moment(time.end_date.date,"YYYY-MM-DD hh:mm:ss").diff(moment(time.start_date.date,"YYYY-MM-DD hh:mm:ss"))));
-            $('#global-timer .time').text(formatMS(7200000 - (moment(time.end_date.date,"YYYY-MM-DD hh:mm:ss").diff(moment(time.start_date.date,"YYYY-MM-DD hh:mm:ss")))));
+            let timebetween = 7200000 - (moment(time.end_date.date,"YYYY-MM-DD hh:mm:ss").diff(moment(time.start_date.date,"YYYY-MM-DD hh:mm:ss")));
+            if (timebetween >= 0)
+                $('#global-timer .time').text(formatMS(timebetween));
+            else
+                $('#global-timer .time').text('- '+formatMS(-timebetween));
 
             if (this.globalTimer.isRunning()) {
                 this.globalTimer.stop();
@@ -399,7 +398,7 @@ class PlayerRiddleGrid {
             if (!this.globalTimer.isRunning()) {
                 const ms = dateNow().diff(moment(time.start_date.date,"YYYY-MM-DD hh:mm:ss"));
                 const sec = Math.floor(ms / 1000);
-                if(7200 - sec >0) {
+                if(7200 - sec > 0) {
                     this.globalTimer.start({
                         countdown: true,
                         startValues: {
@@ -408,21 +407,19 @@ class PlayerRiddleGrid {
                     });
                     this.displayGlobalTimerTime(this.before);
                 } else {
-                        this.before = 0;
-                        this.globalTimer.start({
-                            countdown: false,
-                            startValues: {
-                                seconds: sec
-                            }
-                        });
-                        countdownResult();
-                        this.displayGlobalTimerTime(this.before);
-
-
+                    this.before = 0;
+                    this.globalTimer.start({
+                        countdown: false,
+                        startValues: {
+                            seconds: sec - 7200
+                        }
+                    });
+                    countdownResult();
+                    this.displayGlobalTimerTime(this.before);
                 }
-                }
-
             }
+
+        }
 
     }
 
@@ -436,23 +433,16 @@ class PlayerRiddleGrid {
             });
         }
     }
-displayNegative(timerN){
-    const val = timerN.getTimeValues();
-    const fields = val.hours > 0 ? ['hours'] : [];
-    fields.push('minutes');
-    fields.push('seconds');
-    $('#global-timer .time').text('-'+val.toString(fields));
-}
+
     displayGlobalTimerTime(before) {
         const val = this.globalTimer.getTimeValues();
         const fields = val.hours > 0 ? ['hours'] : [];
         fields.push('minutes');
         fields.push('seconds');
         if(before === 1)
-        $('#global-timer .time').text(val.toString(fields));
+            $('#global-timer .time').text(val.toString(fields));
         if(before === 0)
             $('#global-timer .time').text('- '+val.toString(fields));
-
     }
 
     update() {
