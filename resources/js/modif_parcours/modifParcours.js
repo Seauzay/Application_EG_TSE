@@ -93,19 +93,28 @@ class ModParcourAPI {
 
     modParcours(){
         if(this.parcours != [] && this.parcours.riddles_id != [] && this.parcours.length > 0){
+            //save parcours
             var newParcours = [];
             for(var parc of this.parcours){
                 newParcours.push({team_color : parc.team_color, riddles_id : parc.riddles_id});
             }
 
+            //save riddles lines :
+            var idLine = [];
+            for(var riddle of this.AllRiddles){
+                idLine.push({id : riddle.id, line : riddle.line});
+            }
+
             $.ajax('riddleteam/modParcours', {
-                data : {parcours : newParcours},
+                data : {parcours : newParcours,
+                    riddleLine : idLine},
                 dataType: 'json'
                 , success: (response) => {
                     alert(response.status.message);
                     this.resetParcours();
                 }
             });
+
         }
 
     }
@@ -163,47 +172,90 @@ class ModParcourAPI {
         this.update();
     }
 
+
+    createLineDisplay(level,id){
+        //creation de la ligne
+        var riddle_line = document.createElement('li');
+        riddle_line.className="mod-line-li";
+        riddle_line.id=id;
+
+        //création du header
+        var lvlNbr = document.createElement('div');
+        lvlNbr.className="lvl-nbr-header";
+        lvlNbr.textContent=level;
+
+        //création du content-div (qui va avoir les riddles)
+        var riddle_content = document.createElement('div');
+        riddle_content.className = "mod-line-content";
+        //création du bouton de création de riddle :
+        var addRiddle = document.createElement('div');
+        addRiddle.className = "btn-add-riddle";
+        var titleH2 = document.createElement('h2');
+        titleH2.textContent="+";
+        addRiddle.appendChild(titleH2);
+        riddle_content.appendChild(addRiddle);
+        riddle_line.appendChild(lvlNbr);
+        riddle_line.appendChild(riddle_content);
+        return riddle_line;
+    }
+
+    createLinesAndCards(array_content_id,maxLvl){
+        if(array_content_id == "possible-riddle" || array_content_id == "mod-parcours"){
+            var contentList = document.querySelector("#"+array_content_id);
+            var oldList = contentList.querySelectorAll(".mod-line-li");
+
+            //remove all old elements
+            for (let d of oldList)
+                contentList.removeChild(d);
+
+            var arrayToUpdateId = [];
+            var line_id_prefix = "";
+
+            if(array_content_id == "mod-parcours"){
+                arrayToUpdateId = this.parcours[this.selectedIndex].riddles_id;
+                line_id_prefix = "mod-parcours-line-";
+            }else if(array_content_id == "possible-riddle"){
+                arrayToUpdateId =  this.displayRiddles[this.selectedIndex];
+                line_id_prefix = "mod-riddles-line-";
+            }
+
+            //on ajoute une ligne de plus !
+            for(let i = 1; i <= maxLvl+1;i++){
+                var riddle_line = this.createLineDisplay(i,line_id_prefix+i);
+                contentList.appendChild(riddle_line);
+            }
+
+            //Update de la liste
+            for (var rid_id of arrayToUpdateId) {
+                //on récupère les informations de la riddle
+                var riddle = this.AllRiddles.filter(v => v.id == rid_id)[0];
+                // Création de la riddle :
+                var riddleCard = this.template.createCard(riddle);
+                this.template.collapseContent(riddleCard);
+                //on l'ajoute au niveau voulue :
+                var riddle_line = contentList.querySelector("#"+line_id_prefix+riddle.line).querySelector(".mod-line-content");
+                riddle_line.prepend(riddleCard);
+            }
+        }
+    }
+
+
     update() {
         if (this.selectedIndex >= 0) {
-            var dataParc = this.parcours[this.selectedIndex];
-            var content_riddles = document.querySelector("#possible-riddle");
-            var content_parcours = document.querySelector("#mod-parcours");
-            var oldParcourContent = document.querySelectorAll(".mod-parcours-content");
-            for (let d of oldParcourContent)
-                content_parcours.removeChild(d);
-            var oldRiddleContent = document.querySelectorAll(".mod-riddles-content");
-            for (let d of oldRiddleContent)
-                content_riddles.removeChild(d);
-            var found = false;
-
-            for (var rid_id of dataParc.riddles_id) {
-                var riddle_content = document.createElement('li');
-                var riddle = this.AllRiddles.filter(v => v.id == rid_id)[0];
-                riddle_content.appendChild(this.template.createCard(riddle));
-                riddle_content.className = 'mod-parcours-content';
-                riddle_content.id='riddle-'+riddle.id;
-                content_parcours.appendChild(riddle_content);
-            }
-
-            for(var rid_id of this.displayRiddles[this.selectedIndex]){
-                var riddle_content = document.createElement('li');
-                var riddle = this.AllRiddles.filter(v => v.id == rid_id)[0];
-                riddle_content.appendChild(this.template.createCard(riddle));
-                riddle_content.className = 'mod-riddles-content';
-                riddle_content.id='riddle-'+riddle.id;
-                content_riddles.appendChild(riddle_content);
-            }
-
             for(var rid of this.AllRiddles){
+                var dataParc = this.parcours[this.selectedIndex];
                 if(!(dataParc.riddles_id.some(r_id => r_id === rid.id)) && !(this.displayRiddles[this.selectedIndex].some(r_id => r_id === rid.id))){
                     this.displayRiddles[this.selectedIndex].push(rid.id);
-                    var riddle_content = document.createElement('li');
-                    riddle_content.appendChild(this.template.createCard(rid));
-                    riddle_content.className = 'mod-riddles-content';
-                    riddle_content.id='riddle-'+rid.id;
-                    content_riddles.appendChild(riddle_content);
                 }
             }
+
+            //création des lines :
+            //nombre de lines à créer :
+            const arrayLines = this.AllRiddles.map(el => el.line);
+            var maxLvl = Math.max(...arrayLines);
+
+            this.createLinesAndCards("mod-parcours",maxLvl);
+            this.createLinesAndCards("possible-riddle",maxLvl);
         }
 
     }
@@ -230,7 +282,7 @@ class ModParcourAPI {
     }
 
     switchArray(elementId, destId, destClass) {
-        if (destClass === 'riddle-list' ||destClass === 'mod-riddles-content' || destClass === 'mod-parcours-content') {
+        if (destClass === 'mod-line-li') {
             //check if element to delete not the same as the one to move :
             var destIdel = destId.replace("riddle-", "");
             if(elementId != destIdel) {
@@ -246,27 +298,21 @@ class ModParcourAPI {
                 }
 
                 //put the element to the new array
-                if (destId === 'mod-parcours') {
+                if(destId.indexOf('mod-parcours-line-') != -1){
+                    //la liste de destination est la liste correspondant aux parcours
                     this.parcours[this.selectedIndex].riddles_id.push(removeElement.id);
-                    var idx = this.displayRiddles[this.selectedIndex].indexOf(removeElement.id);
-                } else if (destId === '_possible-riddle') {
+
+                    //on modifie le niveau de l'énigme (sera répercuté sur tout les parcours)
+                    var newElement = removeElement;
+
+                    var parsedInt = parseInt(destId.replace('mod-parcours-line-',''), 10);
+                    if (isNaN(parsedInt))
+                        parsedInt = 0;
+                    newElement.line = parsedInt;
+                    this.AllRiddles[this.AllRiddles.indexOf(removeElement)] = newElement;
+                }else{
+                    //liste correspond à la liste contenant les enigmes libres ou non trouvé
                     this.displayRiddles[this.selectedIndex].push(removeElement.id);
-                } else {
-                    if (destClass === 'mod-riddles-content') {
-                        var riddleId = destId.replace("riddle-", "");
-                        var elementToPush = this.displayRiddles[this.selectedIndex].filter(v => v == riddleId)[0];
-                        var idxToPush = this.displayRiddles[this.selectedIndex].indexOf(elementToPush);
-                        if (idxToPush != -1) {
-                            this.displayRiddles[this.selectedIndex].splice(idxToPush, 0, removeElement.id);
-                        }
-                    } else if (destClass === 'mod-parcours-content') {
-                        var riddleId = destId.replace("riddle-", "");
-                        var elementToPush = this.parcours[this.selectedIndex].riddles_id.filter(v => v == riddleId)[0];
-                        var idxToPush = this.parcours[this.selectedIndex].riddles_id.indexOf(elementToPush);
-                        if (idxToPush != -1) {
-                            this.parcours[this.selectedIndex].riddles_id.splice(idxToPush, 0, removeElement.id);
-                        }
-                    }
                 }
             }
         }
@@ -276,7 +322,7 @@ class ModParcourAPI {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         var target = ev.target;
-        while (target.className.indexOf('mod-riddles-content') == -1 && target.className.indexOf('mod-parcours-content') == -1 && target.className.indexOf('riddle-list') == -1) {
+        while (target.className.indexOf('mod-line-li') == -1) {
             target = target.parentNode;
         }
         this.switchArray(this.draggedElementId, target.id, target.className);
@@ -286,11 +332,15 @@ class ModParcourAPI {
     }
 
     dragOver(ev){
+        ev.preventDefault();
         var target = ev.target;
-        while (target.className.indexOf('mod-riddles-content') == -1 && target.className.indexOf('mod-parcours-content') == -1 ){
+        while (target.className.indexOf('mod-line-li') == -1){
             target = target.parentNode;
         }
-        var containerSha = document.getElementById(target.id);
+        if(target.id.indexOf('mod-riddles-line-')!=-1){
+            target.id = 'mod-riddles-line-'+this.AllRiddles.filter(v => v.id == this.draggedElementId)[0].line;
+        }
+        var containerSha = document.getElementById(target.id).getElementsByClassName('mod-line-content')[0];
         if(this.dragOverShadow == null){
             this.dragOverShadow = document.createElement('div');
             this.dragOverShadow.id = 'drag-over-shadow';
@@ -329,6 +379,7 @@ class ModParcourTemplate{
             var post_msg = clone.querySelector('.current-riddle-post-msg');
             var cb_activated = clone.querySelector('.current-riddle-activated');
             var id_card = clone.querySelector('.id-card');
+            var collapse_div = clone.querySelector('.collapse-content');
             title.textContent=riddleJSON.name;
             descr.textContent=riddleJSON.description;
             code.textContent=riddleJSON.code;
@@ -338,11 +389,29 @@ class ModParcourTemplate{
                 post_msg.remove();
             url.href=riddleJSON.url;
             id_card.textContent=riddleJSON.id;
+            let card = clone.querySelector('.card-admin');
+            collapse_div.addEventListener("click",ev => {
+                this.collapseContent(card);
+            });
             return clone;
         } else {
             // Une autre méthode pour ajouter les lignes
             // car l'élément HTML n'est pas pris en charge.
         }
+    }
+
+    collapseContent(riddle){
+        if(riddle != null){
+            var cardContent = riddle.querySelector('.current-riddle-info');
+            if(cardContent != null){
+                if(cardContent.style.display == "none"){
+                    cardContent.style.display = "";
+                }else{
+                    cardContent.style.display = "none";
+                }
+            }
+        }
+
     }
 }
 
