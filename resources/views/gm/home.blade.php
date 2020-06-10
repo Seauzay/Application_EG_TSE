@@ -96,6 +96,7 @@
             <template id="mod-parcour-template">
                 <div class="card-admin" draggable="true" ondragstart="drag(event)" ondragover="dragOver(event)" ondragend="dragEnd(event)">
                     <h2 class="current-riddle-name">title</h2>
+                    <div class="collapse-content">Détails</div>
                     <span class="id-card" hidden></span>
                     <div class="current-riddle-info">
                         <div class="current-riddle-descr">descr</div>

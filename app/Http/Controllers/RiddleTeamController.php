@@ -93,6 +93,27 @@ class RiddleTeamController extends Controller
             ]);
         }
 
+        $riddleLineToModify = $request->riddleLine;
+        try {
+            foreach (Riddle::all() as &$riddle){
+                foreach ($riddleLineToModify as $riddleIdLine){
+                    if($riddleIdLine['id'] == $riddle->id){
+                        $riddle->line = $riddleIdLine['line'];
+                        $riddle->saveOrFail();
+                    }
+                }
+            }
+        }catch (Exception $e){
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'error',
+                    'message' => $e->getMessage(),
+                    'display' => false
+                ]
+            ]);
+        }
+
+
         return JsonResponse::create([
             'status' => [
                 'type' => 'success',
