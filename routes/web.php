@@ -69,3 +69,4 @@ Route::post('admin/refreshDB', 'AdminController@refreshDB');
 Route::post('admin/addGM', 'AdminController@addGM');
 Route::get('admin/logout', 'AdminController@logout');
 Route::get('admin/login', 'GameMasterController@login');
+Route::get('admin/CSV', 'GameMasterController@exportResult');

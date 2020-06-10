@@ -8,6 +8,8 @@
 @endsection
 
 @section('content')
+
+
     {{--template pour une énigme gm--}}
     <template id="gm-team-template">
         <div class="container jumbotron gm-team" id="gm-team-jumbo">
@@ -96,6 +98,7 @@
 
     {{--Création des onglets--}}
     <script>
+
         tablist.addTab({title: 'Suivi des équipes', active: true});
         tablist.addTab({title: 'Chronométrage', active: false});
         //roomlist.update();
@@ -107,10 +110,36 @@
         const gmTeamList = new GMTeamList(divSuivi);
         gmTeamList.update();
 
+        //Partie bouton pour la récuperation des données des équipes dans un fichier csv
+		let cont_but = document.createElement('div');
+		cont_but.id = "cont_but";
+		let but = document.createElement('button');
+		but.innerHTML  = 'écriture sur fichier CSV';
+		but.class = "btn btn-secondary pull-right";
+		but.addEventListener("click",function(){
+			//console.log('click');
+			$.ajax('admin/CSV', {method: 'GET', success :  startDownload()});
+		} );
+		function startDownload(){
+			let frame = document.createElement('iframe');
+			frame.style.display = "none";
+			frame.src = "{{url('/report.csv')}}";
+			frame.id = 'frame'
+            divSuivi[0].appendChild(frame);
+
+			$("#frame").click()
+
+		};
+
+		cont_but.appendChild(but);
+		tablist.contentOfTab(1).append(cont_but);
+
+
         const divChrono = $('<div>',{id:'chronometrageTabContent'});
         divChrono.appendTo(tablist.contentOfTab(2));
         const chronometrage = new ChronometrageForm(divChrono);
         chronometrage.fillHTML();
+
 
         Echo.channel('application_tracking_escape_game_tse_database_gm-change').listen('.change', function(e) {
             gmTeamList.update();
@@ -146,8 +175,14 @@
         function modParcours(){
             createParcours.modParcours();
         }
+
+        function resetBDD(){
+            createParcours.resetBDD();
+
+		}
         function resetParcours(){
             createParcours.resetParcours();
         }
+
     </script>
 @endsection

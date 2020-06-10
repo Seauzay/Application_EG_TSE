@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Events\ResetChrono;
 use App\Events\StartChrono;
 use App\Repositories\MessageRepository;
@@ -55,6 +55,43 @@ class GameMasterController extends Controller
         Auth::logout();
         return redirect('gm/login');
     }
+
+	function exportResult()
+	{
+		//$this->authorize('isGMorAdmin', Team::class);
+        $output = [];
+	
+		foreach (Team::all() as $team) {
+            if ($team->grade > 1) continue;
+            $riddles = [];
+            
+			foreach ($team->riddles->all() as $riddle) {
+                array_push($riddles, riddle_info_for_gm($riddle, $team));
+            }
+            if (!empty($riddles)) {
+                array_push($output, 
+                     [
+                        'name' => $team->getAttribute('name'),
+                        'start_date' => $team->getAttribute('start_date'),
+                        'end_date' => $team->getAttribute('end_date'),
+						'score' => $team->getAttribute('score')
+                   ]);
+            }
+
+        }
+		
+ 
+		// create a file pointer connected to the output stream
+		$file = fopen('report.csv', 'w');
+		fputcsv($file,['name','start_date','end_date','score']);
+        foreach ($output as $row) {
+            fputcsv($file, $row);
+        }
+		
+        fclose($file);
+		
+		
+	}
 
     function startChrono(Request $request){
 

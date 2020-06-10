@@ -69,6 +69,25 @@
 
 }
 
+
+#cont_but {
+	display : block;
+	
+	 
+	button {
+		position : absolute;
+		left : 40%;
+		    border: 1px solid $red;
+		color: $red;
+
+		&:hover, &.active{
+			background-color: $red;
+			color: white;
+		}
+	}
+	
+}
+
 #gm-team-jumbo{
     background-color: $yellow !important;
     border: solid 1px;
@@ -76,3 +95,4 @@
     margin-top: 15px !important;
     margin-bottom: 15px !important;
 }
+
