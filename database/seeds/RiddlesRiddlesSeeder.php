@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 class RiddlesRiddlesSeeder extends Seeder
 {
     /*
+     *  !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
        1	L'Amphithéâtre
        2	Mootse
        3	La Salle Newsplex

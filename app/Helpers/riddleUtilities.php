@@ -41,6 +41,9 @@ if (!function_exists('is_riddle_started')) {
 if (!function_exists('start_riddle')) {
     function start_riddle(Riddle $riddle, Team $team)
     {
+        if (is_null($team->start_date)) {
+            throw new Exception("Team not yet authorized");
+        }
         $riddle_team = $riddle->teams->where('id', $team->id)->first();
         if (is_null($riddle_team)) {
             $riddle->teams()->attach($team, ['start_date' => now('Europe/Paris')]);
@@ -48,15 +51,6 @@ if (!function_exists('start_riddle')) {
             $riddle->teams()->updateExistingPivot($team->id, ['start_date' => now('Europe/Paris')]);
         } else {
             throw new Exception("Riddle already started");
-        }
-        if (is_null($team->start_date)) {
-            $team->start_date = now('Europe/Paris');
-            $team->saveOrFail();
-
-            $alerts = FictitiousMessage::whereNotNull('time')->get();
-            foreach ($alerts as $alert) {
-                MessageRepository::generateAlert($team,$alert);
-            }
         }
         event(new ChangeEvent());
     }
@@ -91,14 +85,18 @@ if (!function_exists('end_riddle')) {
         })) {
             $team->end_date = now('Europe/Paris');
             $team->saveOrFail();
+			      return true;
         }
+		    else{
+			      return false;
+		    }
         event(new ChangeEvent());
     }
 }
 
 
 if (!function_exists('riddle_info')) {
-    function riddle_info(Riddle $riddle, Team $team)
+    function riddle_info(Riddle $riddle, Team $team, bool $can_start)
     {
         $riddle_team = $riddle->teams->where('id', $team->id)->first();
         return [
@@ -109,7 +107,7 @@ if (!function_exists('riddle_info')) {
             'url' => $riddle->url,
             'start_date' => is_null($riddle_team) || is_null($riddle_team->pivot->start_date) ? null : new Carbon($riddle_team->pivot->start_date),
             'end_date' => is_null($riddle_team) || is_null($riddle_team->pivot->end_date) ? null : new Carbon($riddle_team->pivot->end_date),
-            'line' => $riddle->line
+            'can_start' => $can_start
         ];
     }
 }
@@ -149,6 +147,18 @@ if (!function_exists('has_incomplete_sisters')){
         return any(riddle_sisters($riddle), function ($r) use ($team) {
             return is_riddle_in_parcours($r, $team) && !is_riddle_completed($r, $team) && !$r->disabled;
         });
+    }
+}
+
+if (!function_exists('calculerClassement')) {
+    function calculerClassement($user)
+    {
+        $fin = substr($user->id, -1) . '$';
+        return (DB::table('teams')->distinct('score')->where([
+                    ['id', 'regexp', $fin],
+                    ['score', '>', $user->score]
+                ]
+            )->count() + 1);
     }
 }
 

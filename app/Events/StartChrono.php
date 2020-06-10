@@ -9,21 +9,15 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Facades\DB;
 
-class SuccessEvent implements ShouldBroadcast
+class StartChrono implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    private $user;
-    public function __construct($user)
+
+    public function __construct()
     {
-        $this->user=$user;
+
     }
 
     /**
@@ -37,8 +31,6 @@ class SuccessEvent implements ShouldBroadcast
     }
 
     public function broadcastAs() {
-        return 'emoji';
+        return 'startChrono';
     }
-
-
 }

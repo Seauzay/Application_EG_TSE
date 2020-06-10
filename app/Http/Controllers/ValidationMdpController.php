@@ -21,7 +21,7 @@ class ValidationMdpController extends Controller
 
         $user = Auth::user();
         if ($riddledb->code == $request->input('code')) {
-            end_riddle($riddledb, $user);
+            $finParcours = end_riddle($riddledb, Auth::user());
 			$format = 'Y-m-d H:i:s';
             $dateFin = DateTime::createFromFormat($format, DB::table('riddles_teams')->where([
                 ['team_id', '=', $user->id],
@@ -52,15 +52,20 @@ class ValidationMdpController extends Controller
                     'message' => 'Énigme Validée',
                     'display' => true
                 ],
-                'score'  => $user->score
+                'score'  => $user->score,
+              'fin' => $finParcours
             ]);
+			
+			
+			
         }
 
         return JsonResponse::create([
             'status' => [
                 'type' => 'error',
                 'message' => 'Code invalide',
-                'display' => true
+                'display' => true,
+				'fin'=> false,
             ]
         ]);
     }

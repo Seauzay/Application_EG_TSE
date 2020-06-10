@@ -1,30 +1,26 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class DatabaseSeeder extends Seeder
+class RefreshDBSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        DB::table('jobs')->truncate();
         $this->call([
-            TeamsSeeder::class,
             RiddlesSeeder::class,
             MessagesSeeder::class,
             MessagingSeeder::class,
             RoomsSeeder::class,
             RoomTeamSeeder::class,
-            RiddlesRiddlesSeeder::class,
             RiddleTeamSeeder::class,
             ParcoursSeeder::class
         ]);
-        /*Eloquent::unguard();
-        $this->call(UsersTablesSeeder::class);*/
-
     }
 }

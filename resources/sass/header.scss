@@ -1,6 +1,7 @@
 header {
   background-color: $gray;
-  color: $darkGray;
+  color: $blueWriting;
+  background-color: $lightGray;
   padding: 1rem;
   @include media-breakpoint-up(sm) {
     padding: 2rem;

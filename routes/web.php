@@ -19,11 +19,19 @@ Route::get('player/logout', 'TeamController@logout');
 Route::get('player/message','TeamController@firstMessage');*/
 
 Route::get('/', 'TeamController@home');
+Route::get('/whatistimenow','TimeController@now');
+
+Route::get('player/login', 'TeamController@login');
+Route::post('player/checklogin', 'TeamController@checklogin');
+Route::get('player/logout', 'TeamController@logout');
+Route::get('player/message','TeamController@firstMessage');
+Route::get('player/endPage','TeamController@finishJourney');
 // GameMaster Login :
 Route::get('gm', 'GameMasterController@home');
 Route::get('gm/login', 'GameMasterController@login');
 Route::post('gm/checklogin', 'GameMasterController@checklogin');
 Route::get('gm/logout', 'GameMasterController@logout');
+Route::get('gm/startChrono','GameMasterController@startChrono');
 
 // Messenger
 Route::get('msg/list', 'MessengerController@listRooms');
@@ -42,7 +50,8 @@ Route::get('validationEnigme/validationMdp/{id}', 'ValidationMdpController@check
 // RiddlesTeams
 Route::get('riddleteam/list', 'RiddleTeamController@listRiddlesTeams');
 Route::get('riddleteam/fullList', 'RiddleTeamController@listAllRiddles');
-
+Route::get('riddleteam/getAllParcours', 'RiddleTeamController@getTeamsParcours');
+Route::get('riddleteam/modParcours','RiddleTeamController@modParcours');
 
 // Player
 Route::get('player/', 'PlayerController@home');
@@ -50,7 +59,8 @@ Route::get('player/login', 'TeamController@login');
 Route::post('player/checklogin', 'TeamController@checklogin');
 Route::get('player/logout', 'TeamController@logout');
 Route::get('player/message','TeamController@firstMessage');
-//Route::get('player/classement','TeamController@classement');
+Route::get('player/startDate','TeamController@getStartDate');
+Route::get('player/classement','TeamController@classement');
 
 //  Admin
 Route::get('admin', 'AdminController@home');

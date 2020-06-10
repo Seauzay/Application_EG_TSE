@@ -1,27 +1,27 @@
 
 const $ = require('jquery');
 
-// classe gérant la grille de questions  
+// classe gérant la grille de questions
 class QRGrid {
     constructor(root) {
         if (!(root instanceof jQuery)) {
             if (typeof root !== 'string')
-                throw 'Invalid parameter in constructor of TabList.';
+                throw 'Invalid parameter in constructor of QRGrid.';
             root = $(root);
         }
         this.root = root;
         this.id = root.prop('id');
 
         this.QRlist = [];
-		
-       
+
+
 	}
 
 	//remplissage de la grille
     remplissageQRgrid() {
-        
-		
-		// Texte des questions réponses pour le remplissage 
+
+
+		// Texte des questions réponses pour le remplissage
 /*		Qlist = ["Que Signifie le décompte à gauche de l'écran ?", "J'ai résolu une énigme, comment passer à l'étape suivante ?", "Que faire en cas de problème ?"];
 		Rlist = [ "Au fur et à mesure de votre progression, vous gagnez des points en fonction du temps \
 		passé à résoudre les énigmes selon le barème suivant : \n\n\
@@ -33,7 +33,7 @@ class QRGrid {
 		"Vous avez terminé une étape ? Bravo ! Il ne vous reste plus qu'a la valider, grâce au game master de l'énigme :\
 		demandez lui le code de validation, et entrez le dans le champ correspondant pour passer à l'étape suivante.",
 		"Contactez le game master le plus proche. Les game masters sont reconnaissables grâce à leurs badges."];*/
-		
+
 		let faq = document.getElementById('FaQ');
 		let conteneur = document.createElement('div');
 		faq.appendChild(conteneur);
@@ -115,10 +115,10 @@ class QRGrid {
 
 			conteneur.appendChild(QR);
 		}*/
-		
+
     }
 
-    
+
 }
 
 exports.QRGrid = QRGrid;

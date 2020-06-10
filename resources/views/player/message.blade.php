@@ -8,6 +8,7 @@
         <div id="typewriter" class="container text-center" data-toggle="buttons">
 
         <script>
+
             var str = "<p class ='consigne'>Bienvenue sur l’application de l’Escape Game TSE ! </br>Elle vous permettra de résoudre certaines énigmes, de progresser dans le jeu… et d’obtenir des indices !</p>" +
                 "<p class ='consigne'>Vous allez être amené à découvrir plusieurs lieux, dans l’Ecole et son quartier. Pour chaque lieu, il vous faudra :</p>" +
                 "<p class ='consigne' style='left:3.5em'> cliquer sur “commencer l’énigme”</p>" +
@@ -18,18 +19,42 @@
                 i = 0,
                 isTag,
                 text;
-
+            var documentHeight = $(document).height();
             (function type() {
                 text = str.slice(0, ++i);
                 if (text === str)
                 {
-                    setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
+                    $(document.body).append(
+                        '<footer id="sticky-footer" style="background-color: #e3e9ec">' +
+                        '<div class="media">' +
+                        // '  <div class="media-left media-middle">' +
+                        '      <img class="d-flex align-self-center mr-3 ml-2" src="{{url('images/dev1.png')}}" alt="Dev" height= "43px" width= "64px">' +
+/*                        '    </a>' +
+                            '</div>'+*/
+                    ' <div class="" style="color: #e3342f; font-size=0.5em">' +
+                        ' <strong class="text-justify"> Cette application a été imaginée, prototypée et produite par des étudiants du M1 Design de Communication, des élèves de la DTA et des étudiants de FISE2. Merci à eux!</strong>' +
+                        '  </div>'+
+                        '  </div>'+
+                       ' </footer>');
+                    setTimeout(function() {
+                        let newDocumentHeight = $(document).height();
+                        if(documentHeight != newDocumentHeight) {
+                            documentHeight = newDocumentHeight;
+                            $('html, body').scrollTop(newDocumentHeight);
+                        }
+                    },500) ;
+                    setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 8000);
                     return;
 
                 }
 
 
                 document.getElementById('typewriter').innerHTML = text;
+                let newDocumentHeight = $(document).height();
+                if(documentHeight != newDocumentHeight) {
+                    documentHeight = newDocumentHeight;
+                    $('html, body').scrollTop(newDocumentHeight);
+                }
 
                 var char = text.slice(-1);
                 if( char === '<' ) isTag = true;

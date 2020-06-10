@@ -14,7 +14,7 @@
     "@babel/preset-react": "^7.10.1",
     "axios": "^0.19.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "4.5.0",
     "cross-env": "^5.1",
     "easytimer.js": "^3.2.0",
     "jquery": "^3.5.1",
@@ -30,7 +30,9 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
+    "bootstrap-sass": "^3.4.1",
     "laravel-echo": "^1.8.0",
+    "moment": "^2.26.0",
     "socket.io-client": "^2.3.0"
   }
 }

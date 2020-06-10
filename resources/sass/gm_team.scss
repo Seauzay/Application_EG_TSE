@@ -1,6 +1,6 @@
 .gm-team {
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-top: 10px;
+  padding-bottom: 15px;
 
   .gm-riddle-col {
     @include media-breakpoint-down(xs) {
@@ -12,6 +12,22 @@
   .current-riddle-title {
     font-weight: bold;
   }
+
+    .classement {
+        font-weight: bold;
+    }
+
+    .team-name {
+        font-weight: bold;
+    }
+
+    .team-score {
+        font-weight: bold;
+    }
+
+    .bold-text {
+        font-weight: bold !important;
+    }
 
   .progress {
     font-size: 1.2rem;
@@ -53,6 +69,7 @@
 
 }
 
+
 #cont_but {
 	display : block;
 	
@@ -70,3 +87,12 @@
 	}
 	
 }
+
+#gm-team-jumbo{
+    background-color: $yellow !important;
+    border: solid 1px;
+    border-color: #dec781 !important;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+

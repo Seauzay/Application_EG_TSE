@@ -35,6 +35,8 @@ class GenerateAlert implements ShouldQueue
      */
     public function handle()
     {
-        MessageRepository::create($this->team, $this->team->rooms()->first(), $this->alert);//
+        if (!is_null($this->team->start_date)){
+            MessageRepository::create($this->team, $this->team->rooms()->first(), $this->alert);//
+        }
     }
 }

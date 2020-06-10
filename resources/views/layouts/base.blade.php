@@ -22,17 +22,15 @@
 {{--        <h1 class="my-auto ml-3"><a href="{{ url('/') }}">{{config('app.name')}}</a></h1>--}}
     </div>
 </header>
-
+<script>const emoji = new DisplayEmoji();</script>
     <div class="sticky-top">
         @include('layouts.logout')
     </div>
-
-<div id="tablist"></div>
+<div id="tablist">
 <script>
     const tablist = new TabList('#tablist');
 </script>
-
+</div>
 @yield('content')
-
 </body>
 </html>

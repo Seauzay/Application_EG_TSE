@@ -9,16 +9,23 @@
 }
 
 .tabs {
-  background-color: white !important;
+  background-color: $lightGray !important;
   .nav a {
-    background: $lightGray ;
+    background: $lightGray !important;
     color: $darkGray ;
     border:solid 2px $darkGray !important;
+
   }
 
+  .jumbotron
+  {
+    background-color: $lightGray !important;
+  }
 
   .nav {
-    margin-bottom: 2rem;
+    margin-bottom: 0rem;
+    background: $lightGray !important;
+
 
   }
 
@@ -45,10 +52,12 @@
 #tablist > ul {
   position: sticky;
   top: 60px;
-  background-color: white;
+  background-color: $lightGray !important;
   z-index: 99;
   padding-top: 10px;
   transform: translateY(-10px);
+  margin-bottom: 0 !important;
+
 }
 
 #tablist > a{
