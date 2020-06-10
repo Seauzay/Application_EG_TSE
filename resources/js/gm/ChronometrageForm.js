@@ -33,6 +33,7 @@ class ChronometrageForm {
             '</div>' +
             '<div class ="form-group">'+
             '<button type="button" id="triggerButton" class="btn btn-primary" name="action" value="trigger">Déclencher le timer</input>' +
+            '&nbsp;'+
             '<button type="button" id="resetButton" class="btn btn-primary" name="action" value="reset">Remettre le timer à zéro</input>' +
             '</div>');
         let copyThis = this;

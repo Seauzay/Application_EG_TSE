@@ -124,7 +124,7 @@ class GMTeam {
 
         this.teamTimer = new Timer();
         this.teamTimer.addEventListener('secondsUpdated', () => {
-            this.root.find('.team-time').text(formatMS(this.teamTimer.getTotalTimeValues().secondTenths * 100));
+            this.root.find('.team-time').text('Temps écoulé: '+formatMS(this.teamTimer.getTotalTimeValues().secondTenths * 100));
         });
     }
 	//fonction permettant de modifier plusieurs information pour
@@ -140,27 +140,28 @@ class GMTeam {
 			this.setScore(options.score);
 		if (isValidProperty(options,'classement'))
 			this.setClassement(options.classement);
+        console.log(options.start);
         if (isValidProperty(options,'start') && isValidProperty(options,'end')) {
             if (this.teamTimer.isRunning()) {
                 this.teamTimer.stop();
             }
-            this.root.find('.team-time').text(formatMS(moment(options.end,"YYYY-MM-DD hh:mm:ss").diff(moment(options.start,"YYYY-MM-DD hh:mm:ss"))));
+            this.root.find('.team-time').text('Temps écoulé: '+formatMS(moment(options.end.date,"YYYY-MM-DD hh:mm:ss").diff(moment(options.start.date,"YYYY-MM-DD hh:mm:ss"))));
         } else if (isValidProperty(options,'start')) {
             if (!this.teamTimer.isRunning()) {
-                const ms = dateNow().diff(moment(options.start,"YYYY-MM-DD hh:mm:ss"));
+                const ms = dateNow().diff(moment(options.start.date,"YYYY-MM-DD hh:mm:ss"));
                 const sec = Math.floor(ms / 1000);
                 this.teamTimer.start({
                     startValues: {
                         seconds: sec
                     }
                 });
-                this.root.find('.current-riddle-time').text(formatMS(this.teamTimer.getTotalTimeValues().secondTenths * 100));
+                this.root.find('.team-time').text('Temps écoulé: '+formatMS(this.teamTimer.getTotalTimeValues().secondTenths * 100));
             }
         } else {
             if (this.teamTimer.isRunning()) {
                 this.teamTimer.stop();
             }
-            this.root.find('.team-time').text(formatMS(0));
+            this.root.find('.team-time').text('Temps écoulé: '+formatMS(0));
         }
         if (isValidProperty(options,'riddle_start') && isValidProperty(options,'riddle_end')) {
             if (this.riddleTimer.isRunning()) {

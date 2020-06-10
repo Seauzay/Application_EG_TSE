@@ -25,11 +25,11 @@ class RiddleTeamController extends Controller
             if (!empty($riddles)) {
                 array_push($output, [
                     'team' => [
-                        'id' => $team->getAttribute('id'),
-                        'name' => $team->getAttribute('name'),
-                        'start_date' => $team->getAttribute('start_date'),
-                        'end_date' => $team->getAttribute('end_date'),
-						'score' => $team->getAttribute('score'),
+                        'id' => $team->id,
+                        'name' => $team->name,
+                        'start_date' => $team->start_date,
+                        'end_date' => $team->end_date,
+						'score' => $team->score,
                         'progression' => team_progression($team)
                     ],
                     'riddles' => $riddles
@@ -45,7 +45,6 @@ class RiddleTeamController extends Controller
                 'display' => false
             ],
             'data' => $output,
-            'riddle_names' => DB::table('riddles')->pluck('name'),
             'riddle_number' => Riddle::where('disabled', 0)->count()
         ]);
     }
