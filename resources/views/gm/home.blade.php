@@ -72,10 +72,7 @@
                         <div class="current-riddle-code">code</div>
                         <div class="current-riddle-post-msg">Msg de resolution</div>
                         <a draggable="false" class="current-riddle-url" >URL</a>
-                        <div class="current-riddle-disable-cb">
-                            <label {{--for="disable{{$loop->index}}" --}}>Désactiver :</label>
-                            <input type="checkbox" class="current-riddle-activated" {{-- id="disable{{$loop->index}}" name="disabled" {{$riddle['disabled'] ? 'checked' : ''}}--}}>
-                        </div>
+                        <div class="current-riddle-activated"></div>
                     </div>
                 </div>
             </template>

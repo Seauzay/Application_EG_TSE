@@ -338,6 +338,13 @@ class ModParcourTemplate{
                 post_msg.remove();
             url.href=riddleJSON.url;
             id_card.textContent=riddleJSON.id;
+            if(riddleJSON.disabled){
+                cb_activated.textContent ="Désactivée";
+                cb_activated.style.color = 'red';
+                cb_activated.style.font_weight = 'bold';
+            }else{
+                cb_activated.style.display="none";
+            }
             return clone;
         } else {
             // Une autre méthode pour ajouter les lignes
