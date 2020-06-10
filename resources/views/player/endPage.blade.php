@@ -15,6 +15,7 @@
                 isTag,
                 text;
 
+            var documentHeight = $(document).height();
             (function type() {
                 text = str.slice(0, ++i);
 
@@ -25,6 +26,11 @@
                 }
 
                 document.getElementById('typewriter').innerHTML = text;
+                let newDocumentHeight = $(document).height();
+                if(documentHeight != newDocumentHeight) {
+                    documentHeight = newDocumentHeight;
+                    $('html, body').scrollTop(newDocumentHeight);
+                }
 
                 var char = text.slice(-1);
                 if( char === '<' ) isTag = true;

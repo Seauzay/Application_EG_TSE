@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 class RoomTeamSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     *  !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
      *
      * @return void
      */

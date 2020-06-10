@@ -6,13 +6,12 @@ use Illuminate\Database\Seeder;
 class RiddleTeamSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     *  !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
      *
      * @return void
      */
     public function run()
     {
         DB::table('riddles_teams')->truncate();
-        $faker = Faker::create();
     }
 }

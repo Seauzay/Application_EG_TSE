@@ -10,17 +10,18 @@
 @section('content')
     {{--template pour une énigme gm--}}
     <template id="gm-team-template">
-        <div class="container jumbotron gm-team">
+        <div class="container jumbotron gm-team" id="gm-team-jumbo">
             <div class="row align-items-start gm-teams mb-3">
                 <div class="col align-self-center text-center">
-					<span class="classement"></span>&nbsp; :
-                    <span class="team-name"></span>&nbsp;
-                    <!--<span class="team-time"></span> -->
-					<span class="team-score"></span>&nbsp; pts
+                    <span class="bold-text">[</span>
+                    <span class="classement"></span><span class="bold-text">&nbsp;]&nbsp;</span>
+                    <span class="team-name"></span><span class="bold-text">&nbsp;avec</span>
+                    <span class="team-score"></span><span class="bold-text">&nbsp;pts</span>
+                    <div class="team-time"></div>
                 </div>
                 <div class="col-8 gm-riddle-col">
-                    <div class="row justify-content-center"><span class="current-riddle-title">Énigme actuelle&nbsp;: </span></div>
-                    <div class="row justify-content-center"><span class="current-riddle"></span>&nbsp;: <span
+                    <div class="row justify-content-center"><span class="current-riddle-title">Énigme actuelle: </span></div>
+                    <div class="row justify-content-center"><span class="current-riddle"></span>:&nbsp;<span
                                 class="current-riddle-time"></span></div>
                 </div>
             </div>

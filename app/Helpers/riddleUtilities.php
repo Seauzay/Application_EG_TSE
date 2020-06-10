@@ -96,7 +96,7 @@ if (!function_exists('end_riddle')) {
 
 
 if (!function_exists('riddle_info')) {
-    function riddle_info(Riddle $riddle, Team $team)
+    function riddle_info(Riddle $riddle, Team $team, bool $can_start)
     {
         $riddle_team = $riddle->teams->where('id', $team->id)->first();
         return [
@@ -107,7 +107,7 @@ if (!function_exists('riddle_info')) {
             'url' => $riddle->url,
             'start_date' => is_null($riddle_team) || is_null($riddle_team->pivot->start_date) ? null : new Carbon($riddle_team->pivot->start_date),
             'end_date' => is_null($riddle_team) || is_null($riddle_team->pivot->end_date) ? null : new Carbon($riddle_team->pivot->end_date),
-            'line' => $riddle->line
+            'can_start' => $can_start
         ];
     }
 }

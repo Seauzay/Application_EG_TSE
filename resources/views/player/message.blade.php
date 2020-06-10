@@ -19,7 +19,7 @@
                 i = 0,
                 isTag,
                 text;
-
+            var documentHeight = $(document).height();
             (function type() {
                 text = str.slice(0, ++i);
                 if (text === str)
@@ -32,18 +32,29 @@
 /*                        '    </a>' +
                             '</div>'+*/
                     ' <div class="" style="color: #e3342f; font-size=0.5em">' +
-                        ' <strong class="text-justify"> Cette application a été imaginée, prototypée et produite par des étudiants du M1 Design de Communication, des élèves de la DTA et des étudiants de FISE 2. Merci à eux !</strong>' +
+                        ' <strong class="text-justify"> Cette application a été imaginée, prototypée et produite par des étudiants du M1 Design de Communication, des élèves de la DTA et des étudiants de FISE2. Merci à eux!</strong>' +
                         '  </div>'+
                         '  </div>'+
                        ' </footer>');
-                    setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 4000);
+                    setTimeout(function() {
+                        let newDocumentHeight = $(document).height();
+                        if(documentHeight != newDocumentHeight) {
+                            documentHeight = newDocumentHeight;
+                            $('html, body').scrollTop(newDocumentHeight);
+                        }
+                    },500) ;
+                    setTimeout(function(){ return  window.location = "{{ url('/') }}"; }, 8000);
                     return;
 
                 }
 
 
                 document.getElementById('typewriter').innerHTML = text;
-                //document.scrollTop = document.getElementById('typewriter').scrollHeight;
+                let newDocumentHeight = $(document).height();
+                if(documentHeight != newDocumentHeight) {
+                    documentHeight = newDocumentHeight;
+                    $('html, body').scrollTop(newDocumentHeight);
+                }
 
                 var char = text.slice(-1);
                 if( char === '<' ) isTag = true;
