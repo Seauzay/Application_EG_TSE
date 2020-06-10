@@ -193,9 +193,11 @@ class ModParcourAPI {
         var titleH2 = document.createElement('h2');
         titleH2.textContent="+";
         addRiddle.appendChild(titleH2);
-        riddle_content.appendChild(addRiddle);
+        //riddle_content.appendChild(addRiddle);
         riddle_line.appendChild(lvlNbr);
         riddle_line.appendChild(riddle_content);
+
+        riddle_line.addEventListener("dragover",ev=>this.dragOver(ev));
         return riddle_line;
     }
 
@@ -332,15 +334,15 @@ class ModParcourAPI {
     }
 
     dragOver(ev){
-        ev.preventDefault();
         var target = ev.target;
         while (target.className.indexOf('mod-line-li') == -1){
             target = target.parentNode;
         }
-        if(target.id.indexOf('mod-riddles-line-')!=-1){
-            target.id = 'mod-riddles-line-'+this.AllRiddles.filter(v => v.id == this.draggedElementId)[0].line;
+        var tgtId = target.id;
+        if(tgtId.indexOf('mod-riddles-line-')!=-1){
+            tgtId = 'mod-riddles-line-'+this.AllRiddles.filter(v => v.id == this.draggedElementId)[0].line;
         }
-        var containerSha = document.getElementById(target.id).getElementsByClassName('mod-line-content')[0];
+        var containerSha = document.getElementById(tgtId).getElementsByClassName('mod-line-content')[0];
         if(this.dragOverShadow == null){
             this.dragOverShadow = document.createElement('div');
             this.dragOverShadow.id = 'drag-over-shadow';
