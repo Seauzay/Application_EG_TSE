@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-	 
+
 
     {{--template pour une énigme gm--}}
     <template id="gm-team-template">
@@ -98,7 +98,7 @@
 
     {{--Création des onglets--}}
     <script>
-		
+
         tablist.addTab({title: 'Suivi des équipes', active: true});
         tablist.addTab({title: 'Chronométrage', active: false});
         //roomlist.update();
@@ -109,7 +109,7 @@
         divSuivi.appendTo(tablist.contentOfTab(1));
         const gmTeamList = new GMTeamList(divSuivi);
         gmTeamList.update();
-        
+
         //Partie bouton pour la récuperation des données des équipes dans un fichier csv
 		let cont_but = document.createElement('div');
 		cont_but.id = "cont_but";
@@ -125,12 +125,12 @@
 			frame.style.display = "none";
 			frame.src = "{{url('/report.csv')}}";
 			frame.id = 'frame'
-			div.appendChild(frame);
-			
+            divSuivi[0].appendChild(frame);
+
 			$("#frame").click()
 
 		};
-		
+
 		cont_but.appendChild(but);
 		tablist.contentOfTab(1).append(cont_but);
 
@@ -175,11 +175,11 @@
         function modParcours(){
             createParcours.modParcours();
         }
-        
+
         function resetBDD(){
             createParcours.resetBDD();
-			
-		}	
+
+		}
         function resetParcours(){
             createParcours.resetParcours();
         }
