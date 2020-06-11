@@ -9,6 +9,36 @@
 
 @section('content')
 
+    <div class="modal" tabindex="-1" role="dialog" id="success-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Succès</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-message">Modal body text goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="error-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Erreur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-message">Modal body text goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{--template pour une énigme gm--}}
     <template id="gm-team-template">
@@ -23,7 +53,7 @@
                 </div>
                 <div class="col-8 gm-riddle-col">
                     <div class="row justify-content-center"><span class="current-riddle-title">Énigme actuelle: </span></div>
-                    <div class="row justify-content-center"><span class="current-riddle"></span><span
+                    <div class="row justify-content-center"><span class="current-riddle"></span>&nbsp;<span
                                 class="current-riddle-time"></span></div>
                 </div>
             </div>

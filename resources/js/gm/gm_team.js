@@ -341,7 +341,7 @@ class GMTeamList {
                 const currentRiddle = riddles.pop();
                 gmteam.setAtributes({
                     teamName: team.name,
-                    riddleName: currentRiddle.name+': ',
+                    riddleName: currentRiddle.name+':',
                     progress: 100 * prog,
                     start: team.start_date,
                     end: team.end_date,

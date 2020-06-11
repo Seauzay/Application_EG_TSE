@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="modal" tabindex="-1" role="dialog" id="erros-modal">
+    <div class="modal" tabindex="-1" role="dialog" id="error-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">

@@ -111,8 +111,8 @@ class PlayerRiddle {
                 cancel: true
             });
             this.showURL(true);
-            this.setTimer(dateNow());
-            this.startTimerFromDate(0);
+            this.setTimer(0);
+            this.startTimerFromDate(dateNow());
             $.ajax('riddle/' + this.id + '/start'); //TODO Error handling
             playerRiddleGrid.start();
             playerRiddleGrid.update();
