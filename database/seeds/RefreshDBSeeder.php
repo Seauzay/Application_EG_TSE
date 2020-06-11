@@ -23,6 +23,7 @@ class RefreshDBSeeder extends Seeder
         else{
             DB::table('teams')->where('grade','=',0)->update(['start_date' => null]);
             DB::table('teams')->where('grade','=',0)->update(['end_date' => null]);
+            DB::table('teams')->where('grade','=',0)->update(['score' => 0]);
         }
         $this->call([
             RiddleTeamSeeder::class,
