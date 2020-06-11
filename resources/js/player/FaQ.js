@@ -45,7 +45,7 @@ class QRGrid {
 			"    <div class='card-header' id='headingOne' style='background-color: #e3e9ec !important'>" +
 			"      <h5 class='mb-0'>\n" +
 			"        <button class='btn btn-link collapsed' data-toggle='collapse' data-target='#collapseOne' aria-expanded='false' aria-controls='collapseOne' style='color: #4c5356'>" +
-			"          I - J’ai résolu une énigme, comment passer à l’étape suivante ?" +
+			"          I - Je n'ai pas eu le temps de lire les consignes, HELP !" +
 			"        </button>" +
 			"      </h5>" +
 			"    </div>" +

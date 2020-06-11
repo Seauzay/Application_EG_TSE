@@ -59,13 +59,15 @@ class ChronometrageForm {
             success: function(data) // show response from the php script.
             {
                 if (data.status.type === 'success') {
-                    // show modal for success
-                    alert(data.status.message);
+                    $('#success-modal').find('.modal-message').text(data.status.message);
+                    $('#success-modal').modal('show');
+                    //alert(data.status.message);
 
                 }
                 if (data.status.type === 'error') {
-                    // show modal for error
-                    alert(data.status.message);
+                    $('#error-modal').find('.modal-message').text(data.status.message);
+                    $('#error-modal').modal('show');
+                    //alert(data.status.message);
                 }
             }
         });
