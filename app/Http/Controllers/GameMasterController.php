@@ -55,42 +55,53 @@ class GameMasterController extends Controller
         return redirect('gm/login');
     }
 
+	
+
+
 	function exportResult()
 	{
         $this->authorize('isGM', Team::class);
         $output = [];
 
 		foreach (Team::all() as $team) {
-            if ($team->grade > 1) continue;
+            if ($team->grade >= 1) continue;
             $riddles = [];
 
 			foreach ($team->riddles->all() as $riddle) {
                 array_push($riddles, riddle_info_for_gm($riddle, $team));
             }
-            if (!empty($riddles)) {
-                array_push($output,
-                     [
-                        'name' => $team->getAttribute('name'),
-                        'start_date' => $team->getAttribute('start_date'),
-                        'end_date' => $team->getAttribute('end_date'),
-						'score' => $team->getAttribute('score')
-                   ]);
-            }
+           
+                
+            $infos =  [
+				'name'=> $team->getAttribute('name'),
+                'start'=> $team->getAttribute('start_date'),
+                'end'=> $team->getAttribute('end_date'),
+				'score'=> $team->getAttribute('score')
+            ];
+				
+			foreach($riddles as $rids){
+				array_push($infos,$rids->name);
+				array_push($infos, $rids->start_date);	
+				array_push($infos,$rids->end_date);
+					
+			}	
+			array_push($output, $infos);
 
         }
 
 
 		// create a file pointer connected to the output stream
 		$file = fopen('report.csv', 'w');
-		fputcsv($file,['name','start_date','end_date','score']);
+		fputcsv($file,['name','start_date','end_date','score','enigmes...']);
         foreach ($output as $row) {
             fputcsv($file, $row);
         }
 
         fclose($file);
-
-
+		return 'true';
 	}
+
+
 
     function startChrono(Request $request){
 
