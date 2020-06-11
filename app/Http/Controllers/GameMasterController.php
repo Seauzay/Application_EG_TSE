@@ -34,9 +34,8 @@ class GameMasterController extends Controller
         if (Auth::attempt($user_data)) {
             return redirect('gm');
         } else {
-            return back()->with('error', 'Wrong Login Details');
+            return back()->with('error', 'Mot de passe ou identifiant erronés');
         }
-
     }
 
     function home()
@@ -58,18 +57,18 @@ class GameMasterController extends Controller
 
 	function exportResult()
 	{
-		//$this->authorize('isGMorAdmin', Team::class);
+        $this->authorize('isGM', Team::class);
         $output = [];
-	
+
 		foreach (Team::all() as $team) {
             if ($team->grade > 1) continue;
             $riddles = [];
-            
+
 			foreach ($team->riddles->all() as $riddle) {
                 array_push($riddles, riddle_info_for_gm($riddle, $team));
             }
             if (!empty($riddles)) {
-                array_push($output, 
+                array_push($output,
                      [
                         'name' => $team->getAttribute('name'),
                         'start_date' => $team->getAttribute('start_date'),
@@ -79,18 +78,18 @@ class GameMasterController extends Controller
             }
 
         }
-		
- 
+
+
 		// create a file pointer connected to the output stream
 		$file = fopen('report.csv', 'w');
 		fputcsv($file,['name','start_date','end_date','score']);
         foreach ($output as $row) {
             fputcsv($file, $row);
         }
-		
+
         fclose($file);
-		
-		
+
+
 	}
 
     function startChrono(Request $request){
@@ -153,19 +152,32 @@ class GameMasterController extends Controller
         }
 
         $teams = Team::whereIn('id', $ids)->get();
-        foreach ($teams as $team) {
-            $team->start_date = null;
-            $team->saveOrFail();
+
+        if(any($teams,function($t){
+            return $t->end_date != null;
+        })){
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'error',
+                    'message' => 'Action interdite! Une ou plusieurs équipes ont déjà fini la partie! Demandez à l\'admin de vider la base de donnée.',
+                    'display' => true
+                ],
+            ]);
+        }else{
+            foreach ($teams as $team) {
+                $team->start_date = null;
+                $team->saveOrFail();
+            }
+
+            event(new ResetChrono());
+
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'success',
+                    'message' => 'Le timer de cette vague a été remis à zéro avec succès!',
+                    'display' => true
+                ],
+            ]);
         }
-
-        event(new ResetChrono());
-
-        return JsonResponse::create([
-            'status' => [
-                'type' => 'success',
-                'message' => 'Le timer de cette vague a été remis à zéro avec succès!',
-                'display' => true
-            ],
-        ]);
     }
 }

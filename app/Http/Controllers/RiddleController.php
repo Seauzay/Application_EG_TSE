@@ -36,13 +36,12 @@ class RiddleController extends Controller
                         function ($r) use ($user) {
                             return $r->disabled || !is_riddle_in_parcours($r, $user) || is_riddle_completed($r, $user);
                         })
-                && has_incomplete_sisters($riddle,$user)
+                && has_incomplete_sisters_or_is_incomplete($riddle,$user)
             ){
-                $sisters = riddle_sisters($riddle);
-                $can_start = !any(array_slice(($sisters),1),function($r) use($user){
+                $can_start = !any(riddle_sisters($riddle),function($r) use($user){
                     return is_riddle_started($r,$user) && !is_riddle_completed($r,$user);
                 });
-                $riddles[] = riddle_info($riddle, $user,$can_start);
+                $riddles[] = riddle_info($riddle, $user, $can_start);
             }
         }
 

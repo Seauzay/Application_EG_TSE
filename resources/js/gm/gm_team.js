@@ -1,16 +1,39 @@
 const {Timer} = require('easytimer.js');
-var moment = require('moment');
+var sychronizeDate = null;
+const moment = require('moment');
 
 function dateNow(){
-    let date;
-    $.ajax('whatistimenow/', {
-        method: 'GET',
-        async : false,
-        dataType: 'json',
-        success: function(data) {date=data.now.date;}
-    });
-    return moment(date,"YYYY-MM-DD hh:mm:ss");
+    if (sychronizeDate == null){
+        let nowDateClient;
+        $.ajax('whatistimenow/', {
+            method: 'GET',
+            async : false,
+            dataType: 'json',
+            success: function(data) {
+                nowDateClient = moment();
+                date = moment(data.now.date,"YYYY-MM-DD hh:mm:ss");
+            }
+        });
+        sychronizeDate = nowDateClient.diff(date);
+        console.log('Synchronized with server time!');
+        console.log('Time difference is: '+sychronizeDate+' ms');
+        if(sychronizeDate<1000){
+            sychronizeDate = 0;
+            console.log('Time difference is too small. Neglected!');
+        }
+    }
+    else{
+        if(sychronizeDate>0)
+            date = moment().subtract(sychronizeDate,'ms');
+        else if(sychronizeDate<0)
+            date = moment().add(-sychronizeDate,'ms');
+        else
+            date = moment();
+    }
+    return date;
 }
+// Calling dateNow for the first time in order to sychronize date between server and client.
+dateNow();
 
 function formatMS(s) {
     function pad(n, z) {
@@ -140,7 +163,6 @@ class GMTeam {
 			this.setScore(options.score);
 		if (isValidProperty(options,'classement'))
 			this.setClassement(options.classement);
-        console.log(options.start);
         if (isValidProperty(options,'start') && isValidProperty(options,'end')) {
             if (this.teamTimer.isRunning()) {
                 this.teamTimer.stop();
@@ -185,7 +207,7 @@ class GMTeam {
             if (this.riddleTimer.isRunning()) {
                 this.riddleTimer.stop();
             }
-            this.root.find('.current-riddle-time').text(formatMS(0));
+            this.root.find('.current-riddle-time').text('');
         }
     }
 
@@ -313,19 +335,33 @@ class GMTeamList {
             const gmteam = this.findOrCreateGMTeam('gm-team-' + team.id);
             if (gmteam.classement != pos && gmteam.classement != null)
                 updateClassement = true;
-            // todo à améliorer en prenant en compte les temps (pour l'instant on prend la dernière)
-            const currentRiddle = riddles.pop();
-            gmteam.setAtributes({
-                teamName: team.name,
-                riddleName: currentRiddle.name,
-                progress: 100 * prog,
-                start: team.start_date,
-                end: team.end_date,
-                riddle_start: currentRiddle.start_date,
-                riddle_end: currentRiddle.end_date,
-				score: team.score,
-				classement: pos
-            });
+
+            if(prog !=1){
+                // todo à améliorer en prenant en compte les temps (pour l'instant on prend la dernière)
+                const currentRiddle = riddles.pop();
+                gmteam.setAtributes({
+                    teamName: team.name,
+                    riddleName: currentRiddle.name+': ',
+                    progress: 100 * prog,
+                    start: team.start_date,
+                    end: team.end_date,
+                    riddle_start: currentRiddle.start_date,
+                    riddle_end: currentRiddle.end_date,
+                    score: team.score,
+                    classement: pos
+                });
+            }
+            else{
+                gmteam.setAtributes({
+                    teamName: team.name,
+                    riddleName: "Terminé",
+                    progress: 100,
+                    start: team.start_date,
+                    end: team.end_date,
+                    score: team.score,
+                    classement: pos
+                });
+            }
 
             // This handles the details section for each teams.
             const list = gmteam.root.find('.card-body ul');

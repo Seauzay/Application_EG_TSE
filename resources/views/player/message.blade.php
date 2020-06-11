@@ -72,4 +72,8 @@
         </div>
 
     </form>
+    <script>
+        $("#log-out-container").css("display","block");
+        $("#log-out-container").css("padding-right","10%");
+    </script>
     @endsection

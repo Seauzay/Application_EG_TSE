@@ -64,9 +64,9 @@ Route::get('player/classement','TeamController@classement');
 
 //  Admin
 Route::get('admin', 'AdminController@home');
-Route::post('admin/modifyRiddle', 'AdminController@modifyRiddle');
-Route::post('admin/refreshDB', 'AdminController@refreshDB');
-Route::post('admin/addGM', 'AdminController@addGM');
+Route::get('admin/modifyRiddle', 'AdminController@modifyRiddle');
+Route::get('admin/refreshDB', 'AdminController@refreshDB');
+Route::get('admin/addGM', 'AdminController@addGM');
 Route::get('admin/logout', 'AdminController@logout');
 Route::get('admin/login', 'GameMasterController@login');
 Route::get('admin/CSV', 'GameMasterController@exportResult');
