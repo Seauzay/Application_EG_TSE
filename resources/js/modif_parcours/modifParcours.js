@@ -197,13 +197,13 @@ class ModParcourAPI {
         //création du content-div (qui va avoir les riddles)
         var riddle_content = document.createElement('div');
         riddle_content.className = "mod-line-content";
-        //création du bouton de création de riddle :
+       /* //création du bouton de création de riddle :
         var addRiddle = document.createElement('div');
         addRiddle.className = "btn-add-riddle";
         var titleH2 = document.createElement('h2');
         titleH2.textContent="+";
         addRiddle.appendChild(titleH2);
-        //riddle_content.appendChild(addRiddle);
+        riddle_content.appendChild(addRiddle);*/
         riddle_line.appendChild(lvlNbr);
         riddle_line.appendChild(riddle_content);
 
