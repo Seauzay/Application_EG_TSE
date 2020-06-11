@@ -164,7 +164,7 @@ class ParcoursSeeder extends Seeder
                     // tour
                     DB::table('parcours')->insert([
                         'team_id' => $color->base + $number,
-                        'riddle_id' => 8888
+                        'riddle_id' => 8
                     ]);
                 }
 
