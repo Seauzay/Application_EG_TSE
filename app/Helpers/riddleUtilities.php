@@ -128,6 +128,7 @@ if (!function_exists('riddle_info_for_gm')) {
 if (!function_exists('riddle_sisters')) {
     function riddle_sisters(Riddle $riddle)
     {
+        /*
         $sisters = [$riddle];
         foreach ($riddle->parents as $parent){
             foreach ($parent->children as $child){
@@ -135,16 +136,18 @@ if (!function_exists('riddle_sisters')) {
                     $sisters[] = $child;
                 }
             }
-        }
+        }*/
 
-        return $sisters;
+        return Riddle::where('id','!=',$riddle->id)->where('line',"=",$riddle->line)->get();
     }
 }
 
-if (!function_exists('has_incomplete_sisters')){
-    function has_incomplete_sisters(Riddle $riddle, Team $team)
+if (!function_exists('has_incomplete_sisters_or_is_incomplete')){
+    function has_incomplete_sisters_or_is_incomplete(Riddle $riddle, Team $team)
     {
-        return any(riddle_sisters($riddle), function ($r) use ($team) {
+        $riddles = riddle_sisters($riddle);
+        $riddles[] = $riddle;
+        return any($riddles, function ($r) use ($team) {
             return is_riddle_in_parcours($r, $team) && !is_riddle_completed($r, $team) && !$r->disabled;
         });
     }

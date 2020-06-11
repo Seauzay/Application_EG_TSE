@@ -117,7 +117,7 @@ class RiddleTeamController extends Controller
         return JsonResponse::create([
             'status' => [
                 'type' => 'success',
-                'message' => "Modification done",
+                'message' => "Les modications on été sauvegardées avec succès !",
                 'display' => false
             ]
         ]);

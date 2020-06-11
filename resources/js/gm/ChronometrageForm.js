@@ -37,16 +37,13 @@ class ChronometrageForm {
             '<button type="button" id="resetButton" class="btn btn-primary" name="action" value="reset">Remettre le timer à zéro</button>' +
             '</div>');
         let copyThis = this;
-        console.log($("#triggerButton"));
         $(document).ready(function(){
             $("#triggerButton").on('click',function() {
-                console.log('test');
                 let formData = $('#chronoForm').serializeArray();
                 formData.push({ name: this.name, value: this.value });
                 copyThis.submitForm(formData);
             });
             $("#resetButton").on('click',function() {
-                console.log('test');
                 let formData = $('#chronoForm').serializeArray();
                 formData.push({ name: this.name, value: this.value });
                 copyThis.submitForm(formData);
@@ -58,17 +55,19 @@ class ChronometrageForm {
 
     submitForm(formData){
         $.ajax('gm/startChrono',{
-            data: formData, // serializes the form's elements.
+            data: formData,
             success: function(data) // show response from the php script.
             {
                 if (data.status.type === 'success') {
-                    // show modal for success
-                    alert(data.status.message);
+                    $('#success-modal').find('.modal-message').text(data.status.message);
+                    $('#success-modal').modal('show');
+                    //alert(data.status.message);
 
                 }
                 if (data.status.type === 'error') {
-                    // show modal for error
-                    alert(data.status.message);
+                    $('#error-modal').find('.modal-message').text(data.status.message);
+                    $('#error-modal').modal('show');
+                    //alert(data.status.message);
                 }
             }
         });

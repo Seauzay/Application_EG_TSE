@@ -121,15 +121,15 @@ class ModParcourAPI {
 
     getColorFromParcour(name){
         switch(name){
-            case "Rouge" : clr="red";
+            case "Rouge" : clr="#ea0000";
                 break;
-            case "Vert" : clr="green";
+            case "Vert" : clr="#00b050";
                 break;
-            case "Bleu" : clr="blue";
+            case "Bleu" : clr="#0070c0";
                 break;
             case "Jaune" : clr="#F9C11C";
                 break;
-            case "Violet" : clr="violet";
+            case "Violet" : clr="#7030a0";
                 break;
             default :
                 clr="gray";
@@ -140,6 +140,7 @@ class ModParcourAPI {
         this.selectedIndex = newIdx;
         var header_list = document.querySelector("#header-mod-parcours");
         header_list.style.borderColor = this.getColorFromParcour(this.parcours[newIdx].team_color);
+        header_list.style.backgroundColor = header_list.style.borderColor;
         this.update();
     }
     updateDisplay() {
@@ -149,13 +150,22 @@ class ModParcourAPI {
         //var content_parcours = document.querySelector("#content-mod-parcours");
         for (let parc of this.parcours) {
             //set header
-            var title = document.createElement('h2');
+            var title = document.createElement('h4');
+            title.style.marginTop = '8px';
             var btn = document.createElement('div');
+            btn.style.cursor = 'pointer';
+            btn.style.display = 'inline-block';
+            btn.style.paddingRight = '5px';
+            btn.style.paddingLeft = '5px';
+            btn.style.marginRight = '2px';
+            btn.style.marginLeft = '2px';
+            btn.style.borderRadius = '2px';
+            btn.style.border = '1px';
             btn.appendChild(title);
             title.textContent = parc.team_color;
             var clr = this.getColorFromParcour(parc.team_color);
-
             btn.style.backgroundColor = clr;
+            btn.style.borderColor = clr;
             let idx = this.parcours.indexOf(parc);
             btn.addEventListener("click",ev => this.changeIdx(idx));
             header_parcours.appendChild(btn);

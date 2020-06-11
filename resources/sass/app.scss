@@ -7,7 +7,7 @@
 // jQuery-ui
 @import '~jquery-ui/themes/base/all.css';
 // Open iconic
-@import '~open-iconic/font/css/open-iconic-bootstrap.min.css';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.css');
 
 // Messages
 @import 'messenger';
@@ -21,6 +21,7 @@
 @import "admin_screen";
 @import "mod_parcour";
 @import "endPage";
+@import "selectboxit";
 // Global CSS
 body{
   font-size: 1rem;

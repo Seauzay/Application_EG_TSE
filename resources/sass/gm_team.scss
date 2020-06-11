@@ -71,13 +71,14 @@
 
 
 #cont_but {
-	display : block;
-	
-	 
+	//display : block;
+    text-align: right;
+    margin-top: 15px !important;
+    padding: 0 !important;
+
 	button {
-		position : absolute;
-		left : 40%;
-		    border: 1px solid $red;
+        border-radius: 1px;
+        border: 1px solid $red;
 		color: $red;
 
 		&:hover, &.active{
@@ -85,7 +86,7 @@
 			color: white;
 		}
 	}
-	
+
 }
 
 #gm-team-jumbo{
@@ -95,4 +96,3 @@
     margin-top: 15px !important;
     margin-bottom: 15px !important;
 }
-

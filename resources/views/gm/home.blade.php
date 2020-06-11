@@ -9,6 +9,36 @@
 
 @section('content')
 
+    <div class="modal" tabindex="-1" role="dialog" id="success-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Succès</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-message">Modal body text goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="error-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Erreur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-message">Modal body text goes here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{--template pour une énigme gm--}}
     <template id="gm-team-template">
@@ -23,7 +53,7 @@
                 </div>
                 <div class="col-8 gm-riddle-col">
                     <div class="row justify-content-center"><span class="current-riddle-title">Énigme actuelle: </span></div>
-                    <div class="row justify-content-center"><span class="current-riddle"></span>:&nbsp;<span
+                    <div class="row justify-content-center"><span class="current-riddle"></span>&nbsp;<span
                                 class="current-riddle-time"></span></div>
                 </div>
             </div>
@@ -73,10 +103,7 @@
                         <div class="current-riddle-code">code</div>
                         <div class="current-riddle-post-msg">Msg de resolution</div>
                         <a draggable="false" class="current-riddle-url" >URL</a>
-                        <div class="current-riddle-disable-cb">
-                            <label {{--for="disable{{$loop->index}}" --}}>Désactiver :</label>
-                            <input type="checkbox" class="current-riddle-activated" {{-- id="disable{{$loop->index}}" name="disabled" {{$riddle['disabled'] ? 'checked' : ''}}--}}>
-                        </div>
+                        <div class="current-riddle-activated"></div>
                     </div>
                 </div>
             </template>
@@ -106,20 +133,17 @@
     </script>
 
     <script>
-        const divSuivi = $('<div>');
-        divSuivi.appendTo(tablist.contentOfTab(1));
-        const gmTeamList = new GMTeamList(divSuivi);
-        gmTeamList.update();
-
         //Partie bouton pour la récuperation des données des équipes dans un fichier csv
 		let cont_but = document.createElement('div');
 		cont_but.id = "cont_but";
+        cont_but.className = "container";
 		let but = document.createElement('button');
-		but.innerHTML  = 'écriture sur fichier CSV';
+		but.innerHTML  = 'Exporter en CSV';
 		but.class = "btn btn-secondary pull-right";
+		but.id = 'export-button'
 		but.addEventListener("click",function(){
 			//console.log('click');
-			$.ajax('admin/CSV', {method: 'GET', success :  startDownload()});
+			$.ajax('admin/CSV', {method: 'GET', success :(response)=>{if (response=='true'){  startDownload()}}});
 		} );
 		function startDownload(){
 			let frame = document.createElement('iframe');
@@ -134,6 +158,10 @@
 
 		cont_but.appendChild(but);
 		tablist.contentOfTab(1).append(cont_but);
+        const divSuivi = $('<div>');
+        divSuivi.appendTo(tablist.contentOfTab(1));
+        const gmTeamList = new GMTeamList(divSuivi);
+        gmTeamList.update();
 
 
         const divChrono = $('<div>',{id:'chronometrageTabContent'});
@@ -185,5 +213,9 @@
             createParcours.resetParcours();
         }
 
+    </script>
+    <script>
+        $("#log-out-container").css("display","block");
+        $("#log-out-container").css("padding-right","10%");
     </script>
 @endsection

@@ -67,6 +67,7 @@ $(document).on("mousedown", function (e1) {
 }(jQuery));
 
 // Custom
+require('./selectboxit');
 TabList = require('./tabs').TabList;
 GMTeam = require('./gm/gm_team').GMTeam;
 GMTeamList = require('./gm/gm_team').GMTeamList;

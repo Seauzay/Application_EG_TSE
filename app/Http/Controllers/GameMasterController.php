@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Events\ResetChrono;
 use App\Events\StartChrono;
@@ -34,9 +35,8 @@ class GameMasterController extends Controller
         if (Auth::attempt($user_data)) {
             return redirect('gm');
         } else {
-            return back()->with('error', 'Wrong Login Details');
+            return back()->with('error', 'Mot de passe ou identifiant erronés');
         }
-
     }
 
     function home()
@@ -56,42 +56,47 @@ class GameMasterController extends Controller
         return redirect('gm/login');
     }
 
+
+
+
 	function exportResult()
 	{
-		//$this->authorize('isGMorAdmin', Team::class);
+        $this->authorize('isGM', Team::class);
         $output = [];
-	
+
 		foreach (Team::all() as $team) {
-            if ($team->grade > 1) continue;
-            $riddles = [];
-            
-			foreach ($team->riddles->all() as $riddle) {
-                array_push($riddles, riddle_info_for_gm($riddle, $team));
-            }
-            if (!empty($riddles)) {
-                array_push($output, 
-                     [
-                        'name' => $team->getAttribute('name'),
-                        'start_date' => $team->getAttribute('start_date'),
-                        'end_date' => $team->getAttribute('end_date'),
-						'score' => $team->getAttribute('score')
-                   ]);
-            }
+            if ($team->grade >= 1) continue;
+
+            $infos =  [
+				'name'=> $team->getAttribute('name'),
+                'timing'=> Carbon::parse($team->end_date)->diff(Carbon::parse($team->start_date))->format('%H:%i:%s'),
+				'score'=> $team->getAttribute('score')
+            ];
+
+			foreach($team->riddles->all() as $riddle){
+                $infoRiddle = riddle_info_for_gm($riddle, $team);
+                if(!is_null($infoRiddle['start_date']) && !is_null($infoRiddle['end_date'])){
+                    array_push($infos,$infoRiddle['name']);
+                    array_push($infos, Carbon::parse($infoRiddle['end_date'])->diff(Carbon::parse($infoRiddle['start_date']))->format('%H:%i:%s'));
+                }
+			}
+			array_push($output, $infos);
 
         }
-		
- 
+
+
 		// create a file pointer connected to the output stream
 		$file = fopen('report.csv', 'w');
-		fputcsv($file,['name','start_date','end_date','score']);
+		fputcsv($file,['Equipe','Timing','Score','Enigmes/Timing...'],";");
         foreach ($output as $row) {
-            fputcsv($file, $row);
+            fputcsv($file, array_map("utf8_decode", $row), ";");
         }
-		
+
         fclose($file);
-		
-		
+		return 'true';
 	}
+
+
 
     function startChrono(Request $request){
 
@@ -153,19 +158,32 @@ class GameMasterController extends Controller
         }
 
         $teams = Team::whereIn('id', $ids)->get();
-        foreach ($teams as $team) {
-            $team->start_date = null;
-            $team->saveOrFail();
+
+        if(any($teams,function($t){
+            return $t->end_date != null;
+        })){
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'error',
+                    'message' => 'Action interdite! Une ou plusieurs équipes ont déjà fini la partie! Demandez à l\'admin de vider la base de donnée.',
+                    'display' => true
+                ],
+            ]);
+        }else{
+            foreach ($teams as $team) {
+                $team->start_date = null;
+                $team->saveOrFail();
+            }
+
+            event(new ResetChrono());
+
+            return JsonResponse::create([
+                'status' => [
+                    'type' => 'success',
+                    'message' => 'Le timer de cette vague a été remis à zéro avec succès!',
+                    'display' => true
+                ],
+            ]);
         }
-
-        event(new ResetChrono());
-
-        return JsonResponse::create([
-            'status' => [
-                'type' => 'success',
-                'message' => 'Le timer de cette vague a été remis à zéro avec succès!',
-                'display' => true
-            ],
-        ]);
     }
 }
