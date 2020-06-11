@@ -52,6 +52,7 @@ Route::get('riddleteam/list', 'RiddleTeamController@listRiddlesTeams');
 Route::get('riddleteam/fullList', 'RiddleTeamController@listAllRiddles');
 Route::get('riddleteam/getAllParcours', 'RiddleTeamController@getTeamsParcours');
 Route::get('riddleteam/modParcours','RiddleTeamController@modParcours');
+Route::get('riddleteam/modRiddlesLvl','RiddleTeamController@modRiddlesLvl');
 
 // Player
 Route::get('player/', 'PlayerController@home');

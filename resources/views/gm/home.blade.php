@@ -174,7 +174,7 @@
             gmTeamList.update();
         });
 
-        const createParcours = new CreateModParcourDisp(tablist);
+        const createParcours = new CreateModParcourDisp(tablist,false);
         function allowDrop(ev) {
             createParcours.allowDrop(ev);
         }

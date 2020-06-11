@@ -92,7 +92,9 @@ class RiddleTeamController extends Controller
                 ]
             ]);
         }
+    }
 
+    public function modRiddlesLvl(Request $request){
         $riddleLineToModify = $request->riddleLine;
         try {
             foreach (Riddle::all() as &$riddle){
@@ -122,7 +124,6 @@ class RiddleTeamController extends Controller
             ]
         ]);
     }
-
 
     public function getTeamsParcours(Request $request)
     {
