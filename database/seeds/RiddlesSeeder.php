@@ -150,14 +150,6 @@ class RiddlesSeeder extends Seeder
             'code' => 0,
             'line' => 4
         ]);
-        DB::table('riddles')->insert([
-            'id' => 8888, // pour les rouges
-            'name' => 'La Tour', // + arcade (détecteur de distance)
-            'description' => 'Trouvez une partie du numéro de Théo',
-            'url' => null,
-            'code' => 0,
-            'line' => 4
-        ]);
 
         // fusion de l'embranchement 2 : téléphone
         DB::table('riddles')->insert([

@@ -64,7 +64,8 @@ if (!function_exists('cancel_riddle')) {
             throw new Exception("Riddle not started");
         if (!is_null($riddle_team->pivot->end_start))
             throw new Exception("Riddle already finished");
-        $riddle->teams()->updateExistingPivot($team->id, ['start_date' => null]);
+        //$riddle_team->delete();
+        $riddle->teams()->detach($riddle_team);
         event(new ChangeEvent());
     }
 }

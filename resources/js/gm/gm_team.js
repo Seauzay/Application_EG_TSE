@@ -189,8 +189,7 @@ class GMTeam {
             if (this.riddleTimer.isRunning()) {
                 this.riddleTimer.stop();
             }
-            this.root.find('.current-riddle-time').text(formatMS(moment(options.riddle_end,"YYYY-MM-DD hh:mm:ss").diff(moment(options.riddle_start,"YYYY-MM-DD hh:mm:ss"
-            ))));
+            this.root.find('.current-riddle-time').text("");
         } else if (isValidProperty(options,'riddle_start')) {
             if (this.riddleTimer.isRunning()) {
                 this.riddleTimer.stop();
@@ -263,6 +262,7 @@ class GMTeamList {
 	//Ajoute une équipe à GM, provoque l'affichage de l'équipe sur la page.
     addGMTeam(id) {
         const newDiv = $('<div>', {id: id});
+        newDiv.addClass('gm-team');
         newDiv.hide().appendTo(this.root).fadeIn(500);
         const gmTeam = new GMTeam(newDiv, id);
         this.gmTeams.push(gmTeam);
@@ -336,22 +336,37 @@ class GMTeamList {
             if (gmteam.classement != pos && gmteam.classement != null)
                 updateClassement = true;
 
-            if(prog !=1){
+            const currentRiddle = riddles.pop();
+            console.log(currentRiddle);
+            if(prog != 1){
                 // todo à améliorer en prenant en compte les temps (pour l'instant on prend la dernière)
-                const currentRiddle = riddles.pop();
-                gmteam.setAtributes({
-                    teamName: team.name,
-                    riddleName: currentRiddle.name+':',
-                    progress: 100 * prog,
-                    start: team.start_date,
-                    end: team.end_date,
-                    riddle_start: currentRiddle.start_date,
-                    riddle_end: currentRiddle.end_date,
-                    score: team.score,
-                    classement: pos
-                });
+                if (isValidProperty(currentRiddle,'start_date') && !isValidProperty(currentRiddle,'end_date')){
+                    gmteam.setAtributes({
+                        teamName: team.name,
+                        riddleName: currentRiddle.name+':',
+                        progress: 100 * prog,
+                        start: team.start_date,
+                        end: team.end_date,
+                        riddle_start: currentRiddle.start_date,
+                        riddle_end: currentRiddle.end_date,
+                        score: team.score,
+                        classement: pos
+                    });
+                }else{
+                    gmteam.setAtributes({
+                        teamName: team.name,
+                        riddleName: 'En attente',
+                        progress: 100 * prog,
+                        start: team.start_date,
+                        end: team.end_date,
+                        riddle_start: currentRiddle.start_date,
+                        riddle_end: currentRiddle.end_date,
+                        score: team.score,
+                        classement: pos
+                    });
+                }
             }
-            else{
+            else {
                 gmteam.setAtributes({
                     teamName: team.name,
                     riddleName: "Terminé",
@@ -366,6 +381,9 @@ class GMTeamList {
             // This handles the details section for each teams.
             const list = gmteam.root.find('.card-body ul');
             list.empty();
+            if (isValidProperty(currentRiddle,'end_date')){
+                riddles.push(currentRiddle);
+            }
             riddles.forEach((riddle) => {
                 const content = $('<li>');
                 const start = moment(riddle.start_date,"YYYY-MM-DD hh:mm:ss");
