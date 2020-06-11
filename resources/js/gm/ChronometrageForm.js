@@ -37,16 +37,13 @@ class ChronometrageForm {
             '<button type="button" id="resetButton" class="btn btn-primary" name="action" value="reset">Remettre le timer à zéro</button>' +
             '</div>');
         let copyThis = this;
-        console.log($("#triggerButton"));
         $(document).ready(function(){
             $("#triggerButton").on('click',function() {
-                console.log('test');
                 let formData = $('#chronoForm').serializeArray();
                 formData.push({ name: this.name, value: this.value });
                 copyThis.submitForm(formData);
             });
             $("#resetButton").on('click',function() {
-                console.log('test');
                 let formData = $('#chronoForm').serializeArray();
                 formData.push({ name: this.name, value: this.value });
                 copyThis.submitForm(formData);

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
+    <div class="container" id="log-out-container">
         @yield('nav-items')
         <div class="row justify-content-end">
             @if(isset(Auth::user()->name))

@@ -26,11 +26,11 @@
                         <label for="inputColor">Sélectionnez votre couleur d'équipe:</label>
                         <select id="color" name="color" class="custom-select mr-sm-2">
                             <option  disabled selected hidden>Couleurs</option>
-                            <option style="background-color: #e43a37;color: white" name="color" value="1">Rouge</option>
-                            <option style="background-color: #4bd73f;color: white" name="color" value="2">Vert</option>
-                            <option style="background-color: #50a3d6;color: white" name="color" value="3">Bleu</option>
-                            <option style="background-color: #f5d312;color: white" name="color" value="4">Jaune</option>
-                            <option style="background-color: #d36dc7;color: white" name="color" value="5">Violet</option>
+                            <option data-iconurl="{{url('images/red-icon.png')}}" name="color" value="1">Rouge</option>
+                            <option data-iconurl="{{url('images/green-icon.png')}}" name="color" value="2">Vert</option>
+                            <option data-iconurl="{{url('images/blue-icon.png')}}" name="color" value="3">Bleu</option>
+                            <option data-iconurl="{{url('images/yellow-icon.png')}}" name="color" value="4">Jaune</option>
+                            <option data-iconurl="{{url('images/purple-icon.png')}}" name="color" value="5">Violet</option>
                         </select>
                         <label for="inputNum">Sélectionnez votre numéro d'équipe:</label>
                         <select id="num" name="num" class="custom-select mr-sm-2">
@@ -66,4 +66,12 @@
                 <button type="submit" class="btn btn-danger" id="goButton">Go&nbsp;! :)</button>
             </div>
         </form>
+    <script>
+        $("select").selectBoxIt(
+            {
+                autoWidth: false,
+                isMobile: function(){return false;},
+                theme: "jqueryui"
+            });
+    </script>
 @endsection

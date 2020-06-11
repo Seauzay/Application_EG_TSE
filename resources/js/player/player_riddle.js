@@ -1,16 +1,39 @@
 const {Timer} = require('easytimer.js');
-var moment = require('moment');
+var sychronizeDate = null;
+const moment = require('moment');
 
 function dateNow(){
-    let date;
-    $.ajax('whatistimenow/', {
-        method: 'GET',
-        async : false,
-        dataType: 'json',
-        success: function(data) {date=data.now.date;}
-    });
-    return moment(date,"YYYY-MM-DD hh:mm:ss");
+    if (sychronizeDate == null){
+        let nowDateClient;
+        $.ajax('whatistimenow/', {
+            method: 'GET',
+            async : false,
+            dataType: 'json',
+            success: function(data) {
+                nowDateClient = moment();
+                date = moment(data.now.date,"YYYY-MM-DD hh:mm:ss");
+            }
+        });
+        sychronizeDate = nowDateClient.diff(date);
+        console.log('Synchronized with server time!');
+        console.log('Time difference is: '+sychronizeDate+' ms');
+        if(sychronizeDate<1000){
+            sychronizeDate = 0;
+            console.log('Time difference is too small. Neglected!');
+        }
+    }
+    else{
+        if(sychronizeDate>0)
+            date = moment().subtract(sychronizeDate,'ms');
+        else if(sychronizeDate<0)
+            date = moment().add(-sychronizeDate,'ms');
+        else
+            date = moment();
+    }
+    return date;
 }
+// Calling dateNow for the first time in order to sychronize date between server and client.
+dateNow();
 
 /* retire de la page tout les éléments d'une classe
 Attention: si les éléments en question sont liés à des classe,
@@ -88,8 +111,8 @@ class PlayerRiddle {
                 cancel: true
             });
             this.showURL(true);
-            this.setTimer(0);
-            this.startTimerFromDate(dateNow());
+            this.setTimer(dateNow());
+            this.startTimerFromDate(0);
             $.ajax('riddle/' + this.id + '/start'); //TODO Error handling
             playerRiddleGrid.start();
             playerRiddleGrid.update();

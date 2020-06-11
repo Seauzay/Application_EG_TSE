@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Riddle;
 use App\Team;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\UnauthorizedException;
+use Mockery\Exception;
 use RefreshDBSeeder;
 use const Grpc\CALL_ERROR;
 
@@ -27,7 +29,8 @@ class AdminController extends Controller
                 'code' => $riddle->code,
                 'url' =>$riddle->url,
                 'disabled' => $riddle->disabled,
-                'post-msg' => $riddle->post_resolution_message
+                'post-msg' => $riddle->post_resolution_message,
+                'level' => $riddle->line
             ];
         })->all();
 
@@ -40,46 +43,129 @@ class AdminController extends Controller
 
     public function refreshDB()
     {
-        $this->authorize('isAdmin', Team::class);
-        $seeder = new refreshDBSeeder();
-        $seeder->run();
-        return redirect('admin');
+        try{
+            $this->authorize('isAdmin', Team::class);
+            $seeder = new refreshDBSeeder();
+            $seeder->run();
+            DB::commit();
+            return JsonResponse::create(['status' => [
+                'type' => 'success',
+                'message' => 'La base de donnée a été réinitialisée avec succès !',
+                'display' => true
+            ]]);
+        }catch(Exception $e){
+            DB::rollback();
+            return JsonResponse::create(['status' => [
+                'type' => 'error',
+                'message' => 'Une erreur a été produite !',
+                'display' => true
+            ]]);
+        }
     }
 
     function modifyRiddle(Request $request)
     {
-        $this->authorize('isAdmin', Team::class);
+        try{
+            $this->authorize('isAdmin', Team::class);
 
-        $riddle = Riddle::where('id', '=', $request->input('id'))->first();
+            $riddle = Riddle::where('id', '=', $request->input('id'))->first();
+            $creation = false;
+            if( is_null($riddle)){
+                $riddle = new Riddle;
+                $creation = true;
+                if(!is_null($request->input('name')) && !is_null($request->input('code'))){
+                    $riddle->name = $request->input('name');
+                    $riddle->description = $request->input('description') ?? null;
+                    $riddle->code = $request->input('code');
+                    $riddle->url = $request->input('url') ?? null;
+                    $riddle->post_resolution_message = $request->input('post-msg') ?? null;
+                    $riddle->disabled = $request->input('disabled') ? true : false;
+                }else{
+                    return JsonResponse::create(['status' => [
+                        'type' => 'error',
+                        'message' => 'Veuillez rentrer un nom et un code de validation valides pour votre nouvelle énigme !',
+                        'display' => true
+                    ]]);
+                }
+            }else{
+                $riddle->name = $request->input('name') ?? $riddle->name;
+                $riddle->description = $request->input('description') ?? $riddle->description;
+                $riddle->code = $request->input('code') ?? $riddle->code;
+                $riddle->url = $request->input('url')?? $riddle->url;
+                $riddle->post_resolution_message = $request->input('post-msg')?? $riddle->post_resolution_message;
+                $riddle->disabled = $request->input('disabled') ? true : false;
+            }
 
-        $riddle->name = $request->input('name') ?? $riddle->name;
-        $riddle->description = $request->input('description') ?? $riddle->description;
-        $riddle->code = $request->input('code') ?? $riddle->code;
-        $riddle->url = $request->input('url')?? $riddle->url;
-        $riddle->post_resolution_message = $request->input('post-msg')?? $riddle->post_resolution_message;
-        $riddle->disabled = $request->input('disabled') ? true : false;
-
-        $riddle->saveOrFail();
-        return redirect('admin');
+            if ($riddle->save()) {
+                DB::commit();
+                if($creation){
+                    return JsonResponse::create(['status' => [
+                        'type' => 'success',
+                        'message' => 'La nouvelle énigme a été créée avec succès !',
+                        'display' => true
+                    ]]);
+                }else{
+                    return JsonResponse::create(['status' => [
+                        'type' => 'success',
+                        'message' => 'Énigme(s) modifiée(s) avec succès !',
+                        'display' => true
+                    ]]);
+                }
+            } else {
+                DB::rollBack();
+                return JsonResponse::create(['status' => [
+                    'type' => 'error',
+                    'message' => 'Une erreur a été produite lors de la sauvegarde !',
+                    'display' => true
+                ]]);
+            }
+        }catch (Exception $e){
+            DB::rollBack();
+            return JsonResponse::create(['status' => [
+                'type' => 'success',
+                'message' => 'Une erreur a été produite !',
+                'display' => true
+            ]]);
+        }
     }
 
     function addGM(Request $request){
-        $this->authorize('isAdmin', Team::class);
+        try{
+            $this->authorize('isAdmin', Team::class);
 
-        $alreadyInDbGM = Team::where('grade','=',1)
-            ->where('name','=',$request->input('name'))->get()->first();
-        if(is_null($alreadyInDbGM)){
-            DB::table('teams')->insert([
-                'id' => DB::table('teams')->where('id','<',101)->max('id')+1,
-                'name' => $request->input('name'),
-                'password' => bcrypt($request->input('password')),
-                'grade' => 1,
-            ]);
-        }else{
-            $alreadyInDbGM->password = bcrypt($request->input('password'));
-            $alreadyInDbGM->saveOrFail();
+            $alreadyInDbGM = Team::where('grade','=',1)
+                ->where('name','=',$request->input('name'))->get()->first();
+            if(is_null($alreadyInDbGM)){
+                DB::table('teams')->insert([
+                    'id' => DB::table('teams')->where('id','<',101)->max('id')+1,
+                    'name' => $request->input('name'),
+                    'password' => bcrypt($request->input('password')),
+                    'grade' => 1,
+                ]);
+                DB::commit();
+                return JsonResponse::create(['status' => [
+                    'type' => 'success',
+                    'message' => 'Le compte gamemaster a été créé avec succès !',
+                    'display' => true
+                ]]);
+            }else{
+                $alreadyInDbGM->password = bcrypt($request->input('password'));
+                $alreadyInDbGM->saveOrFail();
+                DB::commit();
+                return JsonResponse::create(['status' => [
+                    'type' => 'success',
+                    'message' => 'Ce gamemaster existe déjà. Son mot de passe a été modifé avec succès !',
+                    'display' => true
+                ]]);
+            }
+        }catch(Exception $e){
+            DB::rollBack();
+            return JsonResponse::create(['status' => [
+                'type' => 'error',
+                'message' => 'Une erreur a été produite !',
+                'display' => true
+            ]]);
         }
-        return redirect('admin');
     }
 
     function logout()

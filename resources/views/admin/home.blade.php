@@ -11,7 +11,11 @@
         <div class="card-admin">
             <h2>Réinitialiser la base de données ? (cette action est irréversible)</h2>
             <form id="refreshDB" action="{{ url('/admin/refreshDB') }}" method="post">
-                <button class="btn btn-danger" id="refreshButton" onclick="confirm(e)">Je veux réinitialiser la base de données</button>
+                <input type="checkbox" id="refreshRiddles" name="Riddles" checked>
+                <label for="Riddles">Réinitialiser les énigmes également</label>
+                <input type="checkbox" id="refreshGMs" name="GMs">
+                <label for="GMs">Réinitialiser les gamemasters également</label>
+                <button class="btn btn-danger" id="refreshButton" onclick="confirm(e)">Je veux réinitialiser les parcours et recommencer une nouvelle partie.</button>
             </form>
 
             <script>
@@ -23,6 +27,10 @@
                     newButton.type = 'submit';
                     document.querySelector('#refreshDB').appendChild(newButton);
                 });
+                $(form).submit(function(e){
+                    e.preventDefault();
+
+                })
             </script>
         </div>
     </div>
@@ -159,6 +167,10 @@
         function resetParcours(){
             createParcours.resetParcours();
         }
+    </script>
+    <script>
+        $("#log-out-container").css("display","block");
+        $("#log-out-container").css("padding-right","10%");
     </script>
 
 @endsection

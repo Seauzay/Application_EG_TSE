@@ -20,7 +20,7 @@ class RiddlesSeeder extends Seeder
             'id' => 1,
             'name' => 'L\'Amphithéâtre',
             'description' => 'Connectez-vous à l\'intranet.',
-            'url' => 'http://51.75.126.46/html/escapegameTSE/Mooste/index.html',
+            'url' => 'http://51.75.126.46/html/escapegameTSE/Mooste/frontend/index.html',
             'code' => 0,
             'line' => 1
         ]);
@@ -80,7 +80,7 @@ class RiddlesSeeder extends Seeder
             'id' => 7,
             'name' => 'La Cour des Matières',
             'description' => 'Déchiffrez le code',
-            'url' => 'http://51.75.126.46/html/escapegameTSE/public/CDM',
+            'url' => 'http://51.75.126.46/CDM/public',
             'code' => 0,
             'line' => 3
         ]);
@@ -127,7 +127,7 @@ class RiddlesSeeder extends Seeder
             'id' => 10, // pour les jaunes
             'name' => 'La Fabrique de l\'Innovation', // code source
             'description' => 'Trouvez une partie du numéro de Théo',
-            'url' => 'http://51.75.126.46/html/escapegameTSE/public/codesource',
+            'url' => 'http://51.75.126.46/sourcecode/public',
             'code' => 0,
             'line' => 4
         ]);
@@ -146,7 +146,7 @@ class RiddlesSeeder extends Seeder
             'name' => 'La Fabrique de l\'Innovation', // code source
             'description' => 'Trouvez une partie du numéro de Théo',
             'post_resolution_message' => 'Vous avez reçu un nouveau message de Théo. Composez le 06 65 XX XX 11 pour l\'écouter.',
-            'url' => 'http://51.75.126.46/html/escapegameTSE/public/codesource',
+            'url' => 'http://51.75.126.46/sourcecode/public',
             'code' => 0,
             'line' => 4
         ]);
@@ -164,7 +164,7 @@ class RiddlesSeeder extends Seeder
             'id' => 11,
             'name' => 'Le Téléphone de Théo',
             'description' => 'Appelez Théo.',
-            'url' => 'http://51.75.126.46/html/escapegameTSE/public/telephone',
+            'url' => 'http://51.75.126.46/telephone/public',
             'code' => 0,
             'line' => 5
         ]);
