@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Events\ResetChrono;
 use App\Events\StartChrono;
@@ -55,7 +56,7 @@ class GameMasterController extends Controller
         return redirect('gm/login');
     }
 
-	
+
 
 
 	function exportResult()
@@ -65,26 +66,20 @@ class GameMasterController extends Controller
 
 		foreach (Team::all() as $team) {
             if ($team->grade >= 1) continue;
-            $riddles = [];
 
-			foreach ($team->riddles->all() as $riddle) {
-                array_push($riddles, riddle_info_for_gm($riddle, $team));
-            }
-           
-                
             $infos =  [
 				'name'=> $team->getAttribute('name'),
-                'start'=> $team->getAttribute('start_date'),
-                'end'=> $team->getAttribute('end_date'),
+                'timing'=> Carbon::parse($team->end_date)->diff(Carbon::parse($team->start_date))->format('%H:%i:%s'),
 				'score'=> $team->getAttribute('score')
             ];
-				
-			foreach($riddles as $rids){
-				array_push($infos,$rids->name);
-				array_push($infos, $rids->start_date);	
-				array_push($infos,$rids->end_date);
-					
-			}	
+
+			foreach($team->riddles->all() as $riddle){
+                $infoRiddle = riddle_info_for_gm($riddle, $team);
+                if(!is_null($infoRiddle['start_date']) && !is_null($infoRiddle['end_date'])){
+                    array_push($infos,$infoRiddle['name']);
+                    array_push($infos, Carbon::parse($infoRiddle['end_date'])->diff(Carbon::parse($infoRiddle['start_date']))->format('%H:%i:%s'));
+                }
+			}
 			array_push($output, $infos);
 
         }
@@ -92,9 +87,9 @@ class GameMasterController extends Controller
 
 		// create a file pointer connected to the output stream
 		$file = fopen('report.csv', 'w');
-		fputcsv($file,['name','start_date','end_date','score','enigmes...']);
+		fputcsv($file,['Equipe','Timing','Score','Enigmes/Timing...'],";");
         foreach ($output as $row) {
-            fputcsv($file, $row);
+            fputcsv($file, array_map("utf8_decode", $row), ";");
         }
 
         fclose($file);
