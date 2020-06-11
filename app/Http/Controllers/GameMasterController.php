@@ -34,9 +34,8 @@ class GameMasterController extends Controller
         if (Auth::attempt($user_data)) {
             return redirect('gm');
         } else {
-            return back()->with('error', 'Wrong Login Details');
+            return back()->with('error', 'Mot de passe ou identifiant erronés');
         }
-
     }
 
     function home()

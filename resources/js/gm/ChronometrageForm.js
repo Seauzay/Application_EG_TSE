@@ -55,7 +55,7 @@ class ChronometrageForm {
 
     submitForm(formData){
         $.ajax('gm/startChrono',{
-            data: formData, // serializes the form's elements.
+            data: formData,
             success: function(data) // show response from the php script.
             {
                 if (data.status.type === 'success') {

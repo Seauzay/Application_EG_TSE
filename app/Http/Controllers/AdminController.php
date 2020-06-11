@@ -41,12 +41,12 @@ class AdminController extends Controller
     }
 
 
-    public function refreshDB()
+    public function refreshDB(Request $request)
     {
         try{
             $this->authorize('isAdmin', Team::class);
             $seeder = new refreshDBSeeder();
-            $seeder->run();
+            $seeder->run($request->input('Riddles'),$request->input('GMs'));
             DB::commit();
             return JsonResponse::create(['status' => [
                 'type' => 'success',
