@@ -46,7 +46,13 @@ class AdminController extends Controller
         try{
             $this->authorize('isAdmin', Team::class);
             $seeder = new refreshDBSeeder();
-            $seeder->run($request->input('Riddles'),$request->input('GMs'));
+            $refreshRiddles = false;
+            $refreshGM = false;
+            if($request->input('Riddles') == "on")
+                $refreshRiddles = true;
+            if($request->input('GMs') == "on")
+                $refreshGM = false;
+            $seeder->run($refreshRiddles,$refreshGM);
             DB::commit();
             return JsonResponse::create(['status' => [
                 'type' => 'success',
