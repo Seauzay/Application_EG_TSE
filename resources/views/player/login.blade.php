@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('content')
     @if(isset(Auth::user()->name))
-        <script>window.location = "/";</script>
+        <script>window.location = "{{ url('/') }}";</script>
     @endif
 
 
