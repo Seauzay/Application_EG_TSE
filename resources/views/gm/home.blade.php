@@ -118,7 +118,7 @@
 		but.class = "btn btn-secondary pull-right";
 		but.addEventListener("click",function(){
 			//console.log('click');
-			$.ajax('admin/CSV', {method: 'GET', success :  startDownload()});
+			$.ajax('admin/CSV', {method: 'GET', success :(response)=>{if (response=='true'){  startDownload()}}});
 		} );
 		function startDownload(){
 			let frame = document.createElement('iframe');
