@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-8 gm-riddle-col">
                     <div class="row justify-content-center"><span class="current-riddle-title">Énigme actuelle: </span></div>
-                    <div class="row justify-content-center"><span class="current-riddle"></span>:&nbsp;<span
+                    <div class="row justify-content-center"><span class="current-riddle"></span><span
                                 class="current-riddle-time"></span></div>
                 </div>
             </div>
@@ -72,10 +72,7 @@
                         <div class="current-riddle-code">code</div>
                         <div class="current-riddle-post-msg">Msg de resolution</div>
                         <a draggable="false" class="current-riddle-url" >URL</a>
-                        <div class="current-riddle-disable-cb">
-                            <label {{--for="disable{{$loop->index}}" --}}>Désactiver :</label>
-                            <input type="checkbox" class="current-riddle-activated" {{-- id="disable{{$loop->index}}" name="disabled" {{$riddle['disabled'] ? 'checked' : ''}}--}}>
-                        </div>
+                        <div class="current-riddle-activated"></div>
                     </div>
                 </div>
             </template>
@@ -105,17 +102,14 @@
     </script>
 
     <script>
-        const divSuivi = $('<div>');
-        divSuivi.appendTo(tablist.contentOfTab(1));
-        const gmTeamList = new GMTeamList(divSuivi);
-        gmTeamList.update();
-
         //Partie bouton pour la récuperation des données des équipes dans un fichier csv
 		let cont_but = document.createElement('div');
 		cont_but.id = "cont_but";
+        cont_but.className = "container";
 		let but = document.createElement('button');
-		but.innerHTML  = 'écriture sur fichier CSV';
+		but.innerHTML  = 'Exporter en CSV';
 		but.class = "btn btn-secondary pull-right";
+		but.id = 'export-button'
 		but.addEventListener("click",function(){
 			//console.log('click');
 			$.ajax('admin/CSV', {method: 'GET', success :(response)=>{if (response=='true'){  startDownload()}}});
@@ -133,6 +127,10 @@
 
 		cont_but.appendChild(but);
 		tablist.contentOfTab(1).append(cont_but);
+        const divSuivi = $('<div>');
+        divSuivi.appendTo(tablist.contentOfTab(1));
+        const gmTeamList = new GMTeamList(divSuivi);
+        gmTeamList.update();
 
 
         const divChrono = $('<div>',{id:'chronometrageTabContent'});
@@ -184,5 +182,9 @@
             createParcours.resetParcours();
         }
 
+    </script>
+    <script>
+        $("#log-out-container").css("display","block");
+        $("#log-out-container").css("padding-right","10%");
     </script>
 @endsection

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             MessagingSeeder::class,
             RoomsSeeder::class,
             RoomTeamSeeder::class,
-            RiddlesRiddlesSeeder::class,
+            //RiddlesRiddlesSeeder::class,
             RiddleTeamSeeder::class,
             ParcoursSeeder::class
         ]);

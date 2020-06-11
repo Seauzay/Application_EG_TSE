@@ -7,7 +7,6 @@ class DisplayEmoji {
     display() {
         $.ajax('player/classement', {
             method: 'GET', success: function (response) {
-                console.log(response.rank);
                 if (response.rank == 1)
                     $('#emoji .rank').text('🥇');
                 else if (response.rank == 2)
@@ -19,7 +18,6 @@ class DisplayEmoji {
 
             }
         });
-        console.log('listener');
     }
 
 }

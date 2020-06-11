@@ -10,17 +10,27 @@ class RefreshDBSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run($refreshRiddles,$refreshGM)
     {
         DB::table('jobs')->truncate();
+        if($refreshRiddles){
+            $this->call([RiddlesSeeder::class,
+                ParcoursSeeder::class]);
+        }
+        if($refreshGM){
+            $this->call([TeamsSeeder::class]);
+        }
+        else{
+            DB::table('teams')->where('grade','=',0)->update(['start_date' => null]);
+            DB::table('teams')->where('grade','=',0)->update(['end_date' => null]);
+            DB::table('teams')->where('grade','=',0)->update(['score' => 0]);
+        }
         $this->call([
-            RiddlesSeeder::class,
+            RiddleTeamSeeder::class,
             MessagesSeeder::class,
             MessagingSeeder::class,
             RoomsSeeder::class,
             RoomTeamSeeder::class,
-            RiddleTeamSeeder::class,
-            ParcoursSeeder::class
         ]);
     }
 }

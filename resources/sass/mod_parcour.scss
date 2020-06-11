@@ -29,10 +29,12 @@
   }
 
   #header-mod-parcours{
-    background: white;
+    background: #ea0000;
     color:white;
     border:3px solid #36c;
     border-radius: 5px 5px 0px 0px;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
   }
 }
 
@@ -43,4 +45,8 @@
   width : 20rem;
   height: 3rem;
   margin : 5px;
+}
+
+#mod-bdd{
+    text-align: center;
 }

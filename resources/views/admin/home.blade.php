@@ -7,36 +7,65 @@
 @endsection
 
 @section('content')
+    <div class="modal" tabindex="-1" role="dialog" id="success-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Succès</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-message">Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{url('/admin')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="erros-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Erreur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-message">Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{url('/admin')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="reinit-base" >
         <div class="card-admin">
-            <h2>Réinitialiser la base de données ? (cette action est irréversible)</h2>
-            <form id="refreshDB" action="{{ url('/admin/refreshDB') }}" method="post">
-                <button class="btn btn-danger" id="refreshButton" onclick="confirm(e)">Je veux réinitialiser la base de données</button>
+            <h4>Réinitialiser la base de données ? (cette action est irréversible)</h4>
+            <form id="refreshDB">
+                <div>
+                    <input type="checkbox" id="refreshRiddles" name="Riddles">
+                    <label for="Riddles">Réinitialiser les énigmes</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="refreshGMs" name="GMs">
+                    <label for="GMs">Réinitialiser les gamemasters</label>
+                </div>
+                <button class="btn btn-danger" id="refreshButton" onclick="confirm(e)">Je veux réinitialiser les parcours et recommencer une nouvelle partie.</button>
             </form>
-
-            <script>
-                document.querySelector('#refreshButton').addEventListener('click', function (e) {
-                    e.preventDefault();
-                    this.style.display = 'none';
-                    const newButton = document.createElement('button');
-                    newButton.textContent = 'Je comprends les conséquences tragiques de mon acte et je souhaite tout recommencer';
-                    newButton.type = 'submit';
-                    document.querySelector('#refreshDB').appendChild(newButton);
-                });
-            </script>
         </div>
     </div>
 
     <div id="add-GM">
         <div class="card-admin">
-            <h2>Ajouter Game Master</h2>
-            <form action="{{url('admin/addGM')}}" method="post">
-                <div>
-                    <input class="form-control" type="text" id="name" name="name" placeholder="Identifiant">
-                </div>
-                <div>
-                    <input class="form-control" type="password" id="password" name="password" placeholder="Password">
-                </div>
+            <h4>Ajouter/Modifier Game Master</h4>
+            <form id="add-GM-form">
+                <input class="form-control" type="text" id="name" name="name" placeholder="Identifiant">
+                <input class="form-control" type="password" id="password" name="password" placeholder="Password">
                 <button class="btn btn-primary validate-button my-1 center-block" type="submit">Ajouter</button>
             </form>
         </div>
@@ -44,9 +73,9 @@
     <div id="mod-riddles">
         @foreach($riddles as $riddle)
             <div class="card-admin">
-                <form action="{{ url('/admin/modifyRiddle') }}" method="post" style="margin-bottom: 2rem;">
+                <form class="modify-riddle" style="margin-bottom: 2rem;">
                     <input type="number" name="id" value="{{$riddle['id']}}" hidden>
-                    <h2 class="current-ridlle-name">{{$riddle['name']}}</h2>
+                    <h3 class="current-ridlle-name">{{$riddle['name']}}</h3>
                     <div class="current-riddle-info">
                         <div class="current-riddle-descr">{{$riddle['description']}}</div>
                         <div class="current-riddle-code">{{$riddle['code']}}</div>
@@ -83,17 +112,14 @@
         <div class="mod-parcour-container">
             <template id="mod-parcour-template">
                 <div class="card-admin" draggable="true" ondragstart="drag(event)" ondragover="dragOver(event)" ondragend="dragEnd(event)">
-                    <h2 class="current-riddle-name">title</h2>
+                    <h4 class="current-riddle-name">title</h4>
                     <span class="id-card" hidden></span>
                     <div class="current-riddle-info">
                         <div class="current-riddle-descr">descr</div>
                         <div class="current-riddle-code">code</div>
                         <div class="current-riddle-post-msg">Msg de resolution</div>
                         <a draggable="false" class="current-riddle-url" >URL</a>
-                        <div class="current-riddle-disable-cb">
-                            <label {{--for="disable{{$loop->index}}" --}}>Désactiver :</label>
-                            <input type="checkbox" class="current-riddle-activated" {{-- id="disable{{$loop->index}}" name="disabled" {{$riddle['disabled'] ? 'checked' : ''}}--}}>
-                        </div>
+                        <div class="current-riddle-activated"></div>
                     </div>
                 </div>
             </template>
@@ -162,6 +188,81 @@
         function resetParcours(){
             createParcours.resetParcours();
         }
+    </script>
+    <script>
+        $("#log-out-container").css("display","block");
+        $("#log-out-container").css("padding-right","10%");
+    </script>
+    <script>
+        $(document).ready(function(){
+            $(document).on('submit', '#add-GM-form', function() {
+                $.ajax("{{url('admin/addGM')}}",{
+                    data: $(this).serialize(),
+                    success: function(data) // show response from the php script.
+                    {
+                        if (data.status.type === 'success') {
+                            $('#success-modal').find('.modal-message').text(data.status.message);
+                            $('#success-modal').modal('show');
+
+                        }
+                        if (data.status.type === 'error') {
+                            $('#error-modal').find('.modal-message').text(data.status.message);
+                            $('#error-modal').modal('show');
+                        }
+                    }
+                });
+                return false;
+            });
+            document.querySelector('#refreshButton').addEventListener('click', function (e) {
+                e.preventDefault();
+                this.style.display = 'none';
+                const newButton = document.createElement('button');
+                newButton.textContent = 'Je comprends les conséquences tragiques de mon acte et je souhaite tout recommencer';
+                newButton.type = 'submit';
+                document.querySelector('#refreshDB').appendChild(newButton);
+            });
+            $('#refreshDB').submit(function(e){
+                e.preventDefault();
+                $.ajax("{{url('admin/refreshDB')}}",{
+                    data: $(this).serialize(),
+                    success: function(data) // show response from the php script.
+                    {
+                        if (data.status.type === 'success') {
+                            // show modal for success
+                            $('#success-modal').find('.modal-message').text(data.status.message);
+                            $('#success-modal').modal('show');
+
+                        }
+                        if (data.status.type === 'error') {
+                            // show modal for error
+                            $('#error-modal').find('.modal-message').text(data.status.message);
+                            $('#error-modal').modal('show');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(".modify-riddle").submit(function(e){
+            e.preventDefault();
+            $.ajax("{{ url('/admin/modifyRiddle') }}",{
+                data: $(this).serialize(),
+                success: function(data) // show response from the php script.
+                {
+                    if (data.status.type === 'success') {
+                        $('#success-modal').find('.modal-message').text(data.status.message);
+                        $('#success-modal').modal('show');
+
+                    }
+                    if (data.status.type === 'error') {
+                        $('#error-modal').find('.modal-message').text(data.status.message);
+                        $('#error-modal').modal('show');
+                    }
+                }
+            });
+        })
+
     </script>
 
 @endsection
