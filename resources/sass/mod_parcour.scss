@@ -79,6 +79,26 @@
     left : 0;
     right : 0;
     margin: 0 auto;
+
+    #header-add-mod-riddles{
+      background-color: #36c;
+      color:white;
+      border:none;
+      border-radius: 5px 5px 0px 0px;
+      margin-left: -12px;
+      margin-top: -12px;
+      margin-right: -12px;
+      text-align: center;
+      padding : 12px;
+    }
+
+    .btn-riddles{
+      display : flex;
+      flex-direction: row;
+      button{
+        margin : auto auto;
+      }
+    }
   }
 }
 #drag-over-shadow{
@@ -92,3 +112,5 @@
 #mod-bdd{
     text-align: center;
 }
+
+

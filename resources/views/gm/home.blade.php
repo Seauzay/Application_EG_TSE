@@ -85,8 +85,8 @@
     {{-- Template pour la modification de parcours--}}
     <div id="mod-parcour-display-template">
         <div id="mod-bdd">
-                <button id="btn-mod-bdd"class="btn btn-primary validate-button my-1" onclick="modParcours()">Modifier</button>
-                <button id="btn-reset-display"class="btn btn-primary validate-button my-1" onclick="resetParcours()">Reset</button>
+                <button id="btn-mod-bdd"class="btn btn-primary validate-button my-1" onclick="modParcours(event)">Modifier</button>
+                <button id="btn-reset-display"class="btn btn-primary validate-button my-1" onclick="resetParcours(event)">Reset</button>
 
         </div>
 
@@ -96,6 +96,7 @@
             <template id="mod-parcour-template">
                 <div class="card-admin" draggable="true" ondragstart="drag(event)" ondragover="dragOver(event)" ondragend="dragEnd(event)">
                     <h2 class="current-riddle-name">title</h2>
+                    <div class="current-riddle-activated"></div>
                     <div class="collapse-content">Détails</div>
                     <span class="id-card" hidden></span>
                     <div class="current-riddle-info">
@@ -103,7 +104,7 @@
                         <div class="current-riddle-code">code</div>
                         <div class="current-riddle-post-msg">Msg de resolution</div>
                         <a draggable="false" class="current-riddle-url" >URL</a>
-                        <div class="current-riddle-activated"></div>
+
                     </div>
                 </div>
             </template>
@@ -201,16 +202,12 @@
             }
         }
 
-        function modParcours(){
-            createParcours.modParcours();
+        function modParcours(ev){
+            createParcours.modParcours(ev);
         }
 
-        function resetBDD(){
-            createParcours.resetBDD();
-
-		}
-        function resetParcours(){
-            createParcours.resetParcours();
+        function resetParcours(ev){
+            createParcours.resetParcours(ev);
         }
 
     </script>

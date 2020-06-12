@@ -8,7 +8,7 @@ class CreateModParcourDisp{
         const pos = this.tablist.addTab({title: "Gestion des parcours"});
         this.containerGestion = this.tablist.contentOfTab(pos + 1);
         if(isModParcours){
-            const pos2 = this.tablist.addTab({title: "'Modifier les énigmes'"});
+            const pos2 = this.tablist.addTab({title: "Modifier les énigmes"});
             this.containerModRiddle = this.tablist.contentOfTab(pos2+1);
         }
         this.isModParcours = isModParcours;
@@ -264,6 +264,7 @@ class ModParcourAPI {
             this.selectedIndex = 0;
             header_parcours.style.borderColor = this.getColorFromParcour(this.parcours[0].team_color);
         }
+        this.changeIdx(this.selectedIndex);
     }
 
     updateParcours(parcourJSON) {
@@ -504,6 +505,7 @@ class ModParcourAPI {
             if(isModCard){
                 var riddle = this.AllRiddles.filter(v => v.id == riddle_id)[0];
                 //add new Information :
+                clone.querySelector("#header-add-mod-riddles").textContent = "Modifier énigme";
                 clone.querySelector("input[name='id']").textContent = riddle.id;
                 clone.querySelector("input[name='disabledCB']").checked = riddle.disabled;
                 clone.querySelector("input[name='lvl']").textContent = riddle.line;
@@ -523,6 +525,7 @@ class ModParcourAPI {
                 modBtn.addEventListener('click',ev=>this.modRiddleInfo());
                 clone.querySelector('.btn-riddles').appendChild(modBtn);
             }else{
+                clone.querySelector("#header-add-mod-riddles").textContent = "Ajouter énigme";
                 clone.querySelector("input[name='id']").textContent = riddle_id;
                 clone.querySelector("input[name='disabledCB']").checked = false;
                 clone.querySelector('.current-riddle-info').remove();
@@ -540,7 +543,7 @@ class ModParcourAPI {
             cancelBtn.addEventListener('click',ev=>this.cancelModAdd());
             clone.querySelector('.btn-riddles').appendChild(cancelBtn);
             clone.querySelector(".card-admin").id = "add-mod-riddles-node";
-            this.container.querySelector("#parcour-mod-div").style.opacity = 0.3;
+            this.container.querySelector("#parcour-mod-div").style.opacity = 0.15;
             this.container.appendChild(clone);
         }
     }
@@ -549,11 +552,10 @@ class ModParcourAPI {
         this.container.querySelector("#parcour-mod-div").style.opacity = 1;
         var clone = this.container.querySelector("#add-mod-riddles-node");
         if(clone != null) {
-            var newId = 0;
+            var newId = 1;
             while(this.AllRiddles.filter(r => r.id == newId).length!= 0)
                 newId++;
-            var oldRiddle = {};
-            Object.assign(oldRiddle, this.AllRiddles[0]);
+            var oldRiddle = JSON.parse(JSON.stringify( this.AllRiddles[0]));
             oldRiddle.name = "";
             oldRiddle.description = "";
             oldRiddle.code = "";
@@ -563,10 +565,20 @@ class ModParcourAPI {
             oldRiddle.id = newId;
             var newRiddle = this.getNewRiddle(oldRiddle);
             this.cancelModAdd();
-
             if(newRiddle != null){
-                this.AllRiddles.push(newRiddle);
-                this.update();
+                $.ajax('admin/modifyRiddle', {
+                    data : {riddle : newRiddle},
+                    dataType: 'json',
+                    success: (response) => {
+                        if(response.status.type == 'success'){
+                            alert(response.status.message);
+                            this.AllRiddles.push(newRiddle);
+                            this.update();
+                        }else{
+                            alert(response.status.message);
+                        }
+                    }
+                });
             }
 
         }
@@ -580,10 +592,20 @@ class ModParcourAPI {
             var oldRiddle = this.AllRiddles.filter(v => v.id == id)[0];
             var newRiddle = this.getNewRiddle(oldRiddle);
             this.cancelModAdd();
-
             if(newRiddle != null){
-                this.AllRiddles[this.AllRiddles.indexOf(oldRiddle)] = newRiddle;
-                this.update();
+                $.ajax('admin/modifyRiddle', {
+                    data : {riddle : newRiddle},
+                    dataType: 'json',
+                    success: (response) => {
+                        if(response.status.type == 'success'){
+                            alert(response.status.message);
+                            this.AllRiddles[this.AllRiddles.indexOf(oldRiddle)] = newRiddle;
+                            this.update();
+                        }else{
+                            alert(response.status.message);
+                        }
+                    }
+                });
             }
         }
 
@@ -592,7 +614,7 @@ class ModParcourAPI {
     getNewRiddle(oldRiddle){
         var clone = this.container.querySelector("#add-mod-riddles-node");
         if(clone != null){
-            var riddleTmp = oldRiddle;
+            var riddleTmp=JSON.parse(JSON.stringify( oldRiddle));
             var name = clone.querySelector("input[name='name']").value;
             var description = clone.querySelector("input[name='description']").value;
             var code = clone.querySelector("input[name='code']").value;

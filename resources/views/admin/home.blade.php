@@ -88,6 +88,7 @@
             <template id="mod-parcour-template">
                 <div class="card-admin" draggable="true" ondragstart="drag(event)" ondragover="dragOver(event)" ondragend="dragEnd(event)">
                     <h4 class="current-riddle-name">title</h4>
+                    <div class="current-riddle-activated"></div>
                     <div class="collapse-content">Détails</div>
                     <span class="id-card" hidden></span>
                     <div class="current-riddle-info">
@@ -95,7 +96,6 @@
                         <div class="current-riddle-code">code</div>
                         <div class="current-riddle-post-msg">Msg de resolution</div>
                         <a draggable="false" class="current-riddle-url" >URL</a>
-                        <div class="current-riddle-activated"></div>
                     </div>
                 </div>
             </template>
@@ -123,8 +123,9 @@
             <div class="card-admin">
                 <input type="number" name="id" hidden>
                 <input type="number" name="lvl" hidden>
+                <h2 id="header-add-mod-riddles"></h2>
                     <div class="current-riddle-info">
-                        <h2 class="current-riddle-name"></h2>
+                        <h4 class="current-riddle-name"></h4>
                         <div class="current-riddle-descr"></div>
                         <div class="current-riddle-code"></div>
                         <div class="current-riddle-post-msg" ></div>
