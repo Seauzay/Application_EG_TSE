@@ -29,6 +29,11 @@
     opacity: 0.7;
     text-align : left;
   }
+
+  .collapse-content{
+    border : 3px solid white;
+    background-color: white;
+  }
 }
 #add-GM,#mod-riddles, #reinit-base{
   .card-admin{
@@ -43,3 +48,4 @@
   }
 
 }
+

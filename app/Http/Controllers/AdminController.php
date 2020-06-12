@@ -69,23 +69,27 @@ class AdminController extends Controller
         }
     }
 
-    function modifyRiddle(Request $request)
+    function modifyRiddle(Request $requestJSON)
     {
+
         try{
             $this->authorize('isAdmin', Team::class);
-
-            $riddle = Riddle::where('id', '=', $request->input('id'))->first();
+            $request = $requestJSON->riddle;
+            $riddle = Riddle::where('id', '=', $request['id'])->first();
             $creation = false;
+
             if( is_null($riddle)){
                 $riddle = new Riddle;
                 $creation = true;
-                if(!is_null($request->input('name')) && !is_null($request->input('code'))){
-                    $riddle->name = $request->input('name');
-                    $riddle->description = $request->input('description') ?? null;
-                    $riddle->code = $request->input('code');
-                    $riddle->url = $request->input('url') ?? null;
-                    $riddle->post_resolution_message = $request->input('post-msg') ?? null;
-                    $riddle->disabled = $request->input('disabled') ? true : false;
+                if(!is_null($request['name']) && !is_null($request['code'])){
+                    $riddle->name = $request['name'];
+                    $riddle->description = $request['description'] ?? null;
+                    $riddle->code = $request['code'];
+                    $riddle->url = $request['url'] ?? null;
+                    $riddle->post_resolution_message = $request['post-resolution-message'] ?? null;
+                    $riddle->disabled = ($request['disabled'] == "true")? true : false;
+                    $riddle->id = $request['id'];
+                    $riddle->line = $request['line'];
                 }else{
                     return JsonResponse::create(['status' => [
                         'type' => 'error',
@@ -94,12 +98,13 @@ class AdminController extends Controller
                     ]]);
                 }
             }else{
-                $riddle->name = $request->input('name') ?? $riddle->name;
-                $riddle->description = $request->input('description') ?? $riddle->description;
-                $riddle->code = $request->input('code') ?? $riddle->code;
-                $riddle->url = $request->input('url')?? $riddle->url;
-                $riddle->post_resolution_message = $request->input('post-msg')?? $riddle->post_resolution_message;
-                $riddle->disabled = $request->input('disabled') ? true : false;
+                $riddle->name = $request['name'] ?? $riddle->name;
+                $riddle->description = $request['description'] ?? $riddle->description;
+                $riddle->code = $request['code'] ?? $riddle->code;
+                $riddle->url = $request['url']?? $riddle->url;
+                $riddle->post_resolution_message = $request['post_resolution_message']?? $riddle->post_resolution_message;
+                $riddle->disabled = ($request['disabled'] == "true")? true : false;
+                $riddle->line = $request['line'];
             }
 
             if ($riddle->save()) {
@@ -128,7 +133,7 @@ class AdminController extends Controller
         }catch (Exception $e){
             DB::rollBack();
             return JsonResponse::create(['status' => [
-                'type' => 'success',
+                'type' => 'error',
                 'message' => 'Une erreur a été produite !',
                 'display' => true
             ]]);
