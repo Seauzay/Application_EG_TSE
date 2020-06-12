@@ -1,4 +1,24 @@
+/**
+ * CreateModParcourDisp :
+ * classe pour gérer les listes de drags and drops des énigmes qui vont permettre de modifier/ajouter les enigmes et les parcours
+ *
+ */
+
 class CreateModParcourDisp{
+
+    /**
+     * Constructeur de la classe.
+     *
+     * utilisation :
+     *
+     * Créer un objet CreateModParcourDisp. Dans la page HTML qui l'intègre, plusieurs templates/élements doivent être présents.
+     * Ils sont donnés dans la feuille /resources/views/modifParcours/modifParcours.blade.php
+     *
+     * @param tabList : l'élement tablist qui va contenir par la suite les listes de modifications des enigmes/parcours
+     * @param isModParcours : booléen : false => 1 onglets créé :   -> 1 : pour la gestion des parcours
+     *                                : true => 2nd onglets créés : -> 2 : pour la création/modification des énigmes
+     *
+     */
     constructor(tabList,isModParcours) {
         this.tablist = tablist;
         this.parcourAPIGestion = null;
@@ -40,6 +60,13 @@ class CreateModParcourDisp{
 
     }
 
+    /**
+     * Pour les fonctions allowDrop(ev), drag(ev), drop(ev), dragOver(ev), resetParcours(ev) et modParcours(ev) :
+     * Elles suivent le même schéma :
+     *  -> on récupère l'éléments parents qui corresponds à l'enfant d'un des onglets créés : target
+     *  -> On compare l'id de target afin de savoir sur quel onglets il faut effectuer l'action
+     * @param ev : event
+     */
 
     allowDrop(ev) {
         var target = ev.target;
@@ -130,21 +157,63 @@ class CreateModParcourDisp{
 
 }
 
+
+/**
+ * Classe qui va récupérer les énigmes de la BDD, gérer les drags and drops et autre modification sur les énigmes
+ * elle est utilisée dans CreateModParcourDisp
+ */
 class ModParcourAPI {
+
+    /**
+     *
+     * @param container : l'élément dans lequel les listes / énigmes/*boutons seront affichés
+     * @param template
+     * @param isModParcours : booléen : false => 1 onglets créé :   -> 1 : pour la gestion des parcours
+     *                                : true => 2nd onglets créés : -> 2 : pour la création/modification des énigmes
+     */
     constructor(container, template,isModParcours) {
         this.container = (typeof container === 'string' ? document.querySelector(container) : container);
         this.template = new ModParcourTemplate(template);
+
+        /**
+         * this.AllRiddles : contient toutes les enigmes de la base de données
+         * chaque élément de AllRiddles contient plusieurs champs :
+         * {id, name, line, description, code, url, disabled, post_resolution_message}
+         */
         this.AllRiddles = [];
+
+        /**
+         * this.parcours :
+         * Contients chaques parcours récupérés depuis la BDD
+         * chaque parcours contient plusieurs champs :
+         * {team_color, riddles_id}
+         * team_color corresponds à la couleurs du parcours
+         * riddles_id est un tableau contenant toutes les id des énigmes présentent dans le parcours
+         * Chaques id ont une correspondance dans this.AllRiddles
+         */
         this.parcours = [];
+
+        /**
+         * this.displayRiddles :
+         * Chaque parcours a des enigmes qui ne lui sont pas associées.
+         * Ces énigmes sont stockées dans des tableaux avec leurs ids
+         * Ces tableaux sont stockés dans this.displayRiddles par ordre des parcours
+         *
+         * Exemple : si on récupère les enigmes de this.parcours[1] et this.displayRiddles[1],
+         * on aura toutes les énigmes de this.AllRiddles
+         */
         this.displayRiddles = [];
-        this.selectedIndex = -1;
+
+        this.selectedIndex = -1; //l'indice du parcours sélectionné
         this.draggedElementId = -1; //element dragged
         this.dragOverShadow = null;
         this.isModParcours = isModParcours;
         this.getElementFromDB();
     }
 
-
+    /**
+     * Fonction utilsant ajax pour récupérer this.AllRiddles et this.parcours depuis la BDD
+     */
     getElementFromDB() {
         // get all riddles
         $.ajax('riddleteam/fullList', {
@@ -175,6 +244,9 @@ class ModParcourAPI {
 
     }
 
+    /**
+     * Fonction utilisant ajax pour modifier les parcours et le "niveau" de chaque énigmes dans la BDD
+     */
     modParcours(){
         //modifier les parcours
         if(this.isModParcours){
@@ -230,6 +302,10 @@ class ModParcourAPI {
         }
         return clr;
     }
+
+    /**
+     * Affiche le parcours associé à l'indice newIdx
+     */
     changeIdx(newIdx){
         this.selectedIndex = newIdx;
         var header_list = this.container.querySelector("#header-mod-parcours");
@@ -237,6 +313,10 @@ class ModParcourAPI {
         header_list.style.backgroundColor = header_list.style.borderColor;
         this.update();
     }
+
+    /**
+     * Crée le header de la liste HTML contenant les différents parcours
+     */
     updateDisplay() {
         //Create Parcours array
         var header_parcours = this.container.querySelector("#header-mod-parcours");
@@ -269,6 +349,10 @@ class ModParcourAPI {
         this.changeIdx(this.selectedIndex);
     }
 
+    /**
+     * Initialise this.displayRiddles et ajoute les différents parcours à this.parcours
+     *
+     */
     updateParcours(parcourJSON) {
         if(this.isModParcours) {
             this.parcours = parcourJSON.parcours;
@@ -282,6 +366,13 @@ class ModParcourAPI {
     }
 
 
+    /**
+     * Chaque parcours à différents niveaux (line) qui indique quelles énigmes seront affichées en premier.
+     * Cette fonction permet de créer un ligne pour les listes HTML
+     * @param level : le niveau à créer
+     * @param id : id de l'élement HTML retrouné
+     * @returns : HTMLElement
+     */
     createLineDisplay(level,id){
         //creation de la ligne
         var riddle_line = document.createElement('li');
@@ -315,6 +406,11 @@ class ModParcourAPI {
         return riddle_line;
     }
 
+    /**
+     * Fonction interne dans l'update graphique des parcours et des énigmes
+     * @param array_content_id : l'id de la liste dans lequel insérer les éléments
+     * @param maxLvl : le nombre de niveau à créer
+     */
     createLinesAndCards(array_content_id,maxLvl){
         if(array_content_id == "possible-riddle" || array_content_id == "mod-parcours"){
             var contentList = this.container.querySelector("#"+array_content_id);
@@ -375,9 +471,16 @@ class ModParcourAPI {
         this.createCardModification(0,false,lvl);
     }
 
+    /**
+     * Fonction principale pour l'update graphique du container
+     */
     update() {
+        //on récupère le niveau max de toutes les énigmes possibles
         const arrayLines = this.AllRiddles.map(el => el.line);
         var maxLvl = Math.max(...arrayLines);
+
+        // Si une énigme de this.AllRiddles n'est ni dans le parcours sélectionné ni dans this.displayRiddles, son id est inséré dans this.displayRiddles
+        // Utile lors de la première update ou celle qui suit un reset
         if (this.selectedIndex >= 0 && this.isModParcours) {
             for(var rid of this.AllRiddles){
                 var dataParc = this.parcours[this.selectedIndex];
@@ -387,8 +490,6 @@ class ModParcourAPI {
             }
 
             //création des lines :
-            //nombre de lines à créer :
-
             this.createLinesAndCards("mod-parcours",maxLvl);
             this.createLinesAndCards("possible-riddle",maxLvl);
         }else if(!this.isModParcours){
@@ -409,7 +510,7 @@ class ModParcourAPI {
     }
 
 
-
+    //Supprime toutes les modifications non sauvegardées dans la BDD
     resetParcours(){
         this.AllRiddles = [];
         this.parcours = [];
@@ -422,9 +523,14 @@ class ModParcourAPI {
         this.getElementFromDB();
     }
 
+    /**
+     * Permet de déplacer un énigme dans un parcours ou dans les énigmes non utilisés (si this.isModParcours = true), sinon permet de changer le niveau d'une énigme
+     * @param elementId : l'id de l'énigme à déplacer
+     * @param destId : l'id du container(la liste) dans lequel l'énigme doit être déplacée
+     * @param destClass : className du container(la liste/line)  dans lequel l'énigme doit être déplacée
+     */
     switchArray(elementId, destId, destClass) {
         if (destClass === 'mod-line-li') {
-
             //check if element to delete not the same as the one to move :
             var destIdel = destId.replace("riddle-", "");
             if(this.isModParcours){
@@ -497,7 +603,13 @@ class ModParcourAPI {
         }
     }
 
-
+    /**
+     * Crée et affiche un élément graphique permettant d'ajouter/modifier une énigme
+     *
+     * @param riddle_id : id de la riddle qu'il faut modifier : non utile si isModCard = true (ajout d'une nouvelle énigme, l'id sera automatiquement produit)
+     * @param isModCard : permet de savoir si l'interface sera utilisée pour ajouter (false) ou modifier une énigme existante (true)
+     * @param lvl : sur quel niveau ajouter l'énigme : non utile si isModCard = true (modification de la énigme pas de son niveau)
+     */
     createCardModification(riddle_id,isModCard,lvl){
         if ("content" in document.createElement("template")) {
             // On prépare une ligne pour le tableau
@@ -505,6 +617,7 @@ class ModParcourAPI {
             this.cancelModAdd();
             let clone = document.importNode(node.content, true);
             if(isModCard){
+                //affiche les éléments de l'énigme à modifier
                 var riddle = this.AllRiddles.filter(v => v.id == riddle_id)[0];
                 //add new Information :
                 clone.querySelector("#header-add-mod-riddles").textContent = "Modifier énigme";
@@ -550,6 +663,9 @@ class ModParcourAPI {
         }
     }
 
+    /**
+     * Permet d'ajouter une énigme dans la BDD
+     */
     addRiddleInfo(){
         this.container.querySelector("#parcour-mod-div").style.opacity = 1;
         var clone = this.container.querySelector("#add-mod-riddles-node");
@@ -590,6 +706,9 @@ class ModParcourAPI {
         }
     }
 
+    /**
+     * Permet de modifier une énigme existante dans la BDD
+     */
     modRiddleInfo(){
         this.container.querySelector("#parcour-mod-div").style.opacity = 1;
         var clone = this.container.querySelector("#add-mod-riddles-node");
@@ -621,6 +740,9 @@ class ModParcourAPI {
 
     }
 
+    /**
+     * Fonction utilsée par addRiddleInfo() et modRiddleInfo() afin de récupérer les infos à modifier de l'élément HTML affiché par createCardModification()
+     */
     getNewRiddle(oldRiddle){
         var clone = this.container.querySelector("#add-mod-riddles-node");
         if(clone != null){
@@ -643,6 +765,7 @@ class ModParcourAPI {
         return null;
     }
 
+    // Permet de supprimer l'élément HTML créé par createCardModification
     cancelModAdd(){
         var clone = this.container.querySelector("#add-mod-riddles-node");
         if(clone!= null)
@@ -651,6 +774,9 @@ class ModParcourAPI {
     }
 }
 
+/**
+ * Permet de créer l'élément HTML représentant l'énigme
+ */
 class ModParcourTemplate{
 
     constructor(param){
