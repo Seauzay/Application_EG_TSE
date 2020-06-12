@@ -12,7 +12,6 @@ class Message extends Model
      * string content
      * datetime date
      */
-
     protected $table = 'messaging';
 
     public $timestamps = false;

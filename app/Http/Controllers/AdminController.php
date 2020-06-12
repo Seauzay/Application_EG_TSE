@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FictitiousMessage;
 use App\Riddle;
 use App\Team;
 use Illuminate\Http\JsonResponse;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\UnauthorizedException;
 use Mockery\Exception;
 use RefreshDBSeeder;
@@ -86,7 +88,13 @@ class AdminController extends Controller
                     $riddle->description = $request['description'] ?? null;
                     $riddle->code = $request['code'];
                     $riddle->url = $request['url'] ?? null;
-                    $riddle->post_resolution_message = $request['post-resolution-message'] ?? null;
+                    if(($request['post_resolution_message'] ?? null) != null){
+                        $message = new FictitiousMessage;
+                        $message->content = $request['post_resolution_message'];
+                        $message->author = 'Théo';
+                        $message->riddle_id = $request['id'];
+                        $message->saveOrFail();
+                    }
                     $riddle->disabled = ($request['disabled'] == "true")? true : false;
                     $riddle->id = $request['id'];
                     $riddle->line = $request['line'];
@@ -102,7 +110,20 @@ class AdminController extends Controller
                 $riddle->description = $request['description'] ?? $riddle->description;
                 $riddle->code = $request['code'] ?? $riddle->code;
                 $riddle->url = $request['url']?? $riddle->url;
-                $riddle->post_resolution_message = $request['post_resolution_message']?? $riddle->post_resolution_message;
+                if($request['post_resolution_message'] != ""){
+                    if(($request['post_resolution_message'] ?? null) != null){
+                        $message = new FictitiousMessage;
+                        $message->content = $request['post_resolution_message'];
+                        $message->author = 'Théo';
+                        $message->riddle_id = $request['id'];
+                        $message->saveOrFail();
+                    }else{
+                        $message = $riddle->postResolutionMessage;
+                        $message->content = $request['post_resolution_message'];
+                        $message->riddle_id = $riddle->id;
+                        $message->saveOrFail();
+                    }
+                }
                 $riddle->disabled = ($request['disabled'] == "true")? true : false;
                 $riddle->line = $request['line'];
             }

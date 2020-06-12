@@ -54,13 +54,34 @@ class RiddleTeamController extends Controller
         $this->authorize('isGMorAdmin', Team::class);
         $riddles = Riddle::all();
 
+        $riddlesCopy = [];
+        foreach($riddles as $riddle){
+            if(is_null($riddle->postResolutionMessage)){
+                $message = null;
+            }else{
+                $message =  $riddle->postResolutionMessage->content;
+            }
+            $riddlesCopy[] = [
+                'id' => $riddle->id,
+                'name' => $riddle->name,
+                'url' => $riddle->url,
+                'description' => $riddle->description,
+                'code' => $riddle->code,
+                'post_resolution_message' => $message,
+                'line' => $riddle->line,
+                'disabled' => $riddle->disabled
+            ];
+
+        }
+
+
         return JsonResponse::create([
             'status' => [
                 'type' => 'success',
                 'message' => 'Énigmes récupérées avec succès',
                 'display' => false
             ],
-            'riddles' => $riddles,
+            'riddles' => $riddlesCopy,
         ]);
     }
 

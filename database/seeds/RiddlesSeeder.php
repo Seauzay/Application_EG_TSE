@@ -29,7 +29,6 @@ class RiddlesSeeder extends Seeder
         DB::table('riddles')->insert([
             'id' => 2,
             'name' => 'CM Images et numérique en Newsplex',
-            'post_resolution_message' => 'Vous avez reçu un Snap de Théo ! <a href="https://youtu.be/8xkPcRLftHY" target="_new">Cliquez ici</a>',
             'description' => 'Trouvez les lettres cachées',
             'url' => null,
             'code' => 0,
@@ -58,7 +57,6 @@ class RiddlesSeeder extends Seeder
             'id' => 5,
             'name' => 'Rendez-vous à l\'administration',
             'description' => 'Trouvez les lettres cachées',
-            'post_resolution_message' => 'Vous avez reçu un Snap de Théo ! <a href="https://youtu.be/8xkPcRLftHY" target="_new">Cliquez ici</a>',
             'url' => null,
             'code' => 0,
             'line' => 2
@@ -98,7 +96,6 @@ class RiddlesSeeder extends Seeder
             'id' => 9, // pour les bleus
             'name' => 'Le Mixeur', // carré magique
             'description' => 'Trouvez une partie du numéro de Théo',
-            'post_resolution_message' => 'Vous avez reçu un nouveau message de Théo. Composez le 06 XX 78 XX 11 pour l\'écouter.',
             'url' => 'http://51.75.126.46/html/escapegameTSE/CarreMagique/',
             'code' => 0,
             'line' => 4
@@ -108,7 +105,6 @@ class RiddlesSeeder extends Seeder
             'id' => 88, // pour les verts
             'name' => 'La Tour', // + arcade (détecteur de distance)
             'description' => 'Trouvez une partie du numéro de Théo',
-            'post_resolution_message' => 'Vous avez reçu un nouveau message de Théo. Composez le 06 XX 78 XX 11 pour l\'écouter.',
             'url' => null,
             'code' => 0,
             'line' => 4
@@ -135,7 +131,6 @@ class RiddlesSeeder extends Seeder
             'id' => 888, // pour les jaunes
             'name' => 'La Tour', // + arcade (détecteur de distance)
             'description' => 'Trouvez une partie du numéro de Théo',
-            'post_resolution_message' => 'Vous avez reçu un nouveau message de Théo. Composez le 06 65 XX XX 11 pour l\'écouter.',
             'url' => null,
             'code' => 0,
             'line' => 4
@@ -145,7 +140,6 @@ class RiddlesSeeder extends Seeder
             'id' => 100, // pour les rouges
             'name' => 'La Fabrique de l\'Innovation', // code source
             'description' => 'Trouvez une partie du numéro de Théo',
-            'post_resolution_message' => 'Vous avez reçu un nouveau message de Théo. Composez le 06 65 XX XX 11 pour l\'écouter.',
             'url' => 'http://51.75.126.46/sourcecode/public',
             'code' => 0,
             'line' => 4
