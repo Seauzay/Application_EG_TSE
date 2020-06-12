@@ -87,7 +87,7 @@ class AdminController extends Controller
                     $riddle->code = $request['code'];
                     $riddle->url = $request['url'] ?? null;
                     $riddle->post_resolution_message = $request['post-resolution-message'] ?? null;
-                    $riddle->disabled = $request['disabled'] ? true : false;
+                    $riddle->disabled = ($request['disabled'] == "true")? true : false;
                     $riddle->id = $request['id'];
                     $riddle->line = $request['line'];
                 }else{
@@ -103,7 +103,7 @@ class AdminController extends Controller
                 $riddle->code = $request['code'] ?? $riddle->code;
                 $riddle->url = $request['url']?? $riddle->url;
                 $riddle->post_resolution_message = $request['post_resolution_message']?? $riddle->post_resolution_message;
-                $riddle->disabled = $request['disabled'] ? true : false;
+                $riddle->disabled = ($request['disabled'] == "true")? true : false;
                 $riddle->line = $request['line'];
             }
 

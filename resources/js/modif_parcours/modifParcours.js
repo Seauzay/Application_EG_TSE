@@ -566,12 +566,14 @@ class ModParcourAPI {
             var newRiddle = this.getNewRiddle(oldRiddle);
             this.cancelModAdd();
             if(newRiddle != null){
+                newRiddle.disabled = (newRiddle.disabled)?"true":"false";
                 $.ajax('admin/modifyRiddle', {
                     data : {riddle : newRiddle},
                     dataType: 'json',
                     success: (response) => {
                         if(response.status.type == 'success'){
                             alert(response.status.message);
+                            newRiddle.disabled = (newRiddle.disabled == "true");
                             this.AllRiddles.push(newRiddle);
                             this.update();
                         }else{
@@ -593,12 +595,14 @@ class ModParcourAPI {
             var newRiddle = this.getNewRiddle(oldRiddle);
             this.cancelModAdd();
             if(newRiddle != null){
+                newRiddle.disabled = (newRiddle.disabled)?"true":"false";
                 $.ajax('admin/modifyRiddle', {
                     data : {riddle : newRiddle},
                     dataType: 'json',
                     success: (response) => {
                         if(response.status.type == 'success'){
                             alert(response.status.message);
+                            newRiddle.disabled = (newRiddle.disabled == "true");
                             this.AllRiddles[this.AllRiddles.indexOf(oldRiddle)] = newRiddle;
                             this.update();
                         }else{
