@@ -6,30 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{$title ?? config('app.name')}}</title>
+{{--    <title>Escape Game <br>Télécom Saint-Étienne</title>--}}
     <link rel="shortcut icon" type="image/png" href="{{url('images/favicon.jpg')}}"/>
+
+
     {{Html::style('css/app.css')}}
     {{Html::script('js/app.js')}}
 </head>
 <body>
 
 <header class="text-center py-3">
-    <div class="row justify-content-center">
-        <img src="{{url('/images/LOGO.png')}}" alt="logo de l'Escape Game" height="80">
-        <h1 class="my-auto ml-3"><a href="{{ url('/') }}">{{config('app.name')}}</a></h1>
+    <div class="container mx-auto">
+        <p><img src="{{url('/images/LOGO.png')}}" alt="logo de l'Escape Game" height="80"></p>
+        <h1 class="my-auto ml-3"><a href="{{ url('/') }}">Escape Game <br>Télécom Saint-Étienne</a></h1>
+{{--        <h1 class="my-auto ml-3"><a href="{{ url('/') }}">{{config('app.name')}}</a></h1>--}}
     </div>
 </header>
-
+<script>const emoji = new DisplayEmoji();</script>
     <div class="sticky-top">
         @include('layouts.logout')
     </div>
-
-<div id="tablist"></div>
+<div id="tablist">
 <script>
     const tablist = new TabList('#tablist');
-    const roomlist = new RoomList(tablist);
 </script>
-
+</div>
 @yield('content')
-
 </body>
 </html>

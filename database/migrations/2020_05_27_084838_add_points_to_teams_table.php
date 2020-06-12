@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterRiddleTableAddPostResolutionMessageColumn extends Migration
+class AddPointsToTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterRiddleTableAddPostResolutionMessageColumn extends Migration
      */
     public function up()
     {
-        Schema::table('riddles', function (Blueprint $table) {
-            $table->string('post_resolution_message')->nullable();
+        Schema::table('teams', function (Blueprint $table) {
+            $table->integer('score')->default('0');
         });
     }
 
@@ -25,8 +25,8 @@ class AlterRiddleTableAddPostResolutionMessageColumn extends Migration
      */
     public function down()
     {
-        Schema::table('riddles', function (Blueprint $table) {
-            $table->dropColumn('post_resolution_message');
+        Schema::table('teams', function (Blueprint $table) {
+            $table->dropColumn('score');
         });
     }
 }

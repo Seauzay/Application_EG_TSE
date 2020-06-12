@@ -2,10 +2,20 @@
 
 @section('nav-items')
     {{-- Timer global --}}
-    <div id="global-timer" class="row justify-content-start">
-        Temps Écoulé&nbsp;:
-        <span class="time"></span>
+
+    <span id="emoji" class="row justify-content-space-between">  <span class="rank" ></span>
+        <span id="score" style="color: #182949 !important;"><strong>{{ Auth::user()->score }} pts</strong></span>
+    </span>
+            <div class="progress row justify-content-space-between" style="width:35%;"></div>
+    <div id="global-timer" class="row justify-content-space-between"  >
+      <span><svg class="bi bi-clock-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+</svg> <strong><span class="time" style="color: #182949"></span></strong></span>
     </div>
+
+{{--
+  <div id="myBar" class="progress-bar bg-warning" role="progressbar"  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+--}}
 @endsection
 
 @section('content')
@@ -23,9 +33,13 @@
                     <form class="col">
                         <div class="form-group">
                             <label for="validation-modal-code" class="form-control-label">Veuillez entrer le code que vous avez reçu à la fin de cette énigme</label>
+
+                            <div class='alert alert-danger alert-block text-center'>
+                               Code invalide !
+                            </div>
                             <input type="text" class="form-control" name="code" id="validation-modal-code" placeholder="Entrez le code ici">
                         </div>
-                        <button type="submit" class="btn btn-primary pull-right">Vérifier</button>
+                        <button type="submit" class="btn btn-secondary pull-right">Vérifier</button>
                     </form>
                 </div>
             </div>
@@ -36,23 +50,33 @@
     <template id="player-riddle-template">
         <div class="card player-riddle-card my-2">
             <div class="card-body">
-                <div class="row mx-auto justify-content-between">
-                    <h5 class="card-title"></h5>
-                    <span class="timer">00:00</span>
+                <div class="row">
+                    <div class="col-auto mr-auto">
+                    <h5 class="card-title" style="color: #182949 !important;"></h5>
+                    </div>
+                    <div class="col-auto">
+                    <span class="timer badge badge-light "></span>
+                    </div>
                 </div>
-                <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <p class="card-text"></p>
-                <p class="card-post-resolution-message" style="display: none;"></p>
-                <a class="btn btn-info player-riddle-url my-1" target="_blank" style="display: none;">Lien vers l'énigme</a>
+                <h6 class="card-subtitle mb-2 text-muted">
+                </h6>
+                <p class="card-text font-italic font-weight-bold" style="color: #182949 !important;"></p>
+                <a class="card-link player-riddle-url " target="_blank" style="display: none; color: #182949 !important "><span><svg class="bi bi-arrow-right-short" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.793 8 8.146 5.354a.5.5 0 0 1 0-.708z"/>
+  <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5H11a.5.5 0 0 1 0 1H4.5A.5.5 0 0 1 4 8z"/>
+</svg></span>&nbsp;Lien vers l'énigme</a>
 
                 <div class="row mx-auto">
-                    <button class="btn btn-primary start-button my-1">Commencer l'énigme</button>
+                    <button class="btn btn-secondary start-button my-1">Commencer l'énigme</button>
                 </div>
-                <div class="row mx-auto">
-                    <button class="btn btn-primary validate-button my-1" data-toggle="modal" data-target="#validation-modal" style="display: none;">Valider l'énigme</button>
+                <div class="row ">
+                    <button class="ml-lg-0 btn btn-light btn-block validate-button my-1" style="color: #182949 !important; background-color: white !important;border :white; display: none;" data-toggle="modal" data-target="#validation-modal" >Vous avez terminé l'énigme&thinsp;? Validez-la ici&thinsp;! </button>
                 </div>
-                <div class="row mx-auto">
-                    <button class="btn btn-primary cancel-button my-1" style="display: none;">Annuler l'énigme</button>
+                <hr>
+                <div class="row ">
+                    <div class="ml-auto mb-0">
+                    <a href="#" class="ml-lg-1 badge  badge-secondary cancel-button " style="display: none;">Annuler l'énigme</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,23 +98,68 @@
         </div>
     </template>
 
+        <!-- Modal pop up system -->
+    <div class="modal fade right" id="myModalDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><span class="badge badge-danger">Nouveau !</span></h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+{{--TOO LATE--}}
+    <div class="modal fade right" id="tooLate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" STYLE="background-color: #f44336 !important;color: white !important;">
+                    <h4 class="modal-title">Vous avez dépassé deux heures <svg class="bi bi-emoji-frown" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683z"/>
+                            <path d="M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+                        </svg></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" STYLE="background-color: #f44336 !important;color: white !important;">
+                    <p></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     {{-- Template pour les salons --}}
     <template id="room-template">
         <div class="messenger-container container-fluid">
             <div class="message-container"></div>
 
             <form action="msg/send/{id}" method="post" class="message-form">
-                <input type="text" name="content">
             </form>
         </div>
     </template>
 
-
     {{--Création des onglets--}}
     <script>
-        tablist.addTab({title: 'Énigmes', active: true});
-        //tablist.addTab({title: 'Salon de clavardage avec les Game Masters'});
+        tablist.addTab({title: 'Énigmes', active: true, icon: '<svg class="bi bi-play-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">' +
+                '  <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>' +
+                '</svg>&nbsp;'});
+		const roomlist = new RoomList(tablist);
         roomlist.update();
+		tablist.addTab({title: 'FAQ',icon: '<svg class="bi bi-question-octagon-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">' +
+                '  <path fill-rule="evenodd" d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM6.57 6.033H5.25C5.22 4.147 6.68 3.5 8.006 3.5c1.397 0 2.673.73 2.673 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.355H7.117l-.007-.463c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.901 0-1.358.603-1.358 1.384zm1.251 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"/>' +
+                '</svg>&nbsp;'});
+		tablist.contentOfTab(2).append($('<div>',{id:'FaQ'}));
+		const QRgGrid = new QRGrid('#FaQ');
+		QRgGrid.remplissageQRgrid();
     </script>
 
     {{--Création des énigmes au chargement de la page--}}
@@ -99,6 +168,23 @@
         tablist.contentOfTab(1).append($('<div>', {id: 'mySuperRiddleGrid'}));
                 {{--div de base de la grille d'énigmes--}}
         const playerRiddleGrid = new PlayerRiddleGrid('#mySuperRiddleGrid');
-        const res = playerRiddleGrid.update();
+        const res = playerRiddleGrid.waitForActivation();
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.startChrono',function(){
+            $.ajax('player/startDate', {method: 'GET', success:function(response){
+                playerRiddleGrid.updateTimer(response.time);
+                playerRiddleGrid.update();
+            }});
+        });
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.resetChrono',function(){
+            document.location.reload(true);
+        });
+    </script>
+
+    <script>
+        emoji.display();
+        Echo.channel('application_tracking_escape_game_tse_database_channel-equipe').listen('.emoji', function(e) {
+            emoji.display();
+        });
+
     </script>
 @endsection

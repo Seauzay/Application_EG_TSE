@@ -47,7 +47,7 @@ class Team extends Authenticatable
     {
         return $this->belongsToMany('App\Room', 'rooms_teams');
     }
-    
+
     public function parcours()
     {
         return $this->hasMany('App\Parcours');

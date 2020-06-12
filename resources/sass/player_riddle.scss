@@ -5,9 +5,25 @@
 
 .player-riddle-card {
   width: 20rem;
+  background-color : $yellow !important;
 }
 
 #global-timer {
   text-align: right;
   padding: 0 10px;
 }
+
+/*
+#myProgress {
+  width: 60%;
+  background-color: $lightGray;
+}
+
+#myBar {
+  width: 0%;
+  height: 30px;
+  background-color: $yellowBorder;
+  text-align: center;
+  line-height: 30px;
+  color: blue;
+}*/

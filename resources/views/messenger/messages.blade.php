@@ -13,10 +13,3 @@
     </div>
 </template>
 
-<div class="collection">
-
-</div>
-
-<form action="msg/send/1" method="post" id="message-form">
-    <input type="text" name="content">
-</form>

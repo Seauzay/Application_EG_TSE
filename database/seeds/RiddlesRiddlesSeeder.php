@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 class RiddlesRiddlesSeeder extends Seeder
 {
     /*
+     *  !!!!!!!!!!!!!!!!!! CLEAR TABLE BEFORE SEEDING !!!!!!!!!!!!!!!!!!!!!!!
        1	L'Amphithéâtre
        2	Mootse
        3	La Salle Newsplex
@@ -91,7 +92,7 @@ class RiddlesRiddlesSeeder extends Seeder
             'parent_id' => 7,
             'child_id' => 8888
         ]);
-        
+
         DB::table('riddles_riddles')->insert([
             'parent_id' => 7,
             'child_id' => 9
@@ -100,7 +101,7 @@ class RiddlesRiddlesSeeder extends Seeder
             'parent_id' => 7,
             'child_id' => 99
         ]);
-        
+
         DB::table('riddles_riddles')->insert([
             'parent_id' => 7,
             'child_id' => 10
@@ -116,7 +117,7 @@ class RiddlesRiddlesSeeder extends Seeder
             'child_id' => 11
         ]);
         DB::table('riddles_riddles')->insert([
-            'parent_id' => 8,
+            'parent_id' => 88,
             'child_id' => 11
         ]);
         DB::table('riddles_riddles')->insert([
@@ -127,7 +128,7 @@ class RiddlesRiddlesSeeder extends Seeder
             'parent_id' => 8888,
             'child_id' => 11
         ]);
-        
+
         DB::table('riddles_riddles')->insert([
             'parent_id' => 9,
             'child_id' => 11
@@ -136,7 +137,7 @@ class RiddlesRiddlesSeeder extends Seeder
             'parent_id' => 99,
             'child_id' => 11
         ]);
-        
+
         DB::table('riddles_riddles')->insert([
             'parent_id' => 10,
             'child_id' => 11

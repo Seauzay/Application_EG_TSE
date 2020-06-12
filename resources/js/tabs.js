@@ -80,7 +80,7 @@ class TabList {
         root.addClass('tabs');
         const navlist = root.find('.nav-tabs');
         if (navlist.length === 0) {
-            root.append($('<ul>', {class: 'nav nav-tabs shadow-sm'})
+            root.append($('<ul>', {class: 'nav nav-tabs nav-fill shadow-sm'})
                 .attr('role', 'tablist')
                 .sortable({
                     connectWith: root.find('.nav-tabs'),
@@ -112,7 +112,8 @@ class TabList {
             title: tab_lang.default_title,
             closeable: false,
             active: false,
-            position: 'end'
+            position: 'end',
+            icon : ''
         }, options);
 
         if (settings.position === 'end')
@@ -135,7 +136,7 @@ class TabList {
                 .attr('role', 'tab')
                 .attr('data-toggle', 'tab')
                 .attr('aria-controls', settings.id.match('(nav-.*)-tab')[1])
-                .text(settings.title);
+                .html(settings.icon+'&nbsp;'+settings.title);
 
             if (settings.closeable) {
                 let cross = $('<span>', {class: 'ui-icon ui-icon-closethick ml-2'});

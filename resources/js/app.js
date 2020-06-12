@@ -67,9 +67,17 @@ $(document).on("mousedown", function (e1) {
 }(jQuery));
 
 // Custom
+require('./selectboxit');
 TabList = require('./tabs').TabList;
 GMTeam = require('./gm/gm_team').GMTeam;
 GMTeamList = require('./gm/gm_team').GMTeamList;
 PlayerRiddle = require('./player/player_riddle').PlayerRiddle;
 PlayerRiddleGrid = require('./player/player_riddle').PlayerRiddleGrid;
 RoomList = require('./messenger/createRoom').RoomList;
+QRGrid = require('./player/FaQ').QRGrid;
+CreateModParcourDisp = require('./modif_parcours/modifParcours').CreateModParcourDisp;
+ModParcourAPI = require('./modif_parcours/modifParcours').ModParcourAPI;
+ModParcourTemplate = require('./modif_parcours/modifParcours').ModParcourTemplate;
+MessageTemplate = require('./messenger/MessageTemplate').MessageTemplate;
+DisplayEmoji = require('./player/display_emoji').DisplayEmoji;
+ChronometrageForm = require('./gm/ChronometrageForm').ChronometrageForm;

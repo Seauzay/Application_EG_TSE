@@ -25,19 +25,34 @@ class Riddle extends Model
     {
         return $this->belongsToMany('App\Team', 'riddles_teams')->withPivot('start_date', 'end_date');
     }
-    
+
     public function parcours()
     {
         return $this->hasMany('App\Parcours');
     }
 
-    public function parents()
+    public function getParentsAttribute()
     {
-        return $this->belongsToMany(Riddle::class, 'riddles_riddles', 'child_id', 'parent_id');
+        try{
+            return Riddle::where('line','=',$this->line-1)->get();
+        }
+        catch(Exception $e){
+            return null;
+        }
     }
 
-    public function children()
+    public function getChildrenAttribute()
     {
-        return $this->belongsToMany(Riddle::class, 'riddles_riddles', 'parent_id', 'child_id');
+        try{
+            return Riddle::where('line','=',$this->line+1)->get();
+        }
+        catch(Exception $e){
+            return null;
+        }
+    }
+
+    public function postResolutionMessage()
+    {
+        return $this->hasOne('App\FictitiousMessage');
     }
 }
