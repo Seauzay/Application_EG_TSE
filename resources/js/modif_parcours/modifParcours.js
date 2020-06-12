@@ -188,7 +188,8 @@ class ModParcourAPI {
                     data : {parcours : newParcours},
                     dataType: 'json'
                     , success: (response) => {
-                        alert(response.status.message);
+                        $('#success-modal').find('.modal-message').text(response.status.message);
+                        $('#success-modal').modal('show');
                         this.resetParcours();
                     }
                 });
@@ -203,7 +204,8 @@ class ModParcourAPI {
                 data : {riddleLine : idLine},
                 dataType: 'json'
                 , success: (response) => {
-                    alert(response.status.message);
+                    $('#success-modal').find('.modal-message').text(response.status.message);
+                    $('#success-modal').modal('show');
                     this.resetParcours();
                 }
             });
@@ -572,12 +574,14 @@ class ModParcourAPI {
                     dataType: 'json',
                     success: (response) => {
                         if(response.status.type == 'success'){
-                            alert(response.status.message);
+                            $('#success-modal').find('.modal-message').text(response.status.message);
+                            $('#success-modal').modal('show');
                             newRiddle.disabled = (newRiddle.disabled == "true");
                             this.AllRiddles.push(newRiddle);
                             this.update();
                         }else{
-                            alert(response.status.message);
+                            $('#error-modal').find('.modal-message').text(response.status.message);
+                            $('#error-modal').modal('show');
                         }
                     }
                 });
@@ -601,12 +605,14 @@ class ModParcourAPI {
                     dataType: 'json',
                     success: (response) => {
                         if(response.status.type == 'success'){
-                            alert(response.status.message);
+                            $('#success-modal').find('.modal-message').text(response.status.message);
+                            $('#success-modal').modal('show');
                             newRiddle.disabled = (newRiddle.disabled == "true");
                             this.AllRiddles[this.AllRiddles.indexOf(oldRiddle)] = newRiddle;
                             this.update();
                         }else{
-                            alert(response.status.message);
+                            $('#error-modal').find('.modal-message').text(response.status.message);
+                            $('#error-modal').modal('show');
                         }
                     }
                 });

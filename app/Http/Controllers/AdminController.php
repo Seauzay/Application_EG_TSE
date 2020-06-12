@@ -81,7 +81,7 @@ class AdminController extends Controller
             if( is_null($riddle)){
                 $riddle = new Riddle;
                 $creation = true;
-                if(!is_null($request['name']) && !is_null($request['code'])){
+                if(!is_null($request['name']) && !is_null($request['code']) && !is_null($request['description'])){
                     $riddle->name = $request['name'];
                     $riddle->description = $request['description'] ?? null;
                     $riddle->code = $request['code'];
@@ -93,7 +93,7 @@ class AdminController extends Controller
                 }else{
                     return JsonResponse::create(['status' => [
                         'type' => 'error',
-                        'message' => 'Veuillez rentrer un nom et un code de validation valides pour votre nouvelle énigme !',
+                        'message' => 'Veuillez rentrer un nom, une description et un code de validation valides pour votre nouvelle énigme !',
                         'display' => true
                     ]]);
                 }
